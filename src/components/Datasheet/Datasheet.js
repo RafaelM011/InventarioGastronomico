@@ -2,7 +2,6 @@ import React, { useEffect }from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import DropDown from "../../components/DropDown/DropDown";
-import InfoBox from "../../components/InformationBox/InformationBox";
 import LeftArrow from "../../assets/left_arrow.png";
 import RightArrow from "../../assets/right_arrow.png";
 import Download from "../../assets/download.png";
@@ -10,6 +9,7 @@ import Upload from "../../assets/upload.png";
 
 import { fetchSucursales, selectSucursal } from "../../slices/sucursalesSlice";
 import { fetchIngredients } from "../../slices/ingredientSlice";
+import ManageIngredient from "../ManageIngredients/ManageIngredients";
 
 export default function Datasheet(props) {
     const {option, active} = props;
@@ -17,7 +17,6 @@ export default function Datasheet(props) {
     const sucursal = useSelector(selectSucursal);    
     const dispatch = useDispatch();
 
-    console.log(username);
     //Request Sucursales on page load
    useEffect( () => {
         dispatch(fetchSucursales(username))
@@ -43,7 +42,7 @@ export default function Datasheet(props) {
                 {/*INFORMATION SECTION*/}
                 <div className="row-start-2 grid grid-cols-[8fr,2fr] mt-10">
                     <div className="col-start-1">
-                        <InfoBox option={option}/>
+                        <ManageIngredient option={option}/>
                     </div>
                     {/* BUTTONS */}
                     <div className="col-start-2 w-full h-full flex flex-col place-items-center">
