@@ -15,7 +15,8 @@ function App() {
 
   useEffect( () => {
     if (userData.status === 'completed') {
-      navigate('/inventario');
+      sessionStorage.setItem("username",`${userData.info.username}`)
+      navigate("/inventario");
     }
   },[userData, navigate])
 
@@ -23,7 +24,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/inventario" element={<Inventario/>}/>
+        <Route path="/inventario/" element={<Inventario/>}/>
         <Route path="/reporte_de_ventas" element={<ReporteDeVentas/>}/>
         <Route path="/suplir_ingredientes" element={<SuplirIngredientes/>}/>
         {/* <Route path="/configurar_ingredientes" element={<Inventario/>}/>

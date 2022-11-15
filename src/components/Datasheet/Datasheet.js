@@ -9,21 +9,19 @@ import Download from "../../assets/download.png";
 import Upload from "../../assets/upload.png";
 
 import { fetchSucursales, selectSucursal } from "../../slices/sucursalesSlice";
-import { selectUser } from "../../slices/userSlice";
 import { fetchIngredients } from "../../slices/ingredientSlice";
 
 export default function Datasheet(props) {
     const {option, active} = props;
-    // let [ingredientes, setIngredientes] = useState([]);
-  
+    const  username = sessionStorage.getItem("username");
+    const sucursal = useSelector(selectSucursal);    
     const dispatch = useDispatch();
-    const userData = useSelector(selectUser);
-    const sucursal = useSelector(selectSucursal);
 
+    console.log(username);
     //Request Sucursales on page load
    useEffect( () => {
-        dispatch(fetchSucursales(userData.info.username))
-    }, [dispatch, userData]) 
+        dispatch(fetchSucursales(username))
+    }, [dispatch, username]) 
     useEffect( () => {
         dispatch(fetchIngredients(sucursal))        
     }, [dispatch,sucursal])
