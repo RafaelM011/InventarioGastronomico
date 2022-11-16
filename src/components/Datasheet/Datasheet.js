@@ -10,6 +10,7 @@ import Upload from "../../assets/upload.png";
 import { fetchSucursales, selectSucursal } from "../../slices/sucursalesSlice";
 import { fetchIngredients } from "../../slices/ingredientSlice";
 import ManageIngredient from "../ManageIngredients/ManageIngredients";
+import InfoBox from "../InformationBox/InformationBox.js";
 
 export default function Datasheet(props) {
     const {option, active} = props;
@@ -25,6 +26,14 @@ export default function Datasheet(props) {
         dispatch(fetchIngredients(sucursal))        
     }, [dispatch,sucursal])
 
+    const SwitchRender = () => {
+        switch(option.id){
+            case 1: return <InfoBox/>
+            case 2: return <ManageIngredient option={option.title}/>
+            default:
+        }
+    }
+
     return (
         <>
             <div className="col-start-2 bg-[#F4F4F4] grid grid-rows-[2fr,8fr]">
@@ -34,7 +43,7 @@ export default function Datasheet(props) {
                         <h1 className="text-3xl text-center"> INVENTARIO: </h1>
                         <DropDown active={active}/>
                     </div>
-                    <div className="w-1/2 h-[140px] bg-[#000692] rounded-l-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] place-self-start mt-8 flex"> 
+                    <div className="w-1/2 h-[140px] bg-inv-blue rounded-l-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] place-self-start mt-8 flex"> 
                         <div className="h-[70%] w-[11.5%] relative top-[20px] left-[20px] rounded-full bg-[#EFEFEF]"></div>
                         <h1 className="text-[40px] text-white font-thin self-center ml-10"> USUARIO RESTAURANTE LOS 100 CIELOS </h1>
                     </div>
@@ -42,7 +51,7 @@ export default function Datasheet(props) {
                 {/*INFORMATION SECTION*/}
                 <div className="row-start-2 grid grid-cols-[8fr,2fr] mt-10">
                     <div className="col-start-1">
-                        <ManageIngredient option={option}/>
+                        {SwitchRender()}    
                     </div>
                     {/* BUTTONS */}
                     <div className="col-start-2 w-full h-full flex flex-col place-items-center">

@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 export function LargeMenu() {
     return(
         <>
-            <div className="w-[225px] h-[300px] bg-[#000692] rounded-b-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55) mx-auto"> 
+            <div className="w-[225px] h-[300px] bg-inv-blue rounded-b-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55) mx-auto"> 
                 <div className="h-[180px] w-[180px] relative top-[90px] left-[23px] rounded-full bg-[#EFEFEF]"></div>
             </div>
         </>
@@ -22,7 +22,7 @@ export function LargeMenu() {
 export function SmallMenu() {
     return(
         <>
-            <div className="w-11/12 h-[100px] bg-[#000692] rounded-r-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] mt-32 place-self-start flex place-content-end"> 
+            <div className="w-11/12 h-[100px] bg-inv-blue rounded-r-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] mt-32 place-self-start flex place-content-end"> 
                 <div className="h-[80px] w-[80px] relative top-[10px] right-[12px] rounded-full bg-[#EFEFEF]"></div>
             </div>
         </>
