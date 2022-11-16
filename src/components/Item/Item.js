@@ -1,5 +1,7 @@
 import React from "react";
 
+import PlusIcon from "../../assets/Plus.png";
+
 export default function Item(props) {
     const {name, quantity, price, unit} = props;
     return(
@@ -45,6 +47,9 @@ export function EmptyItem() {
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                         <input className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text'/>
                     </div>
+                </div>
+                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full">
+                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon'/>
                 </div>
             </div>  
         </>

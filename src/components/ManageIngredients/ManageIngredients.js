@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { ItemsHeader} from "../Item/Item.js";
 import { EmptyItemList } from "../Item/ItemList.js";
 
+import PlusIcon from "../../assets/Plus.png";
+
 export default function ManageIngredient(props) {
     const {option} = props;
     const [amount, setAmount] = useState(1);
@@ -20,8 +22,8 @@ export default function ManageIngredient(props) {
                     <div className=" h-[460px] overflow-auto scrollbar-hide">
                         <EmptyItemList renderAmount={amount}/>    
                     </div>
-                    <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mt-2 mx-auto">
-                        <button className="text-[38px] ml-4 text-white" onClick={addEmptyItem}> + </button>
+                    <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto">
+                        <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addEmptyItem}/>
                     </div>
                 </div>
             </div>
