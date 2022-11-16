@@ -13,6 +13,9 @@ const ingredientsSlice = createSlice({
             .addCase(fetchIngredients.fulfilled, (state, action) => {
                 return action.payload;
             })
+            .addCase(addIngredient.fulfilled, (state, action) => {
+                return action.payload;
+            })
     }
 })
 
@@ -22,6 +25,17 @@ export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients',
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({sucursal})
+    })
+    .then(res => res.json())
+    return response;
+})
+
+export const addIngredient = createAsyncThunk('ingredients/addIngredient', async (ingredientInfo, rejectWithValue) => {
+    const response = await
+    fetch('http://localhost:4000/agregaringrediente', {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(ingredientInfo)
     })
     .then(res => res.json())
     return response;
