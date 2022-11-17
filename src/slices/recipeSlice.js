@@ -7,6 +7,12 @@ const recipeSlice = createSlice({
     initialState,
     reducers: {
 
+    },
+    extraReducers(builder){
+        builder
+            .addCase(fetchRecipes.fulfilled, (state, action) => {
+                return action.payload;
+            })
     }
 })
 
@@ -15,9 +21,11 @@ export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucu
     fetch('http://localhost:4000/getrecipes', {
         method: "post",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(sucursal)
+        body: JSON.stringify({sucursal})
     })
-    console.log(response);
+    .then( res => res.json())
+    return response
 })
 
+export const selectRecipes = state => state.recipes;
 export default recipeSlice.reducer;

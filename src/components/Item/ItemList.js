@@ -2,7 +2,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectIngredients } from "../../slices/ingredientSlice";
 
-import Item, { EmptyItem } from "./Item";
+import Item, { EmptyItem, RecipeItem } from "./Item";
+import { selectRecipes } from "../../slices/recipeSlice";
 
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
@@ -29,6 +30,18 @@ export function EmptyItemList(props){
     return(
         <>
             {render}
+        </>
+    )
+}
+
+export function RecipeList(props) {
+    const recipes = useSelector(selectRecipes);
+
+    return (
+        <>
+            {recipes.map(recipe => {
+                return <RecipeItem key={recipe.id} name={recipe.nombre}/>
+            })}
         </>
     )
 }
