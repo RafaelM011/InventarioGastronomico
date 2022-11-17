@@ -7,6 +7,7 @@ import { fetchSucursales, selectSucursal } from "../../slices/sucursalesSlice";
 import { fetchIngredients } from "../../slices/ingredientSlice";
 import ManageIngredient from "../ManageIngredients/ManageIngredients";
 import InfoBox from "../InformationBox/InformationBox.js";
+import ReportSale from "../ReportSale/ReportSale";
 
 export default function Datasheet(props) {
     const {option, active} = props;
@@ -24,8 +25,9 @@ export default function Datasheet(props) {
 
     const SwitchRender = () => {
         switch(option.id){
-            case 1: return <InfoBox/>
-            case 2: return <ManageIngredient option={option.title}/>
+            case 1: return <InfoBox title={option.title}/>
+            case 2: return <ManageIngredient title={option.title}/>
+            case 3: return <ReportSale title={option.title}/>
             default:
         }
     }
