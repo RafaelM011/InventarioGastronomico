@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { EmptyItemList } from "../Item/ItemList.js";
+import { EmptyItemList, EmptyRecipeList } from "../Item/ItemList.js";
 
 import PlusIcon from "../../assets/Plus.png";
 
@@ -29,10 +29,9 @@ export default function ManageIngredient(props) {
                         <button className={pressed === 1 ? pressedStyle : defaultStyle} onClick={() => changePressed(1)}>AGREGAR INGREDIENTE</button>
                         <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => changePressed(2)}>AGREGAR RECETA</button>
                     </div>
-                    <div className=" h-[460px] w-[1200px] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-inv-blue via-transparent to-transparent">
-                        {pressed === 1 ? <EmptyItemList renderAmount={amount}/> : null}
-=                    </div>
-                    
+                    <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-inv-blue via-transparent to-transparent">
+                        {pressed === 1 ? <EmptyItemList renderAmount={amount}/> : <EmptyRecipeList renderAmount={amount}/>}
+                    </div>                    
                     <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto mt-10">
                         <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addEmptyItem}/>
                     </div>

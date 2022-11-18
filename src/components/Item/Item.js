@@ -34,15 +34,16 @@ export default function Item(props) {
     )
 }
 
-export function EmptyItem() {
-    const dispatch = useDispatch();
+export function EmptyItem(props) {
+    const {id, addFunction} = props;
+    // const dispatch = useDispatch();
     const sucursalSeleccionada = useSelector(selectSucursal);
     const ingredientName = useRef();
     const ingredientPrice = useRef();
     const ingredientAmount = useRef();
     const ingredientUnit = useRef();
 
-    function getIngredientInfo() {
+    function getRecipeInfo() {
         const ingredientInfo = {
             sucursal: sucursalSeleccionada,
             nombre: ingredientName.current.value,
@@ -50,8 +51,8 @@ export function EmptyItem() {
             precio: ingredientPrice.current.value,
             unidad: ingredientUnit.current.value
         }
-
-        dispatch(addIngredient(ingredientInfo));
+        console.log(ingredientInfo);
+        // dispatch(addIngredient(ingredientInfo));
     }
 
     return(
@@ -59,22 +60,22 @@ export function EmptyItem() {
             <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text' ref={ingredientName}/>
+                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text' ref={ingredientName} onChange={addFunction}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' ref={ingredientPrice}/>
+                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' ref={ingredientPrice} onChange={addFunction}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-8/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' ref={ingredientAmount}/>
+                        <input id={id} name='cantidad'  className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' ref={ingredientAmount} onChange={addFunction}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' ref={ingredientUnit}/>
+                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' ref={ingredientUnit} onChange={addFunction}/>
                     </div>
                 </div>
                 <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
-                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={getIngredientInfo}/>
+                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={getRecipeInfo}/>
                 </div>
             </div>  
         </>
@@ -150,6 +151,53 @@ export function RecipeItem(props) {
                     <div className="w-9/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                         <input ref={quantityRef} className="w-9/12 text-3xl text-right font-semibold mt-3 ml-8 bg-inherit outline-none" onChange={updateRef}/>
                     </div>
+                </div>
+            </div>  
+        </>
+    )
+}
+
+export function EmptyRecipe() {
+    const dispatch = useDispatch();
+    const sucursalSeleccionada = useSelector(selectSucursal);
+    const ingredientName = useRef();
+    const ingredientPrice = useRef();
+    const ingredientAmount = useRef();
+    const ingredientUnit = useRef();
+
+    function getRecipeInfo() {
+        const recipeInfo = {
+            sucursal: sucursalSeleccionada,
+            nombre: ingredientName.current.value,
+            cantidad: ingredientAmount.current.value,
+            precio: ingredientPrice.current.value,
+            unidad: ingredientUnit.current.value
+        }
+
+        dispatch(addIngredient(recipeInfo));
+    }
+
+    return(
+        <>
+            <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
+                <div className="w-7/12 h-[60px] flex">
+                    <div className="w-9/12 h-[60px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text' ref={ingredientName}/>
+                    </div>
+                    <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' ref={ingredientPrice}/>
+                    </div>
+                </div>
+                <div className="w-5/12 h-[60px] flex">
+                    <div className="w-8/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' ref={ingredientAmount}/>
+                    </div>
+                    <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' ref={ingredientUnit}/>
+                    </div>
+                </div>
+                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
+                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={getRecipeInfo}/>
                 </div>
             </div>  
         </>
