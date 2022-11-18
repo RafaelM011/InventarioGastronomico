@@ -6,7 +6,11 @@ const recipeSlice = createSlice({
     name: "recipes",
     initialState,
     reducers: {
-
+        addRefAmount(state, action){
+            for (let i = 0; i < state.length; i++){
+                if (state[i].id === action.payload.id)  state[i].refAmount = parseInt(action.payload.refAmount)                
+            }
+        }
     },
     extraReducers(builder){
         builder
@@ -27,5 +31,18 @@ export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucu
     return response
 })
 
+export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, rejectWithValue) => {
+    const response = await
+    fetch('http://localhost:4000/addrecipe', {
+        method: "put",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(recipe)
+    })
+    .then( res => res.json())
+
+    console.log(response);
+})
+
 export const selectRecipes = state => state.recipes;
+export const { addRefAmount } = recipeSlice.actions;
 export default recipeSlice.reducer;

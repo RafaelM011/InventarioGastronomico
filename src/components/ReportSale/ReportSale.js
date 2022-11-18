@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRecipes } from "../../slices/recipeSlice";
+import { fetchRecipes, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice.js";
 import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
@@ -9,11 +9,21 @@ import PlusIcon from "../../assets/Plus.png";
 export default function ReportSale(props) {
     const {title} = props;
     const sucursal = useSelector(selectSucursal);
+    const recipes = useSelector(selectRecipes);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchRecipes(sucursal));
     }, [dispatch, sucursal])
+
+    const sendSalesInfo = () => {
+        for (let i = 0; i < recipes.length; i++){
+            // DEFINE TOTAL INGREDIENT QUANTITY BASED ON REFAMOUNT AND USED QUANTITY PER INGREDIENT
+            if (recipes[i].refAmount) {
+                                
+            }
+        }
+    }
 
     return(
         <>
@@ -25,7 +35,7 @@ export default function ReportSale(props) {
                         <RecipeList/>
                     </div>
                     <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto">
-                        <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon'/>
+                        <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={sendSalesInfo}/>
                     </div>
                 </div>
             </div>

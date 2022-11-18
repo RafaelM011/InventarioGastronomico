@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 import PlusIcon from "../../assets/Plus.png";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addIngredient } from "../../slices/ingredientSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
+import { addRefAmount } from "../../slices/recipeSlice";
 
 
 export default function Item(props) {
@@ -125,8 +126,17 @@ export function RecipesHeader(){
 }
 
 export function RecipeItem(props) {
-    const {name} = props;
-    const quantitRef = useRef();
+    const {name, id} = props;
+    const quantityRef = useRef();
+    const dispatch = useDispatch();
+
+    const updateRef = () => {
+        const obj = {
+            refAmount: quantityRef.current.value,
+            id,
+        }
+        dispatch(addRefAmount(obj))
+    }
 
     return(
         <>
@@ -138,7 +148,7 @@ export function RecipeItem(props) {
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input ref={quantitRef} className="w-9/12 text-3xl text-right font-semibold mt-3 ml-8 bg-inherit outline-none"/>
+                        <input ref={quantityRef} className="w-9/12 text-3xl text-right font-semibold mt-3 ml-8 bg-inherit outline-none" onChange={updateRef}/>
                     </div>
                 </div>
             </div>  

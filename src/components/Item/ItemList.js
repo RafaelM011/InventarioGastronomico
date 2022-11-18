@@ -7,7 +7,6 @@ import { selectRecipes } from "../../slices/recipeSlice";
 
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
-
     return(
         <>
             {ingredients.map(ingredient => {
@@ -26,7 +25,6 @@ export function EmptyItemList(props){
         }
     }
     renderEmptyItems();
-
     return(
         <>
             {render}
@@ -36,11 +34,10 @@ export function EmptyItemList(props){
 
 export function RecipeList(props) {
     const recipes = useSelector(selectRecipes);
-
     return (
         <>
             {recipes.map(recipe => {
-                return <RecipeItem key={recipe.id} name={recipe.nombre}/>
+                return <RecipeItem key={recipe.id} id={recipe.id} name={recipe.nombre}/>
             })}
         </>
     )
