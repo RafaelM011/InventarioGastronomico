@@ -156,11 +156,18 @@ export function RecipeItem(props) {
     )
 }
 
-export function RecipeIngredient() {
-
+export function RecipeIngredient(props) {
+    const {addIngredientToList, id} = props;
     return(
         <>
-
+            <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
+                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input id={id} name='nombre' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE" onChange={addIngredientToList}/>
+                </div>
+                <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input id={id} name='cantidad' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD"  onChange={addIngredientToList}/>
+                </div>
+            </div>
         </>
     )
 }

@@ -2,8 +2,6 @@ import React, { useState } from "react";
 
 import { EmptyItemList, EmptyRecipeList } from "../Item/ItemList.js";
 
-import PlusIcon from "../../assets/Plus.png";
-
 export default function ManageIngredient(props) {
     const {title} = props;
     const [amount, setAmount] = useState(1);
@@ -20,6 +18,14 @@ export default function ManageIngredient(props) {
         setPressed(current)
     }
 
+    const addIngredientButton = [
+        <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8"> AGREGAR INGREDIENTE/S </div>
+    ]
+    const addRecipeButton = [
+        <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8"> AGREGAR RECETA </div>
+    ]
+
+
     return(
         <>
             <div className="z-0 row-start-2 flex items-center place-content-center">
@@ -30,11 +36,9 @@ export default function ManageIngredient(props) {
                         <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => changePressed(2)}>AGREGAR RECETA</button>
                     </div>
                     <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-inv-blue via-transparent to-transparent">
-                        {pressed === 1 ? <EmptyItemList renderAmount={amount}/> : <EmptyRecipeList/>}
+                        {pressed === 1 ? <EmptyItemList renderAmount={amount} addItem={addEmptyItem}/> : <EmptyRecipeList/>}
                     </div>                    
-                    <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto mt-10">
-                        <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addEmptyItem}/>
-                    </div>
+                    {pressed === 1 ? addIngredientButton : addRecipeButton}
                 </div>
             </div>
         </>

@@ -17,7 +17,7 @@ export default function ItemList() {
 }
 
 export function EmptyItemList(props){
-    const {renderAmount} = props;
+    const {renderAmount, addItem} = props;
     const render = []; 
     const newIngredients = [];
 
@@ -61,8 +61,8 @@ export function EmptyItemList(props){
     return(
         <>
             {render}
-            <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto mt-10">
-                <button type="submit"> HERE </button>
+            <div key='1' className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto mt-10">
+                <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addItem}/>
             </div>
         </>
     )
@@ -82,10 +82,15 @@ export function RecipeList(props) {
 export function EmptyRecipeList(){
     const [amount, setAmount] = useState(1);
     const render = [];
-    
+    const newRecipe = {
+        nombre: '',
+        ingredientes: [],
+        cantidades: []
+    }
+
     const renderRecipeItems = () => {
         for (let i = 1; i <= amount; i++) {
-             render.push(<RecipeItem key={i} id={i}/>)
+             render.push(<RecipeIngredient key={i} id={i}/>)
         }
     }
     renderRecipeItems();
@@ -98,15 +103,13 @@ export function EmptyRecipeList(){
         <>
             <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-9/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre Receta" type='text'/>
+                    <input className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre Receta" type='text'/>
                 </div>
                 <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
                     <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
                 </div>
             </div> 
-            <div>
-                {render}
-            </div>
+            {render}
         </>
     )
 }
