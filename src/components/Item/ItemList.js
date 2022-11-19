@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectIngredients } from "../../slices/ingredientSlice";
-
-import Item, { EmptyItem, EmptyRecipe, RecipeItem } from "./Item";
+import PlusIcon from "../../assets/Plus.png";
+import Item, { EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { selectRecipes } from "../../slices/recipeSlice";
 
 export default function ItemList() {
@@ -21,7 +21,7 @@ export function EmptyItemList(props){
     const render = []; 
     const newIngredients = [];
 
-    const addNewIngredientToState = (event) => {
+    const addNewIngredient = (event) => {
         const target = event.target;
         const id = target.id;
         const name = target.name;
@@ -44,9 +44,9 @@ export function EmptyItemList(props){
         }
     }
 
-    const renderEmptyItems = () => {
+    const renderRecipeItems = () => {
         for (let i = 1; i <= renderAmount; i++) {
-             render.push(<EmptyItem key={i} id={i} addFunction={addNewIngredientToState}/>)
+             render.push(<EmptyItem key={i} id={i} addFunction={addNewIngredient}/>)
              newIngredients.push({
                 id: i,
                 nombre: '',
@@ -56,7 +56,7 @@ export function EmptyItemList(props){
              })
         }
     }
-    renderEmptyItems();
+    renderRecipeItems();
 
     return(
         <>
@@ -79,18 +79,34 @@ export function RecipeList(props) {
     )
 }
 
-export function EmptyRecipeList(props){
-    const {renderAmount} = props;
-    const render = [];    
-    const renderEmptyRecipe = () => {
-        for (let i = 1; i <= renderAmount; i++) {
-             render.push(<EmptyRecipe key={i}/>)
+export function EmptyRecipeList(){
+    const [amount, setAmount] = useState(1);
+    const render = [];
+    
+    const renderRecipeItems = () => {
+        for (let i = 1; i <= amount; i++) {
+             render.push(<RecipeItem key={i} id={i}/>)
         }
     }
-    renderEmptyRecipe();
+    renderRecipeItems();
+
+    const addIngredientToRecipe = () => {
+        setAmount( prevState => prevState + 1);
+    }
+
     return(
         <>
-            {render}
+            <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
+                <div className="w-9/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre Receta" type='text'/>
+                </div>
+                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
+                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
+                </div>
+            </div> 
+            <div>
+                {render}
+            </div>
         </>
     )
 }
