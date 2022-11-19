@@ -36,7 +36,7 @@ export default function Item(props) {
 
 export function EmptyItem(props) {
     const {id, addFunction} = props;
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const sucursalSeleccionada = useSelector(selectSucursal);
     const ingredientName = useRef();
     const ingredientPrice = useRef();
@@ -51,8 +51,7 @@ export function EmptyItem(props) {
             precio: ingredientPrice.current.value,
             unidad: ingredientUnit.current.value
         }
-        console.log(ingredientInfo);
-        // dispatch(addIngredient(ingredientInfo));
+        dispatch(addIngredient(ingredientInfo));
     }
 
     return(
