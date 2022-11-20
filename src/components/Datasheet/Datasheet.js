@@ -1,5 +1,5 @@
 import React, { useEffect }from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import DropDown from "../../components/DropDown/DropDown";
 import LeftArrow from "../../assets/left_arrow.png";
@@ -7,7 +7,8 @@ import RightArrow from "../../assets/right_arrow.png";
 import Download from "../../assets/download.png";
 import Upload from "../../assets/upload.png";
 
-import { fetchSucursales } from "../../slices/sucursalesSlice";
+import { fetchSucursales, selectSucursal } from "../../slices/sucursalesSlice";
+import { fetchIngredients } from "../../slices/ingredientSlice";
 import ManageIngredient from "../ManageIngredients/ManageIngredients";
 import InfoBox from "../InformationBox/InformationBox.js";
 import ReportSale from "../ReportSale/ReportSale";
@@ -15,13 +16,16 @@ import ReportSale from "../ReportSale/ReportSale";
 export default function Datasheet(props) {
     const {option, active} = props;
     const  username = sessionStorage.getItem("username");
+    const sucursal = useSelector(selectSucursal);    
     const dispatch = useDispatch();
 
     //Request Sucursales on page load
    useEffect( () => {
         dispatch(fetchSucursales(username))
     }, [dispatch, username]) 
-
+    useEffect( () => {
+        dispatch(fetchIngredients(sucursal))        
+    }, [dispatch,sucursal])
 
     const Switch = () => {
         switch(option.id){

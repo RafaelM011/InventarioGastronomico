@@ -1,21 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
-import { fetchIngredients } from "../../slices/ingredientSlice";
 
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
-    const sucursal = useSelector(selectSucursal);    
-    const dispatch = useDispatch();
-
-    useEffect( () => {
-        dispatch(fetchIngredients(sucursal))    
-    }, [dispatch,sucursal])
-    
     return(
         <>
             {ingredients.map(ingredient => {
@@ -110,6 +102,7 @@ export function EmptyRecipeList(){
     }
     const dispatch = useDispatch();
     const sucursal = useSelector(selectSucursal);
+    const ingredients = useSelector(selectIngredients)
 
     const addRecipeInfo = (event) => {
         const target = event.target;
@@ -135,6 +128,20 @@ export function EmptyRecipeList(){
         setAmount( prevState => prevState + 1);
     }
 
+    const checkRecipeIngredients = recipeInfo => {
+        for (const ingredient of recipeInfo.ingredientes){
+            let exist = false;
+            for (const element of ingredients){
+                if (element.nombre === ingredient) exist = true                
+            }
+            if (!exist)  {
+                alert(`El ingrediente '${ingredient}' no esta registrado en la base de datos`)
+                return false;
+            }    
+        }
+        return true;
+    }
+
     const sendRecipeInfo = () => {
         const recipeInfo = {
             sucursal,
@@ -142,8 +149,8 @@ export function EmptyRecipeList(){
             ingredientes: newRecipe.ingredientes,
             cantidades: newRecipe.cantidades
         }
-
-        dispatch(addRecipe(recipeInfo));
+        let state = checkRecipeIngredients(recipeInfo);
+        if (state) dispatch(addRecipe(recipeInfo)) 
     }
 
     return(

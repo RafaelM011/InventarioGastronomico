@@ -5,7 +5,7 @@ import { selectSucursal } from "../../slices/sucursalesSlice.js";
 import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
 import PlusIcon from "../../assets/Plus.png";
-import { selectIngredients } from "../../slices/ingredientSlice";
+import { decreaseIngredient, selectIngredients } from "../../slices/ingredientSlice";
 
 export default function ReportSale(props) {
     const {title} = props;
@@ -38,16 +38,17 @@ export default function ReportSale(props) {
             }
         }
         const newQuantities = [...quantitiesToDecrease];
-        console.log(recipes);
-        console.log(registeredIngredients);
-        console.log(newQuantities);
         registeredIngredients.forEach( ingredient => {
             if (ingredientsToDecrease.includes(ingredient.nombre)){
                 newQuantities[ingredientsToDecrease.indexOf(ingredient.nombre)] = ingredient.cantidad - newQuantities[ingredientsToDecrease.indexOf(ingredient.nombre)]; 
             }
         })
 
-        console.log(newQuantities)
+        dispatch(decreaseIngredient({
+            sucursal,
+            ingredientes: ingredientsToDecrease,
+            cantidades: newQuantities
+        }))
     }
 
     return(
