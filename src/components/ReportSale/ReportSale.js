@@ -5,10 +5,12 @@ import { selectSucursal } from "../../slices/sucursalesSlice.js";
 import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
 import PlusIcon from "../../assets/Plus.png";
+import { selectIngredients } from "../../slices/ingredientSlice";
 
 export default function ReportSale(props) {
     const {title} = props;
     const sucursal = useSelector(selectSucursal);
+    const registeredIngredients = useSelector(selectIngredients);
     const recipes = useSelector(selectRecipes);
     const dispatch = useDispatch();
 
@@ -17,12 +19,35 @@ export default function ReportSale(props) {
     }, [dispatch, sucursal])
 
     const sendSalesInfo = () => {
+        let ingredientsToDecrease = [];
+        let quantitiesToDecrease = [];
         for (let i = 0; i < recipes.length; i++){
-            // DEFINE TOTAL INGREDIENT QUANTITY BASED ON REFAMOUNT AND USED QUANTITY PER INGREDIENT
             if (recipes[i].refAmount) {
-                                
+                const refAmount = recipes[i].refAmount;
+                const cantidades = recipes[i].cantidades.map( cantidad => (cantidad * refAmount));
+                const {ingredientes} = recipes[i];
+                ingredientes.forEach( (ingrediente,index) => {
+                    if (ingredientsToDecrease.includes(ingrediente)) {
+                        quantitiesToDecrease[ingredientsToDecrease.indexOf(ingrediente)] = quantitiesToDecrease[ingredientsToDecrease.indexOf(ingrediente)] + cantidades[index]
+                    } 
+                    else {
+                        ingredientsToDecrease.push(ingrediente);
+                        quantitiesToDecrease.push(cantidades[index]);
+                    }
+                })
             }
         }
+        const newQuantities = [...quantitiesToDecrease];
+        console.log(recipes);
+        console.log(registeredIngredients);
+        console.log(newQuantities);
+        registeredIngredients.forEach( ingredient => {
+            if (ingredientsToDecrease.includes(ingredient.nombre)){
+                newQuantities[ingredientsToDecrease.indexOf(ingredient.nombre)] = ingredient.cantidad - newQuantities[ingredientsToDecrease.indexOf(ingredient.nombre)]; 
+            }
+        })
+
+        console.log(newQuantities)
     }
 
     return(

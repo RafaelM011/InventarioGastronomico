@@ -21,7 +21,7 @@ const ingredientsSlice = createSlice({
     }
 })
 
-export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (sucursal, {rejectWithValue}) => {
+export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (sucursal, rejectWithValue) => {
     const response = await 
     fetch('http://localhost:4000/importingredientes', {
         method: 'post',
@@ -29,6 +29,7 @@ export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients',
         body: JSON.stringify({sucursal})
     })
     .then(res => res.json())
+    console.log(response);
     return response;
 })
 

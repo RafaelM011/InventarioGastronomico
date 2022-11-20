@@ -1,10 +1,6 @@
 import React, { useRef } from "react";
 
-import PlusIcon from "../../assets/Plus.png";
-
-import { useDispatch, useSelector } from "react-redux";
-import { addIngredient } from "../../slices/ingredientSlice";
-import { selectSucursal } from "../../slices/sucursalesSlice";
+import { useDispatch } from "react-redux";
 import { addRefAmount } from "../../slices/recipeSlice";
 
 
@@ -36,45 +32,24 @@ export default function Item(props) {
 
 export function EmptyItem(props) {
     const {id, addFunction} = props;
-    const dispatch = useDispatch();
-    const sucursalSeleccionada = useSelector(selectSucursal);
-    const ingredientName = useRef();
-    const ingredientPrice = useRef();
-    const ingredientAmount = useRef();
-    const ingredientUnit = useRef();
-
-    function getRecipeInfo() {
-        const ingredientInfo = {
-            sucursal: sucursalSeleccionada,
-            nombre: ingredientName.current.value,
-            cantidad: ingredientAmount.current.value,
-            precio: ingredientPrice.current.value,
-            unidad: ingredientUnit.current.value
-        }
-        dispatch(addIngredient(ingredientInfo));
-    }
-
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text' ref={ingredientName} onChange={addFunction}/>
+                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text'onChange={addFunction}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' ref={ingredientPrice} onChange={addFunction}/>
+                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' onChange={addFunction}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-8/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='cantidad'  className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' ref={ingredientAmount} onChange={addFunction}/>
+                        <input id={id} name='cantidad'  className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' onChange={addFunction}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' ref={ingredientUnit} onChange={addFunction}/>
+                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' onChange={addFunction}/>
                     </div>
-                </div>
-                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
-                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={getRecipeInfo}/>
                 </div>
             </div>  
         </>
@@ -143,7 +118,7 @@ export function RecipeItem(props) {
             <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <h1 className="underline underline-offset-4 decoration-2 text-3xl text-left font-semibold mt-3 ml-6"> {name} </h1>
+                        <h1 className="text-3xl text-left font-semibold mt-3 ml-6"> {name} </h1>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
@@ -157,15 +132,15 @@ export function RecipeItem(props) {
 }
 
 export function RecipeIngredient(props) {
-    const {addIngredientToList, id} = props;
+    const {addRecipeInfo, id} = props;
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
                 <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='nombre' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE" onChange={addIngredientToList}/>
+                    <input id={id} name='ingredientes' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE" onChange={addRecipeInfo}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='cantidad' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD"  onChange={addIngredientToList}/>
+                    <input id={id} name='cantidades' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD"  onChange={addRecipeInfo}/>
                 </div>
             </div>
         </>

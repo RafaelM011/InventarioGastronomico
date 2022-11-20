@@ -18,14 +18,6 @@ export default function ManageIngredient(props) {
         setPressed(current)
     }
 
-    const addIngredientButton = [
-        <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8"> AGREGAR INGREDIENTE/S </div>
-    ]
-    const addRecipeButton = [
-        <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8"> AGREGAR RECETA </div>
-    ]
-
-
     return(
         <>
             <div className="z-0 row-start-2 flex items-center place-content-center">
@@ -38,7 +30,7 @@ export default function ManageIngredient(props) {
                     <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-inv-blue via-transparent to-transparent">
                         {pressed === 1 ? <EmptyItemList renderAmount={amount} addItem={addEmptyItem}/> : <EmptyRecipeList/>}
                     </div>                    
-                    {pressed === 1 ? addIngredientButton : addRecipeButton}
+                    {/* {pressed === 1 ? addIngredientButton : addRecipeButton} */}
                 </div>
             </div>
         </>
