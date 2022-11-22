@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient, selectIngredients } from "../../slices/ingredientSlice";
+import { addIngredient, selectIngredients, updateIngredients } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EditableItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
@@ -19,11 +19,37 @@ export default function ItemList() {
 
 export function EditableItemList() {
     const ingredients = useSelector(selectIngredients);
+    const dispatch = useDispatch();
+    let updatedIngredients = []
+
+    const updateIngredientEntry = (info) => {
+        updatedIngredients[info.index].nombre = info.name;
+        updatedIngredients[info.index].precio = info.price;
+        updatedIngredients[info.index].cantidad = info.quantity;
+        updatedIngredients[info.index].unidad = info.unit;
+    }
+
+    const sendUpdatedEntries = () => {
+        dispatch(updateIngredients(updatedIngredients));
+    }
+
     return(
         <>
-            {ingredients.map(ingredient => {
-                return <EditableItem key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
-            })}
+            <div className=" h-[450px] overflow-auto scrollbar-hide">
+                {ingredients.map((ingredient,index) => {
+                    updatedIngredients.push({
+                        id: ingredient.id,
+                        nombre: ingredient.nombre,
+                        cantidad: ingredient.cantidad,
+                        precio: ingredient.precio,
+                        unidad: ingredient.unidad
+                    })
+                    return <EditableItem key={ingredient.id} index={index} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} updateFunction={updateIngredientEntry}/>
+                })}
+            </div>
+            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
+                <button onClick={sendUpdatedEntries}> SEND INFO </button>
+            </div>
         </>
     )
 }
@@ -82,11 +108,15 @@ export function EmptyItemList(props){
 
     return(
         <>
-            {render}
-            <div key='1' className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto mt-10">
-                <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addItem}/>
+            <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+                {render}
             </div>
-            <div key='2' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={sendIngredientInfo}> AGREGAR INGREDIENTE/S </div>
+            <div className="flex place-content-between">
+                <div key='2' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={sendIngredientInfo}> AGREGAR INGREDIENTE/S AL INVENTARIO </div>
+                <div key='1' className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto mt-7">
+                    <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addItem}/>
+                </div>
+            </div>
         </>
     )
 }
@@ -174,7 +204,9 @@ export function EmptyRecipeList(){
                     <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
                 </div>
             </div> 
-            {render}
+            <div className=" h-[380px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+                {render}
+            </div>
             <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={sendRecipeInfo}> AGREGAR RECETA </div>
         </>
     )

@@ -27,9 +27,7 @@ export default function ManageIngredient(props) {
                         <button className={pressed === 1 ? pressedStyle : defaultStyle} onClick={() => changePressed(1)}>AGREGAR INGREDIENTE</button>
                         <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => changePressed(2)}>AGREGAR RECETA</button>
                     </div>
-                    <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
-                        {pressed === 1 ? <EmptyItemList renderAmount={amount} addItem={addEmptyItem}/> : <EmptyRecipeList/>}
-                    </div>                    
+                    {pressed === 1 ? <EmptyItemList renderAmount={amount} addItem={addEmptyItem}/> : <EmptyRecipeList/>}
                 </div>
             </div>
         </>

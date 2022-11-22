@@ -31,24 +31,56 @@ export default function Item(props) {
 }
 
 export  function EditableItem(props) {
-    const {name, quantity, price, unit} = props;
+    const {index, name, quantity, price, unit, updateFunction} = props;
+    const info = {
+        index,
+        name,
+        quantity,
+        price,
+        unit
+    }
+
+    const updateMyEntry = (event) => {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+       switch(name) {
+            case "nombre":
+                info.name = value;
+                break;
+            case "cantidad":
+                info.quantity = value;
+                break;
+            case "precio":
+                info.price = value;
+                break;
+            case "unidad":
+                info.unit = value;
+                break;
+            default:
+        }     
+
+        updateFunction(info)
+    }
+
     return(
         <>
             <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" value={name}/>
+                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" defaultValue={name} name="nombre" onChange={updateMyEntry}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-9/12 outline-none" value={price}/>
+                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-9/12 outline-none" name="precio" defaultValue={price} onChange={updateMyEntry}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" value={quantity}/>
+                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" name="cantidad" defaultValue={quantity} onChange={updateMyEntry}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-8/12 outline-none" outline-none value={unit}/>
+                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-8/12 outline-none" name="unidad" defaultValue={unit} onChange={updateMyEntry}/>
                     </div>
                 </div>
             </div>  
