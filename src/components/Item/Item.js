@@ -30,6 +30,32 @@ export default function Item(props) {
     )
 }
 
+export  function EditableItem(props) {
+    const {name, quantity, price, unit} = props;
+    return(
+        <>
+            <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
+                <div className="w-7/12 h-[60px] flex">
+                    <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" value={name}/>
+                    </div>
+                    <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-9/12 outline-none" value={price}/>
+                    </div>
+                </div>
+                <div className="w-5/12 h-[60px] flex">
+                    <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" value={quantity}/>
+                    </div>
+                    <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-8/12 outline-none" outline-none value={unit}/>
+                    </div>
+                </div>
+            </div>  
+        </>
+    )
+}
+
 export function EmptyItem(props) {
     const {id, addFunction} = props;
     return(

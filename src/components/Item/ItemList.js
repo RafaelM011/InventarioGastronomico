@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
-import Item, { EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
+import Item, { EditableItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 
@@ -12,6 +12,17 @@ export default function ItemList() {
         <>
             {ingredients.map(ingredient => {
                 return <Item key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
+            })}
+        </>
+    )
+}
+
+export function EditableItemList() {
+    const ingredients = useSelector(selectIngredients);
+    return(
+        <>
+            {ingredients.map(ingredient => {
+                return <EditableItem key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
             })}
         </>
     )
