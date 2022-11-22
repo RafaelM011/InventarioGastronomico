@@ -74,39 +74,44 @@ export function LargeMenuOptions(){
 export function SmallMenuOptions(){
     return(
         <>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/inventario">
                     <img className="w-11/12" src={InventarioImg} alt="inventario"/>
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/reporte_de_ventas">
-                    <img className="w-7/12" src={ReporteVentaImg} alt="reporte de venta"/> 
+                    <img className="w-6/12 mx-auto" src={ReporteVentaImg} alt="reporte de venta"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/suplir_ingredientes">
-                    <img className="w-7/12" src={SuplirIngredientesImg} alt="suplir ingredientes"/> 
+                    <img className="w-6/12 mx-auto" src={SuplirIngredientesImg} alt="suplir ingredientes"/> 
                 </Link>
             </div>  
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/configurar_ingredientes">
-                    <img className="w-7/12" src={ConfigIngredientesImg} alt="configurar ingredientes"/> 
+                    <img className="w-6/12 mx-auto" src={ConfigIngredientesImg} alt="configurar ingredientes"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/contactos">
-                    <img className="w-7/12" src={ContactosImg} alt="contactos"/> 
+                    <img className="w-6/12 mx-auto" src={ContactosImg} alt="contactos"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/precios">
-                    <img className="w-6/12" src={PrecioImg} alt="precio"/> 
+                    <img className="w-6/12 mx-auto" src={PrecioImg} alt="precio"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center">
+            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
                 <Link to="/manual">
-                    <img className="w-6/12" src={ManualImg} alt="manual"/> 
+                    <img className="w-6/12 mx-auto" src={ManualImg} alt="manual"/> 
+                </Link>
+            </div>
+            <div className="">
+                <Link to="/">
+                    <button className="text-center text-3xl text-white bg-inv-blue p-3 rounded-3xl mt-10 hover:scale-110"> LOG OUT </button>
                 </Link>
             </div>
         </>
