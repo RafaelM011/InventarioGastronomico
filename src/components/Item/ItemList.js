@@ -216,14 +216,11 @@ export function EditableRecipeList() {
     const recipes = useSelector(selectRecipes);
     return(
         <>
-            <div className=" h-[450px] overflow-auto scrollbar-hide">
+            <div className="h-[600px] overflow-auto scrollbar-hide">
                 {recipes.map( recipe => {
                     const {id, sucursal, nombre, ingredientes, cantidades} = recipe;
                     return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} />
                 })}
-            </div>
-            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
-                <button> ACTUALIZAR RECETAS </button>
             </div>
         </>
     )
