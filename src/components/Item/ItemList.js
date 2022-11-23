@@ -48,7 +48,7 @@ export function EditableItemList() {
                 })}
             </div>
             <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
-                <button onClick={sendUpdatedEntries}> SEND INFO </button>
+                <button onClick={sendUpdatedEntries}> ACTUALIZAR INGREDIENTES </button>
             </div>
         </>
     )
@@ -208,6 +208,21 @@ export function EmptyRecipeList(){
                 {render}
             </div>
             <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={sendRecipeInfo}> AGREGAR RECETA </div>
+        </>
+    )
+}
+
+export function EditableRecipeList() {
+    const recipes = useSelector(selectRecipes);
+    console.log(recipes);
+    return(
+        <>
+            <div className=" h-[450px] overflow-auto scrollbar-hide">
+
+            </div>
+            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
+                <button> ACTUALIZAR RECETAS </button>
+            </div>
         </>
     )
 }
