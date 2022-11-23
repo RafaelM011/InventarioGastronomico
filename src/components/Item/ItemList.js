@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients, updateIngredients } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
-import Item, { EditableItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
+import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 
@@ -214,11 +214,13 @@ export function EmptyRecipeList(){
 
 export function EditableRecipeList() {
     const recipes = useSelector(selectRecipes);
-    console.log(recipes);
     return(
         <>
             <div className=" h-[450px] overflow-auto scrollbar-hide">
-
+                {recipes.map( recipe => {
+                    const {id, sucursal, nombre, ingredientes, cantidades} = recipe;
+                    return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} />
+                })}
             </div>
             <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
                 <button> ACTUALIZAR RECETAS </button>

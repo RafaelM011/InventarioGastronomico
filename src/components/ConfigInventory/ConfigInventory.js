@@ -13,7 +13,7 @@ export default function ConfigInventory(props) {
                     <h1 className="text-3xl text-center font-bold mt-5 underline"> {title} </h1> 
                     {/* <ItemsHeader/> */}
                     {/* <EditableItemList/> */}
-                    <RecipesHeader/>
+                    {/* <RecipesHeader/> */}
                     <EditableRecipeList/>
                 </div>
             </div>

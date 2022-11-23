@@ -13,6 +13,7 @@ import ManageIngredient from "../ManageIngredients/ManageIngredients";
 import InfoBox from "../InformationBox/InformationBox.js";
 import ReportSale from "../ReportSale/ReportSale";
 import ConfigInventory from "../ConfigInventory/ConfigInventory";
+import { fetchRecipes } from "../../slices/recipeSlice";
 
 export default function Datasheet(props) {
     const {option, active} = props;
@@ -23,10 +24,9 @@ export default function Datasheet(props) {
     //Request Sucursales on page load
    useEffect( () => {
         dispatch(fetchSucursales(username))
-    }, [dispatch, username]) 
-    useEffect( () => {
         dispatch(fetchIngredients(sucursal))        
-    }, [dispatch,sucursal])
+        dispatch(fetchRecipes(sucursal));
+    }, [dispatch, username,sucursal]) 
 
     const Switch = () => {
         switch(option.id){

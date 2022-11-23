@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchRecipes, selectRecipes } from "../../slices/recipeSlice";
+import { selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice.js";
 import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
@@ -13,10 +13,6 @@ export default function ReportSale(props) {
     const registeredIngredients = useSelector(selectIngredients);
     const recipes = useSelector(selectRecipes);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchRecipes(sucursal));
-    }, [dispatch, sucursal])
 
     const sendSalesInfo = () => {
         let ingredientsToDecrease = [];
