@@ -195,10 +195,10 @@ export function RecipeIngredient(props) {
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
                 <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='ingredientes' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE"/>
+                    <input id={id} name='ingredientes' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE" onChange={addRecipeInfo}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='cantidades' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD" />
+                    <input id={id} name='cantidades' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD" onChange={addRecipeInfo} />
                 </div>
             </div>
         </>
@@ -236,7 +236,7 @@ export function EditableRecipeIngredient(props) {
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
                 <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='ingredientes' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" defaultValue={nombre}/>
+                    <input id={id} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" defaultValue={nombre}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                     <input id={id} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none" defaultValue={cantidad}/>
