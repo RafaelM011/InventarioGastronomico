@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { addRefAmount } from "../../slices/recipeSlice";
@@ -207,21 +207,62 @@ export function RecipeIngredient(props) {
 
 export function EditableRecipeItem(props) {
     const {id, nombre, ingredientes, cantidades} = props;
-    
+    const [recipe, setRecipe] = useState({
+        id,
+        nombre,
+        ingredientes,
+        cantidades
+    });
+    const dispatch = useDispatch();
+    let newIngredientes = [...recipe.ingredientes];
+    let newCantidades = [...recipe.cantidades];
+
+    const updateRecipe = (e) => {
+        const target = e.target;
+        const value = target.value;
+        const name = target.name;
+        const index = target.attributes[0].value;
+
+        switch (name){
+            case 'nombre':
+                setRecipe( recipe => {
+                    return {...recipe, nombre: value}
+                });
+                break;
+            case 'ingredientes':
+                newIngredientes[index] = value;
+                setRecipe( recipe => {
+                    return {...recipe, ingredientes: newIngredientes}
+                });
+                break;
+            case 'cantidades':
+                newCantidades[index] = value;
+                setRecipe( recipe => {
+                    return {...recipe, cantidades: newCantidades}
+                });
+                break;
+            default:
+        }
+    }
+
+    const updateRecipeOnDB = () => {
+        
+    }
+
     return(
         <div className="flex w-12/12 place-content-around items-start">
             <details className="w-7/12">
                 <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none" defaultValue={nombre}/>
+                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none" name='nombre' defaultValue={nombre} onChange={updateRecipe}/>
                     <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> EXPANDIR </h1>
                 </summary>
                 <div>
                     {ingredientes.map( (ingrediente,index) => {
-                        return <EditableRecipeIngredient key={index} id={id} nombre={ingrediente} cantidad={cantidades[index]}/>
+                        return <EditableRecipeIngredient key={index} index={index} nombre={ingrediente} cantidad={cantidades[index]} update={updateRecipe}/>
                     })}
                 </div>
             </details>
-            <button className="bg-inv-blue w-3/12 h-fit p-2 mt-[36px] text-2xl text-white rounded-2xl self-start">
+            <button className="bg-inv-blue w-3/12 h-fit p-2 mt-[36px] text-2xl text-white rounded-2xl self-start" onClick={updateRecipeOnDB}>
                 ACTUALIZAR
             </button>
         </div>
@@ -230,16 +271,16 @@ export function EditableRecipeItem(props) {
 }
 
 export function EditableRecipeIngredient(props) {
-    const {id, nombre, cantidad} = props;
+    const {index, nombre, cantidad, update} = props;
     
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
                 <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" defaultValue={nombre}/>
+                    <input index={index} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" defaultValue={nombre} onChange={update}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none" defaultValue={cantidad}/>
+                    <input index={index} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none" defaultValue={cantidad} onChange={update}/>
                 </div>
             </div>
         </>
