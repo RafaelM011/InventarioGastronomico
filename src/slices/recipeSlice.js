@@ -20,6 +20,9 @@ const recipeSlice = createSlice({
             .addCase(addRecipe.fulfilled, (state, action) => {
                 return action.payload;
             })
+            .addCase(updateRecipe.fulfilled, (status, action) => {
+                return action.payload;
+            })
     }
 })
 
@@ -44,6 +47,18 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
     .then( res => res.json())
 
     return response;
+})
+
+export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
+    const response = await 
+    fetch('http://localhost:4000/updaterecipe', {
+        method: 'post',
+        headers: {'Content-Type': 'applicationjson'},
+        body: JSON.stringify(recipe)
+    })
+    .then(res => res.json())
+
+    console.log(response)
 })
 
 export const selectRecipes = state => state.recipes;

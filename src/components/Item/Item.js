@@ -246,7 +246,7 @@ export function EditableRecipeItem(props) {
     }
 
     const updateRecipeOnDB = () => {
-        
+        dispatch(updateRecipe(recipe));
     }
 
     return(
