@@ -32,6 +32,7 @@ function App() {
         {/* <Route path="/precios" element={<Inventario/>}/> */}
         {/* <Route path="/manual" element={<Inventario/>}/> */}
         {/* <Route path="/servicios" element={<Inventario/>}/> */}
+        <Route path="/download"/>
       </Routes>      
     </>
   );

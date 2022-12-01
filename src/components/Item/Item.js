@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { addRefAmount } from "../../slices/recipeSlice";
+import { addRefAmount, updateRecipe } from "../../slices/recipeSlice";
 
 
 export default function Item(props) {
@@ -206,18 +206,19 @@ export function RecipeIngredient(props) {
 }
 
 export function EditableRecipeItem(props) {
-    const {id, nombre, ingredientes, cantidades} = props;
+    const {id, nombre, ingredientes, cantidades, sucursal} = props;
     const [recipe, setRecipe] = useState({
         id,
         nombre,
         ingredientes,
-        cantidades
+        cantidades,
+        sucursal
     });
     const dispatch = useDispatch();
     let newIngredientes = [...recipe.ingredientes];
     let newCantidades = [...recipe.cantidades];
 
-    const updateRecipe = (e) => {
+    const updateRecipeInfo = (e) => {
         const target = e.target;
         const value = target.value;
         const name = target.name;
@@ -253,12 +254,12 @@ export function EditableRecipeItem(props) {
         <div className="flex w-12/12 place-content-around items-start">
             <details className="w-7/12">
                 <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none" name='nombre' defaultValue={nombre} onChange={updateRecipe}/>
+                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none" name='nombre' defaultValue={nombre} onChange={updateRecipeInfo}/>
                     <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> EXPANDIR </h1>
                 </summary>
                 <div>
                     {ingredientes.map( (ingrediente,index) => {
-                        return <EditableRecipeIngredient key={index} index={index} nombre={ingrediente} cantidad={cantidades[index]} update={updateRecipe}/>
+                        return <EditableRecipeIngredient key={index} index={index} nombre={ingrediente} cantidad={cantidades[index]} update={updateRecipeInfo}/>
                     })}
                 </div>
             </details>

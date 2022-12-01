@@ -22,6 +22,8 @@ export default function Inventario() {
         return;
     }
 
+    // fetch('http://localhost:4000/download')
+
     return(
         <>
             <div className={`grid ${gridLayout} h-screen w-screen`}>

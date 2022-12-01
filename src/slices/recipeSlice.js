@@ -52,13 +52,13 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
 export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
     const response = await 
     fetch('http://localhost:4000/updaterecipe', {
-        method: 'post',
-        headers: {'Content-Type': 'applicationjson'},
+        method: "post",
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(recipe)
     })
     .then(res => res.json())
 
-    console.log(response)
+    return response;
 })
 
 export const selectRecipes = state => state.recipes;

@@ -217,7 +217,7 @@ export function EditableRecipeList() {
 
     return(
         <>
-            <div className="h-[600px] overflow-auto scrollbar-hide">
+            <div className="h-[500px] overflow-auto scrollbar-hide">
                 {recipes.map( recipe => {
                     const {id, sucursal, nombre, ingredientes, cantidades} = recipe;
                     return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} />
