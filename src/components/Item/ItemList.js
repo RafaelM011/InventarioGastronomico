@@ -35,7 +35,7 @@ export function EditableItemList() {
 
     return(
         <>
-            <div className=" h-[450px] overflow-auto scrollbar-hide">
+            <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
                 {ingredients.map((ingredient,index) => {
                     updatedIngredients.push({
                         id: ingredient.id,
@@ -217,7 +217,7 @@ export function EditableRecipeList() {
 
     return(
         <>
-            <div className="h-[500px] overflow-auto scrollbar-hide">
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
                 {recipes.map( recipe => {
                     const {id, sucursal, nombre, ingredientes, cantidades} = recipe;
                     return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} />
