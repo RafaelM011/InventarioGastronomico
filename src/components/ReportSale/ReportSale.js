@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice.js";
-import { RecipesHeader } from "../Item/Item";
+// import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
 import PlusIcon from "../../assets/Plus.png";
 import { decreaseIngredient, selectIngredients } from "../../slices/ingredientSlice";
@@ -52,8 +52,8 @@ export default function ReportSale(props) {
             <div className="z-0 row-start-2 flex items-center place-content-center">
                 <div className="w-[90%] h-[700px] bg-white rounded-[50px] shadow-[15px_-10px_0px_0px_#000692]">
                     <h1 className="text-3xl text-center font-bold mt-5 underline"> {title} </h1>
-                        <RecipesHeader/>
-                    <div className=" h-[460px] overflow-auto scrollbar-hide">
+                        {/* <RecipesHeader/> */}
+                    <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent mt-10">
                         <RecipeList/>
                     </div>
                     <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto">

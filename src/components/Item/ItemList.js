@@ -10,9 +10,11 @@ export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
     return(
         <>
-            {ingredients.map(ingredient => {
-                return <Item key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
-            })}
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+                {ingredients.map(ingredient => {
+                    return <Item key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
+                })}
+            </div>
         </>
     )
 }
@@ -35,7 +37,7 @@ export function EditableItemList() {
 
     return(
         <>
-            <div className=" h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
                 {ingredients.map((ingredient,index) => {
                     updatedIngredients.push({
                         id: ingredient.id,

@@ -17,16 +17,19 @@ import { fetchRecipes } from "../../slices/recipeSlice";
 
 export default function Datasheet(props) {
     const {option, active} = props;
-    const  username = sessionStorage.getItem("username");
+    const username = sessionStorage.getItem("username");
     const sucursal = useSelector(selectSucursal);    
     const dispatch = useDispatch();
 
     //Request Sucursales on page load
    useEffect( () => {
-        dispatch(fetchSucursales(username))
         dispatch(fetchIngredients(sucursal))        
         dispatch(fetchRecipes(sucursal));
-    }, [dispatch, username,sucursal]) 
+    }, [dispatch, username, sucursal]) 
+
+    useEffect( () => {
+        dispatch(fetchSucursales(username))
+    }, [dispatch, username])
 
     const Switch = () => {
         switch(option.id){
