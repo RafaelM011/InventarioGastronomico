@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "../../slices/userSlice";
 
-export default function LogIn(props) {
+export default function LogIn() {
     const username = useRef();
     const password = useRef();
     const dispatch = useDispatch();

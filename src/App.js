@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { selectUser } from './slices/userSlice';
+import { idleStatus, selectUser } from './slices/userSlice';
 
 import Home from './pages/Home/Home';
 import Inventario from './pages/Inventario/Inventario';
@@ -12,19 +12,21 @@ import ConfigIngredients from './pages/Configurar_ingredientes/ConfigurarIngredi
 function App() {
   const userData = useSelector(selectUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect( () => {
     if (userData.status === 'completed') {
       sessionStorage.setItem("username",`${userData.info.username}`)
       navigate("/inventario");
+      dispatch(idleStatus());
     }
-  },[userData, navigate])
+  },[dispatch,navigate,userData])
 
   return (
     <>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/inventario/" element={<Inventario/>}/>
+        <Route path="/inventario" element={<Inventario/>}/>
         <Route path="/reporte_de_ventas" element={<ReporteDeVentas/>}/>
         <Route path="/suplir_ingredientes" element={<SuplirIngredientes/>}/>
         <Route path="/configurar_ingredientes" element={<ConfigIngredients/>}/>

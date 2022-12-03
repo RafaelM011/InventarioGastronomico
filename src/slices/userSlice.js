@@ -13,7 +13,11 @@ const initialState = {
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducers: {},
+    reducers: {
+        idleStatus(state, action){
+            state.status = 'idle';
+        }
+    },
     extraReducers(builder){
         builder
             .addCase(fetchUser.fulfilled, (state, action) => {
@@ -66,5 +70,6 @@ export const registerUser = createAsyncThunk('user/registerUser', async (user, {
     return response;
 })
 
+export const { idleStatus } = userSlice.actions;
 export const selectUser = state => state.user;
 export default userSlice.reducer;

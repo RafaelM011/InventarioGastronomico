@@ -8,6 +8,7 @@ export default function Inventario() {
     let [buttonOffsetTop, setButtonOffsetTop] = useState('top-[-85px]');
     let [active, setActive] = useState(false);
 
+
     function deployMenu(){
         if (active === false) {
             setGridLayout("grid-cols-[3fr,7fr]");
