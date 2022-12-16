@@ -24,7 +24,7 @@ const sucursalesSlice = createSlice({
 
 export const fetchSucursales = createAsyncThunk( 'sucursales/fetchSucursales', async (username, {rejectWithValue}) => {
     const response = await
-    fetch('http://localhost:4000/importsucursales', {
+    fetch('inventario-gastronomico-server-production.up.railway.app/importsucursales', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username})
