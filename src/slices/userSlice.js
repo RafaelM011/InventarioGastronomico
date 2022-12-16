@@ -49,7 +49,7 @@ const userSlice = createSlice({
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (user, {rejectWithValue}) => {
     const response = await 
-    fetch('inventario-gastronomico-server-production.up.railway.app/signin',{
+    fetch('https://inventario-gastronomico-server-production.up.railway.app/inventario-gastronomico-server-production.up.railway.app/signin',{
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(user)
@@ -61,7 +61,7 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async (user, {reject
 
 export const registerUser = createAsyncThunk('user/registerUser', async (user, {rejectWithValue}) => {
     const response = await
-    fetch('inventario-gastronomico-server-production.up.railway.app/register',{
+    fetch('https://inventario-gastronomico-server-production.up.railway.app/inventario-gastronomico-server-production.up.railway.app/register',{
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(user)

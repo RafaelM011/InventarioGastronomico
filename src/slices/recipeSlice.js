@@ -28,7 +28,7 @@ const recipeSlice = createSlice({
 
 export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucursal, rejectWithValue) => {
     const response = await
-    fetch('inventario-gastronomico-server-production.up.railway.app/getrecipes', {
+    fetch('https://inventario-gastronomico-server-production.up.railway.app/inventario-gastronomico-server-production.up.railway.app/getrecipes', {
         method: "post",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({sucursal})
@@ -39,7 +39,7 @@ export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucu
 
 export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, rejectWithValue) => {
     const response = await
-    fetch('inventario-gastronomico-server-production.up.railway.app/addrecipe', {
+    fetch('https://inventario-gastronomico-server-production.up.railway.app/inventario-gastronomico-server-production.up.railway.app/addrecipe', {
         method: "put",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(recipe)
@@ -51,7 +51,7 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
 
 export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
     const response = await 
-    fetch('inventario-gastronomico-server-production.up.railway.app/updaterecipe', {
+    fetch('https://inventario-gastronomico-server-production.up.railway.app/inventario-gastronomico-server-production.up.railway.app/updaterecipe', {
         method: "post",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(recipe)
