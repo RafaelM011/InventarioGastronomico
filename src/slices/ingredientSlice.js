@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+//https://inventario-gastronomico-server-production.up.railway.app
+
 const initialState = [];
 
 const ingredientsSlice = createSlice({
@@ -29,7 +31,7 @@ const ingredientsSlice = createSlice({
 
 export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (sucursal, rejectWithValue) => {
     const response = await 
-    fetch('https://inventario-gastronomico-server-production.up.railway.app/importingredientes', {
+    fetch('http://localhost:4000/importingredientes', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({sucursal})
@@ -40,18 +42,19 @@ export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients',
 
 export const addIngredient = createAsyncThunk('ingredients/addIngredient', async (ingredientInfo, rejectWithValue) => {
     const response = await
-    fetch('https://inventario-gastronomico-server-production.up.railway.app/agregaringrediente', {
+    fetch('http://localhost:4000/agregaringrediente', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(ingredientInfo)
     })
     .then(res => res.json())
-    return response;
+    console.log(response);
+    // return response;
 })
 
 export const decreaseIngredient = createAsyncThunk('ingredients/decreaseIngredient', async (ingredientsInfo, rejectWithValue) => {
     const response = await
-    fetch('https://inventario-gastronomico-server-production.up.railway.app/decreaseingredient', {
+    fetch('http://localhost:4000/decreaseingredient', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(ingredientsInfo)
@@ -62,7 +65,7 @@ export const decreaseIngredient = createAsyncThunk('ingredients/decreaseIngredie
 
 export const updateIngredients = createAsyncThunk('ingredients/updateIngredients', async (ingredients, rejectWithValue) => {
     const response = await
-    fetch('https://inventario-gastronomico-server-production.up.railway.app/updateingredients', {
+    fetch('http://localhost:4000/updateingredients', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ingredients})
