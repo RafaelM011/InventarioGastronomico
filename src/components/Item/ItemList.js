@@ -102,10 +102,20 @@ export function EmptyItemList(props){
     renderEmptyItems();
 
     const sendIngredientInfo = () => {
-        const ingredientInfo = {
-            ingredientes: newIngredients
+        let state = true;    
+        console.log(newIngredients);
+        newIngredients.forEach(ingredient => {
+            if (!ingredient.nombre || !ingredient.precio || !ingredient.cantidad || !ingredient.unidad) state = false
+        })
+        
+        if (state) {
+            const ingredientInfo = {
+                ingredientes: newIngredients
+            }
+            dispatch(addIngredient(ingredientInfo));    
+        }else{
+            console.log('something went wrong')
         }
-        dispatch(addIngredient(ingredientInfo));
     }
 
     return(

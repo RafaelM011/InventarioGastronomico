@@ -48,8 +48,7 @@ export const addIngredient = createAsyncThunk('ingredients/addIngredient', async
         body: JSON.stringify(ingredientInfo)
     })
     .then(res => res.json())
-    console.log(response);
-    // return response;
+    return response;
 })
 
 export const decreaseIngredient = createAsyncThunk('ingredients/decreaseIngredient', async (ingredientsInfo, rejectWithValue) => {
