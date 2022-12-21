@@ -14,6 +14,9 @@ const recipeSlice = createSlice({
             for (let i = 0; i < state.length; i++){
                 if (state[i].id === action.payload.id)  state[i].refAmount = parseInt(action.payload.refAmount)                
             }
+        },
+        resetRecipeState(state, action) {
+            return initialState 
         }
     },
     extraReducers(builder){
@@ -66,5 +69,5 @@ export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (reci
 })
 
 export const selectRecipes = state => state.recipes;
-export const { addRefAmount } = recipeSlice.actions;
+export const { addRefAmount, resetRecipeState } = recipeSlice.actions;
 export default recipeSlice.reducer;

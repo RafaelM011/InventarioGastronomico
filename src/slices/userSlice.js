@@ -21,6 +21,9 @@ const userSlice = createSlice({
     reducers: {
         idleStatus(state, action){
             state.status = 'idle';
+        },
+        resetUserState(state, action) {
+            return initialState 
         }
     },
     extraReducers(builder){
@@ -75,6 +78,6 @@ export const registerUser = createAsyncThunk('user/registerUser', async (user, {
     return response;
 })
 
-export const { idleStatus } = userSlice.actions;
+export const { idleStatus, resetUserState } = userSlice.actions;
 export const selectUser = state => state.user;
 export default userSlice.reducer;

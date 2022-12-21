@@ -9,6 +9,12 @@ import PrecioImg from "../../assets/Precios.png";
 import ManualImg from "../../assets/Manual.png";
 import { Link } from "react-router-dom";
 
+import { useDispatch } from "react-redux";
+import { resetIngredientState } from "../../slices/ingredientSlice";
+import { resetRecipeState } from "../../slices/recipeSlice";
+import { resetSucursalesState } from "../../slices/sucursalesSlice";
+import { resetUserState } from "../../slices/userSlice";
+
 export function LargeMenu() {
     return(
         <>
@@ -72,6 +78,15 @@ export function LargeMenuOptions(){
 }
 
 export function SmallMenuOptions(){
+    const dispatch = useDispatch();
+
+    const resetStore = () => {
+        dispatch(resetRecipeState())
+        dispatch(resetIngredientState())
+        dispatch(resetSucursalesState())
+        dispatch(resetUserState())
+    }
+
     return(
         <>
             <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
@@ -111,7 +126,7 @@ export function SmallMenuOptions(){
             </div>
             <div className="">
                 <Link to="/">
-                    <button className="text-center text-3xl text-white bg-inv-blue p-3 rounded-3xl mt-10 hover:scale-110"> LOG OUT </button>
+                    <button className="text-center text-3xl text-white bg-inv-blue p-3 rounded-3xl mt-10 hover:scale-110" onClick={resetStore}> LOG OUT </button>
                 </Link>
             </div>
         </>

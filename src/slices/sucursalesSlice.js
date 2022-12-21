@@ -16,17 +16,21 @@ const sucursalesSlice = createSlice({
     reducers: {
         changeSucursal(state, action) {
             state.sucursalSeleccionada = action.payload;
+        },
+        resetSucursalesState(state, action) {
+            return initialState 
         }
     },
     extraReducers(builder){
         builder
             .addCase(fetchSucursales.fulfilled, (state, action) => {
                 state.items = action.payload;
-                state.sucursalSeleccionada = action.payload[0].name;
+                state.sucursalSeleccionada = action.payload[0]?.name ?? '';
             })
 
             .addCase(addSucursal.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
+                state.sucursalSeleccionada = action.payload[action.payload.length-1]?.name ?? '';       
             })
     }
 })
@@ -44,16 +48,16 @@ export const fetchSucursales = createAsyncThunk( 'sucursales/fetchSucursales', a
 
 export const addSucursal = createAsyncThunk( 'sucursales/addSucursal', async (data, {rejectWithValue}) => {
     const response = await
-    fetch(serverUrl + 'addSucursal', {
+    fetch(serverUrl + 'addsucursal', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     })
     .then(res => res.json())
-    console.log(response);
+    return response;
 })
 
-export const { changeSucursal } = sucursalesSlice.actions;
+export const { changeSucursal, resetSucursalesState } = sucursalesSlice.actions;
 export const selectSucursales = state => state.sucursales;
 export const selectSucursal = state => state.sucursales.sucursalSeleccionada;
 export default sucursalesSlice.reducer;

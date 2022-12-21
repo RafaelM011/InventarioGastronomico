@@ -12,8 +12,9 @@ const ingredientsSlice = createSlice({
     name: "ingredients",
     initialState,
     reducers: {
-        decreaseQuantity(state, action){
-            // UPDATE QUANTITY OF EACH INGREDIENT ON PAYLOAD BY RESPECTIVE AMOUNT ON PAYLOAD
+        resetIngredientState(state, action) {
+            console.log(initialState)
+            return initialState 
         }
     },
     extraReducers(builder){
@@ -78,5 +79,5 @@ export const updateIngredients = createAsyncThunk('ingredients/updateIngredients
 })
 
 export const selectIngredients = state => state.ingredients;
-export const { decreaseQuantity } = ingredientsSlice.actions;
+export const { resetIngredientState } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;
