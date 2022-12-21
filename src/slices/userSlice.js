@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+let serverUrl;
+process.env.NODE_ENV === 'production' 
+    ? serverUrl = 'https://inventario-gastronomico-server-production.up.railway.app/'
+    : serverUrl = 'http://localhost:4000/'
+    
 const initialState = {
     info: {
         id: null,
@@ -49,7 +54,7 @@ const userSlice = createSlice({
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (user, {rejectWithValue}) => {
     const response = await 
-    fetch('http://localhost:4000/signin',{
+    fetch(serverUrl + 'signin',{
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(user)
@@ -61,7 +66,7 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async (user, {reject
 
 export const registerUser = createAsyncThunk('user/registerUser', async (user, {rejectWithValue}) => {
     const response = await
-    fetch('http://localhost:4000/register',{
+    fetch(serverUrl + 'register',{
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(user)

@@ -13,7 +13,7 @@ function App() {
   const userData = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
   useEffect( () => {
     if (userData.status === 'completed') {
       sessionStorage.setItem("username",`${userData.info.username}`)

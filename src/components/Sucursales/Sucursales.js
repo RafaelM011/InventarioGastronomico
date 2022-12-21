@@ -1,8 +1,9 @@
 import React from "react";
-import Sucursal from "./Sucursal";
 
 import { useSelector } from "react-redux";
 import { selectSucursales } from "../../slices/sucursalesSlice";
+import Sucursal from "./Sucursal";
+import { AddSucursal } from "./AddSucursal";
 
 
 export default function Sucursales() {
@@ -10,6 +11,7 @@ export default function Sucursales() {
     
     return(
         <>
+            <AddSucursal/>
             {sucursales.items.map(sucursal => {
                 return <Sucursal key={sucursal.id} sucursal={sucursal.name}/>
             })}

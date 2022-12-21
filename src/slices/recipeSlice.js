@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+let serverUrl;
+process.env.NODE_ENV === 'production' 
+    ? serverUrl = 'https://inventario-gastronomico-server-production.up.railway.app/'
+    : serverUrl = 'http://localhost:4000/'
 const initialState = []
 
 const recipeSlice = createSlice({
@@ -28,7 +32,7 @@ const recipeSlice = createSlice({
 
 export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucursal, rejectWithValue) => {
     const response = await
-    fetch('http://localhost:4000/getrecipes', {
+    fetch(serverUrl + 'getrecipes', {
         method: "post",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({sucursal})
@@ -39,7 +43,7 @@ export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucu
 
 export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, rejectWithValue) => {
     const response = await
-    fetch('http://localhost:4000/addrecipe', {
+    fetch(serverUrl + 'addrecipe', {
         method: "put",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(recipe)
@@ -51,7 +55,7 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
 
 export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
     const response = await 
-    fetch('http://localhost:4000/updaterecipe', {
+    fetch(serverUrl + 'updaterecipe', {
         method: "post",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(recipe)

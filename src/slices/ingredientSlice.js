@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-//https://inventario-gastronomico-server-production.up.railway.app
+let serverUrl;
+process.env.NODE_ENV === 'production' 
+    ? serverUrl = 'https://inventario-gastronomico-server-production.up.railway.app/'
+    : serverUrl = 'http://localhost:4000/'
+
 
 const initialState = [];
 
@@ -31,7 +35,7 @@ const ingredientsSlice = createSlice({
 
 export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (sucursal, rejectWithValue) => {
     const response = await 
-    fetch('http://localhost:4000/importingredientes', {
+    fetch(serverUrl + 'importingredientes', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({sucursal})
@@ -42,7 +46,7 @@ export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients',
 
 export const addIngredient = createAsyncThunk('ingredients/addIngredient', async (ingredientInfo, rejectWithValue) => {
     const response = await
-    fetch('http://localhost:4000/agregaringrediente', {
+    fetch(serverUrl + 'agregaringrediente', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(ingredientInfo)
@@ -53,7 +57,7 @@ export const addIngredient = createAsyncThunk('ingredients/addIngredient', async
 
 export const decreaseIngredient = createAsyncThunk('ingredients/decreaseIngredient', async (ingredientsInfo, rejectWithValue) => {
     const response = await
-    fetch('http://localhost:4000/decreaseingredient', {
+    fetch(serverUrl + 'decreaseingredient', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(ingredientsInfo)
@@ -64,7 +68,7 @@ export const decreaseIngredient = createAsyncThunk('ingredients/decreaseIngredie
 
 export const updateIngredients = createAsyncThunk('ingredients/updateIngredients', async (ingredients, rejectWithValue) => {
     const response = await
-    fetch('http://localhost:4000/updateingredients', {
+    fetch(serverUrl + 'updateingredients', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ingredients})

@@ -12,7 +12,7 @@ export default function Sucursal(props) {
 
     return(
         <>
-            <h1 className="text-[150%] font-semibold mt-3 ml-6 hover:bg-gradient-to-r from-transparent to-[#000692CC] cursor-pointer" onClick={changeLocation}> {sucursal} </h1>
+            <h1 className="text-[150%] font-semibold mt-3 ml-6 hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 cursor-pointer" onClick={changeLocation}> {sucursal} </h1>
         </>
     )
 }
