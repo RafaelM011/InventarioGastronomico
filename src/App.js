@@ -14,6 +14,8 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
+  console.log(process.env.NODE_ENV)
+
   useEffect( () => {
     if (userData.status === 'completed') {
       sessionStorage.setItem("username",`${userData.info.username}`)
