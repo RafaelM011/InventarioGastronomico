@@ -7,29 +7,13 @@ import RightArrow from "../../assets/right_arrow.png";
 import Download from "../../assets/download.png";
 import Upload from "../../assets/upload.png";
 
-import { fetchSucursales, selectSucursal } from "../../slices/sucursalesSlice";
-import { fetchIngredients } from "../../slices/ingredientSlice";
 import ManageIngredient from "../ManageIngredients/ManageIngredients";
 import InfoBox from "../InformationBox/InformationBox.js";
 import ReportSale from "../ReportSale/ReportSale";
 import ConfigInventory from "../ConfigInventory/ConfigInventory";
-import { fetchRecipes } from "../../slices/recipeSlice";
 
 export default function Datasheet(props) {
     const {option, active} = props;
-    const username = sessionStorage.getItem("username");
-    const sucursal = useSelector(selectSucursal);    
-    const dispatch = useDispatch();
-
-    //Request Sucursales on page load
-   useEffect( () => {
-        dispatch(fetchIngredients(sucursal))        
-        dispatch(fetchRecipes(sucursal));
-    }, [dispatch, username, sucursal]) 
-
-    useEffect( () => {
-        dispatch(fetchSucursales(username))
-    }, [dispatch, username])
 
     const Switch = () => {
         switch(option.id){

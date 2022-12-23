@@ -8,13 +8,16 @@ import Inventario from './pages/Inventario/Inventario';
 import ReporteDeVentas from './pages/Reporte_de_ventas/ReporteVentas';
 import SuplirIngredientes from './pages/Suplir_ingredientes/SuplirIngredientes';
 import ConfigIngredients from './pages/Configurar_ingredientes/ConfigurarIngredientes';
+import { fetchSucursales, selectSucursal } from './slices/sucursalesSlice';
+import { fetchIngredients } from './slices/ingredientSlice';
+import { fetchRecipes } from './slices/recipeSlice';
 
 function App() {
-  const userData = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  console.log(process.env.NODE_ENV)
+  const userData = useSelector(selectUser);
+  const username = sessionStorage.getItem("username");
+  const sucursal = useSelector(selectSucursal);   
 
   useEffect( () => {
     if (userData.status === 'completed') {
@@ -24,7 +27,17 @@ function App() {
     }
   },[dispatch,navigate,userData])
 
-  return (
+  useEffect( () => {
+      dispatch(fetchIngredients(sucursal))        
+      dispatch(fetchRecipes(sucursal));
+  }, [dispatch, username, sucursal]) 
+
+  useEffect( () => {
+      dispatch(fetchSucursales(username))
+  }, [dispatch, username])
+
+
+    return (
     <>
       <Routes>
         <Route path="/" element={<Home/>}/>
