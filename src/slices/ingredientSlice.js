@@ -6,30 +6,65 @@ process.env.NODE_ENV === 'production'
     : serverUrl = 'http://localhost:4000/'
 
 
-const initialState = [];
+const initialState = {
+    items: [],
+    newItems: [],
+    status: '',
+    message: ''
+};
 
 const ingredientsSlice = createSlice({
     name: "ingredients",
     initialState,
     reducers: {
+        createNewItem(state,action){
+            const {id, sucursal} = action.payload;
+            if (!state.newItems[id]){
+                state.newItems[id] = {
+                    id,
+                    sucursal,
+                    nombre: '',
+                    precio: null,
+                    cantidad: null,
+                    unidad: ''
+                };
+            }
+        },
+        addNewItem(state,action) {
+            const {id,name,value} = action.payload;
+            switch (name) {
+                case 'nombre':
+                    state.newItems[id].nombre = value;
+                break;
+                case 'precio':
+                    state.newItems[id].precio = value;
+                    break;
+                case 'cantidad':
+                    state.newItems[id].cantidad = value;
+                    break;
+                case 'unidad':
+                    state.newItems[id].unidad = value;
+                    break;
+                default:
+            }
+        },
         resetIngredientState(state, action) {
-            console.log(initialState)
             return initialState 
         }
     },
     extraReducers(builder){
         builder
             .addCase(fetchIngredients.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
             })
             .addCase(addIngredient.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
             })
             .addCase(decreaseIngredient.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
             })
             .addCase(updateIngredients.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
             })
     }
 })
@@ -78,6 +113,7 @@ export const updateIngredients = createAsyncThunk('ingredients/updateIngredients
     return response;
 })
 
-export const selectIngredients = state => state.ingredients;
-export const { resetIngredientState } = ingredientsSlice.actions;
+export const selectIngredients = state => state.ingredients.items;
+export const selectNewIngredients = state => state.ingredients.newItems;
+export const { resetIngredientState,createNewItem,addNewItem } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;

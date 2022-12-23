@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient, selectIngredients, updateIngredients } from "../../slices/ingredientSlice";
+import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
@@ -58,52 +58,19 @@ export function EditableItemList() {
 
 export function EmptyItemList(props){
     const {renderAmount, addItem} = props;
+    const render = [];
     const dispatch = useDispatch();
-    const sucursal = useSelector(selectSucursal);
-    const render = []; 
-    const newIngredients = [];
-
-    const addNewIngredient = (event) => {
-        const target = event.target;
-        const id = target.id;
-        const name = target.name;
-        const value = target.value;
-
-        switch (name) {
-            case 'nombre':
-                newIngredients[id-1].nombre = value;
-            break;
-            case 'precio':
-                newIngredients[id-1].precio = value;
-                break;
-            case 'cantidad':
-                newIngredients[id-1].cantidad = value;
-                break;
-            case 'unidad':
-                newIngredients[id-1].unidad = value;
-                break;
-            default:
-        }
-    }
+    const newIngredients = useSelector(selectNewIngredients);
 
     const renderEmptyItems = () => {
-        for (let i = 1; i <= renderAmount; i++) {
-             render.push(<EmptyItem key={i} id={i} addFunction={addNewIngredient}/>)
-             newIngredients.push({
-                id: i,
-                sucursal,
-                nombre: '',
-                precio: null,
-                cantidad: null,
-                unidad: ''
-             })
+        for (let i = 0; i < renderAmount; i++) {
+             render.push(<EmptyItem key={i} id={i} render={renderAmount}/*addFunction={addNewIngredient}*//>)
         }
     }
     renderEmptyItems();
 
     const sendIngredientInfo = () => {
         let state = true;    
-        console.log(newIngredients);
         newIngredients.forEach(ingredient => {
             if (!ingredient.nombre || !ingredient.precio || !ingredient.cantidad || !ingredient.unidad) state = false
         })

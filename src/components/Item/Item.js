@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
 import { addRefAmount, updateRecipe } from "../../slices/recipeSlice";
+import { selectSucursal } from "../../slices/sucursalesSlice";
 
 
 export default function Item(props) {
@@ -89,24 +91,55 @@ export  function EditableItem(props) {
 }
 
 export function EmptyItem(props) {
-    const {id, addFunction} = props;
+    const {id, render} = props;
+    const dispatch = useDispatch();
+    const sucursal = useSelector(selectSucursal);
+
+    useEffect( () => {
+        const newItem = () => {
+            if ( id === render - 1 && sucursal){
+                const newItem = {
+                    id,
+                    sucursal
+                }
+                dispatch(createNewItem(newItem))    
+            }
+        }
+        newItem()
+    },[dispatch,id,render,sucursal])
+
+
+    const updateNewItem = (event) => {
+        const target = event.target;
+        const id = target.id;
+        const name = target.name;
+        const value = target.value;
+
+        const updatedItem = {
+            id,
+            name,
+            value
+        }
+        dispatch(addNewItem(updatedItem))
+    }
+
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text'onChange={addFunction}/>
+                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' onChange={addFunction}/>
+                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' onBlur={updateNewItem}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-8/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='cantidad'  className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' onChange={addFunction}/>
+                        <input id={id} name='cantidad'  className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' onChange={addFunction}/>
+                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' onBlur={updateNewItem}/>
                     </div>
                 </div>
             </div>  

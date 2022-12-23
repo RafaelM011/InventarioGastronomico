@@ -4,6 +4,7 @@ let serverUrl;
 process.env.NODE_ENV === 'production' 
     ? serverUrl = 'https://inventario-gastronomico-server-production.up.railway.app/'
     : serverUrl = 'http://localhost:4000/'
+
 const initialState = []
 
 const recipeSlice = createSlice({
