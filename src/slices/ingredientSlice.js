@@ -48,6 +48,9 @@ const ingredientsSlice = createSlice({
                 default:
             }
         },
+        ingredientMessage(state, action){
+            state.message = action.payload;
+        },
         resetIngredientState(state, action) {
             return initialState 
         }
@@ -59,6 +62,8 @@ const ingredientsSlice = createSlice({
             })
             .addCase(addIngredient.fulfilled, (state, action) => {
                 state.items = action.payload;
+                state.status = 'fulfilled';
+                state.message = 'Ingredient(s) added succesfully';
             })
             .addCase(decreaseIngredient.fulfilled, (state, action) => {
                 state.items = action.payload;
@@ -115,5 +120,6 @@ export const updateIngredients = createAsyncThunk('ingredients/updateIngredients
 
 export const selectIngredients = state => state.ingredients.items;
 export const selectNewIngredients = state => state.ingredients.newItems;
-export const { resetIngredientState,createNewItem,addNewItem } = ingredientsSlice.actions;
+export const selectIngredientMessage = state => state.ingredients.message;
+export const { resetIngredientState,createNewItem,addNewItem, ingredientMessage } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;

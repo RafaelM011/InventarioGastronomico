@@ -7,6 +7,15 @@ module.exports = {
     extend: {
       colors: {
         'inv-blue': '#0067D1'
+      },
+      animation: {
+        'display': 'message 1s'
+      },
+      keyframes: {
+        message: {
+          '0%': {bottom: '0px'},
+          '100%': {bottom: '40px'},
+        }
       }
     },
   },

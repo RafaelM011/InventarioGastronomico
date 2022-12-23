@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients } from "../../slices/ingredientSlice";
+import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
+import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
@@ -60,6 +61,7 @@ export function EmptyItemList(props){
     const {renderAmount, addItem} = props;
     const render = [];
     const dispatch = useDispatch();
+    const ingredients = useSelector(selectIngredients);
     const newIngredients = useSelector(selectNewIngredients);
 
     const renderEmptyItems = () => {
@@ -71,8 +73,18 @@ export function EmptyItemList(props){
 
     const sendIngredientInfo = () => {
         let state = true;    
-        newIngredients.forEach(ingredient => {
-            if (!ingredient.nombre || !ingredient.precio || !ingredient.cantidad || !ingredient.unidad) state = false
+        newIngredients.forEach(newIngredient => {
+            if (!newIngredient.nombre || !newIngredient.precio || !newIngredient.cantidad || !newIngredient.unidad) {
+                dispatch(ingredientMessage('Missing Information'));                
+                state = false
+            }else{
+                ingredients.forEach(ingredient => {
+                    if (ingredient.nombre === newIngredient.nombre) {
+                        dispatch(ingredientMessage('This ingredient already exist'))
+                        state = false;
+                    }
+                })
+            }
         })
         
         if (state) {
@@ -80,8 +92,6 @@ export function EmptyItemList(props){
                 ingredientes: newIngredients
             }
             dispatch(addIngredient(ingredientInfo));    
-        }else{
-            console.log('something went wrong')
         }
     }
 
@@ -96,6 +106,7 @@ export function EmptyItemList(props){
                     <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addItem}/>
                 </div>
             </div>
+            <DisplayMessage/>
         </>
     )
 }
