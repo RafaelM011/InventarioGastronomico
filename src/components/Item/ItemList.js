@@ -53,6 +53,7 @@ export function EditableItemList() {
             <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
                 <button onClick={sendUpdatedEntries}> ACTUALIZAR INGREDIENTES </button>
             </div>
+            <DisplayMessage type={'ingredient'}/>
         </>
     )
 }
@@ -106,7 +107,7 @@ export function EmptyItemList(props){
                     <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addItem}/>
                 </div>
             </div>
-            <DisplayMessage/>
+            <DisplayMessage type={'ingredient'}/>
         </>
     )
 }

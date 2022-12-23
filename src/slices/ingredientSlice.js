@@ -70,6 +70,7 @@ const ingredientsSlice = createSlice({
             })
             .addCase(updateIngredients.fulfilled, (state, action) => {
                 state.items = action.payload;
+                state.message = 'Ingredient(s) updated succesfully'
             })
     }
 })

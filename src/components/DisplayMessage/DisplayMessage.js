@@ -2,7 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ingredientMessage, selectIngredientMessage } from '../../slices/ingredientSlice';
 
-export const DisplayMessage = () => {
+export const DisplayMessage = (props) => {
+    // const {type} = props;
     const message = useSelector(selectIngredientMessage);
     const dispatch = useDispatch();
 

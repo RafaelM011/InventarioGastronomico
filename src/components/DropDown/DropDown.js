@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import DropdownFlecha from "../../assets/dropdown_arrow.png";
 import Sucursales from "../../components/Sucursales/Sucursales";
 import { selectSucursal } from "../../slices/sucursalesSlice";
+import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
 export default function DropDown(props) {
     const {active} = props;
@@ -24,6 +25,7 @@ export default function DropDown(props) {
                     <Sucursales/>
                 </div>
             </details>
+            <DisplayMessage type={'sucursales'}/>
         </>
     )
 }

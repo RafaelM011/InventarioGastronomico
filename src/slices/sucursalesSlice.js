@@ -7,7 +7,9 @@ process.env.NODE_ENV === 'production'
 
 const initialState = {
     items: [],
-    sucursalSeleccionada: ''
+    sucursalSeleccionada: '',
+    status: '',
+    message: ''
 }
 
 const sucursalesSlice = createSlice({
@@ -30,7 +32,8 @@ const sucursalesSlice = createSlice({
 
             .addCase(addSucursal.fulfilled, (state, action) => {
                 state.items = action.payload;
-                state.sucursalSeleccionada = action.payload[action.payload.length-1]?.name ?? '';       
+                state.sucursalSeleccionada = action.payload[action.payload.length-1]?.name ?? '';  
+                state.message = 'Sucursal added properly'     
             })
     }
 })
@@ -60,4 +63,5 @@ export const addSucursal = createAsyncThunk( 'sucursales/addSucursal', async (da
 export const { changeSucursal, resetSucursalesState } = sucursalesSlice.actions;
 export const selectSucursales = state => state.sucursales;
 export const selectSucursal = state => state.sucursales.sucursalSeleccionada;
+export const selectSucursalesMessage = state => state.sucursales.message;
 export default sucursalesSlice.reducer;
