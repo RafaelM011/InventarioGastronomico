@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import RegisterModal from "../RegisterModal/RegisterModal";
+import { resetUserState } from "../../slices/userSlice";
 
 export default function Header() {
     const [registerModal, setRegisterModal] = useState(false);
-    
+    const dispatch = useDispatch();
+
     const toggleModal = () => {
+        dispatch(resetUserState())
         setRegisterModal(!registerModal)
     }
 

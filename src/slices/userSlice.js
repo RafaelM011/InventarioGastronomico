@@ -75,6 +75,7 @@ export const registerUser = createAsyncThunk('user/registerUser', async (user, {
         body: JSON.stringify(user)
     })
     .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 
