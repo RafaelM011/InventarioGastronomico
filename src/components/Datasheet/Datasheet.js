@@ -1,5 +1,4 @@
-import React, { useEffect }from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
 import DropDown from "../../components/DropDown/DropDown";
 import LeftArrow from "../../assets/left_arrow.png";

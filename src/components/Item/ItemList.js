@@ -22,6 +22,7 @@ export default function ItemList() {
 
 export function EditableItemList() {
     const ingredients = useSelector(selectIngredients);
+    const sucursal = useSelector(selectSucursal);
     const dispatch = useDispatch();
     let updatedIngredients = []
 
@@ -33,7 +34,7 @@ export function EditableItemList() {
     }
 
     const sendUpdatedEntries = () => {
-        dispatch(updateIngredients(updatedIngredients));
+        dispatch(updateIngredients({ingredients: updatedIngredients, sucursal}));
     }
 
     return(

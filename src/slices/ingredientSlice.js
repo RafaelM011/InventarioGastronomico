@@ -108,12 +108,12 @@ export const decreaseIngredient = createAsyncThunk('ingredients/decreaseIngredie
     return response;
 })
 
-export const updateIngredients = createAsyncThunk('ingredients/updateIngredients', async (ingredients, rejectWithValue) => {
+export const updateIngredients = createAsyncThunk('ingredients/updateIngredients', async (data, rejectWithValue) => {
     const response = await
     fetch(serverUrl + 'updateingredients', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ingredients})
+        body: JSON.stringify(data)
     })
     .then(res => res.json())
     return response;
