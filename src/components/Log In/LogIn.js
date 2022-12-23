@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { fetchUser } from "../../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser, selectError } from "../../slices/userSlice";
 
 export default function LogIn() {
     const username = useRef();
     const password = useRef();
     const dispatch = useDispatch();
-
+    const error = useSelector(selectError);
 
     function checkLogInInfo() {
         const userInfo = {
@@ -32,7 +32,8 @@ export default function LogIn() {
                 <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center">
                     <input className="bg-transparent border-none outline-0 place-self-center w-11/12 h-2/5 text-center font-bold text-2xl" type="password" ref={password}/>
                 </div>
-                <div className="place-self-start w-10/12 h-[65px] bg-[#000692] rounded-r-full mt-20 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] text-center">
+                <p className="text-xl text-red-400 mt-6"> {error} </p>
+                <div className="place-self-start w-10/12 h-[65px] bg-[#000692] rounded-r-full mt-10 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] text-center">
                     <button className="text-[35px] font-thin text-white top-1" onClick={checkLogInInfo}> LOGIN </button>
                 </div>
                 <Link to="/recoverpsw">

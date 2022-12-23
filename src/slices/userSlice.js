@@ -80,4 +80,5 @@ export const registerUser = createAsyncThunk('user/registerUser', async (user, {
 
 export const { idleStatus, resetUserState } = userSlice.actions;
 export const selectUser = state => state.user;
+export const selectError = state => state.user.error;
 export default userSlice.reducer;
