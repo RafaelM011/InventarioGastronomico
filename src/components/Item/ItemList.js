@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
-import { addRecipe, selectRecipes } from "../../slices/recipeSlice";
+import { addRecipe, selectNewRecipe, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
@@ -68,7 +68,7 @@ export function EmptyItemList(props){
 
     const renderEmptyItems = () => {
         for (let i = 0; i < renderAmount; i++) {
-             render.push(<EmptyItem key={i} id={i} render={renderAmount}/*addFunction={addNewIngredient}*//>)
+             render.push(<EmptyItem key={i} id={i} render={renderAmount}/>)
         }
     }
     renderEmptyItems();
@@ -128,62 +128,29 @@ export function EmptyRecipeList(){
     const [amount, setAmount] = useState(1);
     const render = [];
     const recipeName = useRef();
-    const newRecipe = {
-        nombre: '',
-        ingredientes: [],
-        cantidades: []
-    }
     const dispatch = useDispatch();
     const sucursal = useSelector(selectSucursal);
-    const ingredients = useSelector(selectIngredients)
-
-    const addRecipeInfo = (event) => {
-        const target = event.target;
-        const id = target.id;
-        const name = target.name;
-        const value = target.value;
-        
-        name === "ingredientes" ?
-        newRecipe.ingredientes[id-1] = value
-        : newRecipe.cantidades[id-1] = value;
-    }
+    const newRecipe = useSelector(selectNewRecipe);
     
-    const renderRecipeItems = () => {
-        for (let i = 1; i <= amount; i++) {
-             render.push(<RecipeIngredient key={i} id={i} addRecipeInfo={addRecipeInfo}/>)
-             newRecipe.ingredientes.push('')
-             newRecipe.cantidades.push(null)
-        }
-    }
-    renderRecipeItems();
-
     const addIngredientToRecipe = () => {
         setAmount( prevState => prevState + 1);
     }
 
-    const checkRecipeIngredients = recipeInfo => {
-        for (const ingredient of recipeInfo.ingredientes){
-            let exist = false;
-            for (const element of ingredients){
-                if (element.nombre === ingredient) exist = true                
-            }
-            if (!exist)  {
-                alert(`El ingrediente '${ingredient}' no esta registrado en la base de datos`)
-                return false;
-            }    
+    const renderRecipeItems = () => {
+        for (let i = 0; i < amount; i++) {
+             render.push(<RecipeIngredient key={i} id={i} amount={amount}/>)
         }
-        return true;
     }
+    renderRecipeItems();
 
     const sendRecipeInfo = () => {
-        const recipeInfo = {
+        const newRecipeInfo = {
             sucursal,
             nombre: recipeName.current.value,
             ingredientes: newRecipe.ingredientes,
             cantidades: newRecipe.cantidades
         }
-        let state = checkRecipeIngredients(recipeInfo);
-        if (state) dispatch(addRecipe(recipeInfo)) 
+        dispatch(addRecipe(newRecipeInfo))
     }
 
     return(
@@ -200,6 +167,7 @@ export function EmptyRecipeList(){
                 {render}
             </div>
             <div key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={sendRecipeInfo}> AGREGAR RECETA </div>
+            <DisplayMessage type={'recipe'}/>
         </>
     )
 }
@@ -215,6 +183,7 @@ export function EditableRecipeList() {
                     return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} />
                 })}
             </div>
+            <DisplayMessage type={'recipe'}/>
         </>
     )
 }

@@ -19,6 +19,11 @@ module.exports = {
       }
     },
   },
+  variants: {
+    extend: {
+      display: ['group-focus']
+    }
+  },
   plugins: [
     require('tailwind-scrollbar-hide')
     // ...

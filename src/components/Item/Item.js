@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
-import { addRefAmount, updateRecipe } from "../../slices/recipeSlice";
+import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
+import { addRefAmount, createNewRecipe, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 
 
@@ -223,16 +223,60 @@ export function RecipeItem(props) {
 }
 
 export function RecipeIngredient(props) {
-    const {addRecipeInfo, id} = props;
+    const {id, amount} = props;
+    const [show, setShow] = useState(false);
+    const [value, setValue] = useState('');
+    const sucursal = useSelector(selectSucursal);
+    const ingredients = useSelector(selectIngredients);
+    const dispatch = useDispatch();
+
+    useEffect( () => {
+        const newItem = () => {
+            if ( id === amount - 1 && sucursal){
+                dispatch(createNewRecipe({id}))    
+            }
+        }
+        newItem()
+    },[dispatch,id,amount,sucursal])
+
+    const updateNewRecipeInfo = (event) => {
+        const target = event.target;
+        const id = target.id;
+        const name = target.name;
+        const value = target.value;
+
+        const newRecipeInfo = {
+            id,
+            name,
+            value,
+        }
+        dispatch(updateNewRecipe(newRecipeInfo))
+    }
+
+    const showIngredientList = () => {
+        setShow(prevState => !prevState);
+    }
+
+    const changeIngredientInput = (event) => {
+        setValue(event.target.innerHTML)
+        setShow(prevState => !prevState)
+    }
+
+    const render = 
+    <div className="w-6/12 h-[180px] absolute top-full right-[420px] py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide"> 
+        {ingredients.map( ingredient => <button key={ingredient.id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={changeIngredientInput}>{ingredient.nombre}</button>)}    
+    </div>
+
     return(
         <>
-            <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
-                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='ingredientes' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE" onChange={addRecipeInfo}/>
+            <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
+                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-10">
+                    <input id={id} name='ingrediente' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE INGREDIENTE" onFocus={showIngredientList} onBlur={updateNewRecipeInfo} defaultValue={value}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input id={id} name='cantidades' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD" onChange={addRecipeInfo} />
+                    <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
                 </div>
+                {show ? render : null}
             </div>
         </>
     )

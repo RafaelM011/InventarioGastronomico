@@ -5,16 +5,40 @@ process.env.NODE_ENV === 'production'
     ? serverUrl = 'https://inventario-gastronomico-server-production.up.railway.app/'
     : serverUrl = 'http://localhost:4000/'
 
-const initialState = []
+const initialState = {
+    items: [],
+    newItem: {
+        ingredientes: [],
+        cantidades: []
+    },
+    status: '',
+    message: ''
+}
 
 const recipeSlice = createSlice({
     name: "recipes",
     initialState,
     reducers: {
-        addRefAmount(state, action){
-            for (let i = 0; i < state.length; i++){
-                if (state[i].id === action.payload.id)  state[i].refAmount = parseInt(action.payload.refAmount)                
+        createNewRecipe(state, action){
+            const {id} = action.payload;
+            if (id >= state.newItem.ingredientes.length){
+                state.newItem.ingredientes.push('');
+                state.newItem.cantidades.push('');
             }
+        },
+        updateNewRecipe(state,action){
+            const {id,name,value} = action.payload;
+            name  === 'ingrediente'
+            ? state.newItem.ingredientes[id] = value
+            : state.newItem.cantidades[id] = value
+        },
+        addRefAmount(state, action){
+            for (let i = 0; i < state.items.length; i++){
+                if (state.items[i].id === action.payload.id) state.items[i].refAmount = parseInt(action.payload.refAmount)                
+            }
+        },
+        recipeMessage(state,action){
+            state.message = action.payload;
         },
         resetRecipeState(state, action) {
             return initialState 
@@ -23,13 +47,15 @@ const recipeSlice = createSlice({
     extraReducers(builder){
         builder
             .addCase(fetchRecipes.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
             })
             .addCase(addRecipe.fulfilled, (state, action) => {
-                return action.payload;
+                state.items = action.payload;
+                state.message = 'Recipe added succesfully';
             })
-            .addCase(updateRecipe.fulfilled, (status, action) => {
-                return action.payload;
+            .addCase(updateRecipe.fulfilled, (state, action) => {
+                state.items = action.payload;
+                state.message = 'Recipe updated succesfully';
             })
     }
 })
@@ -69,6 +95,8 @@ export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (reci
     return response;
 })
 
-export const selectRecipes = state => state.recipes;
-export const { addRefAmount, resetRecipeState } = recipeSlice.actions;
+export const selectRecipes = state => state.recipes.items;
+export const selectNewRecipe = state => state.recipes.newItem;
+export const selectRecipeMessage = state => state.recipes.message;
+export const { addRefAmount, resetRecipeState, recipeMessage, createNewRecipe, updateNewRecipe } = recipeSlice.actions;
 export default recipeSlice.reducer;

@@ -19,6 +19,9 @@ const sucursalesSlice = createSlice({
         changeSucursal(state, action) {
             state.sucursalSeleccionada = action.payload;
         },
+        sucursalesMessage(state,action){
+            state.message = action.payload;
+        },
         resetSucursalesState(state, action) {
             return initialState 
         }
@@ -60,7 +63,7 @@ export const addSucursal = createAsyncThunk( 'sucursales/addSucursal', async (da
     return response;
 })
 
-export const { changeSucursal, resetSucursalesState } = sucursalesSlice.actions;
+export const { changeSucursal, resetSucursalesState, sucursalesMessage } = sucursalesSlice.actions;
 export const selectSucursales = state => state.sucursales;
 export const selectSucursal = state => state.sucursales.sucursalSeleccionada;
 export const selectSucursalesMessage = state => state.sucursales.message;
