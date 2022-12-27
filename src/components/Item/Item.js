@@ -225,10 +225,10 @@ export function RecipeItem(props) {
 export function RecipeIngredient(props) {
     const {id, amount} = props;
     const [show, setShow] = useState(false);
-    const [listValue, setListValue] = useState('');
     const [isMouseOver, setIsMouseOver] = useState(false);
     const sucursal = useSelector(selectSucursal);
     const ingredients = useSelector(selectIngredients);
+    const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const dispatch = useDispatch();
 
     useEffect( () => {
@@ -263,22 +263,30 @@ export function RecipeIngredient(props) {
     }
 
     const changeIngredientInput = (event) => {
-        setListValue(event.target.innerHTML)
+        document.getElementById(event.target.id).value = event.target.innerHTML
         updateNewRecipeInfo(event)
         setIsMouseOver(mouseOver => !mouseOver)
         setShow(prevState => !prevState)
     }
 
+    const filterIngredientList = (event) => {
+        const value = event.target.value;
+        const filtered = ingredients.filter( ingredient => {
+            return ingredient.nombre.toLowerCase().includes(value.toLowerCase())
+        })
+        setFilteredIngredients(filtered)
+    }
+
     const render = 
-    <div className="w-6/12 h-[180px] absolute top-full right-[420px] py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={changeMouseOver} onMouseLeave={changeMouseOver}> 
-        {ingredients.map( ingredient => <button key={ingredient.id} id={id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={changeIngredientInput}>{ingredient.nombre}</button>)}    
+    <div className="w-6/12 max-h-[180px] min-h-fit absolute top-full right-[420px] py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={changeMouseOver} onMouseLeave={changeMouseOver}> 
+        {filteredIngredients.map( ingredient => <button key={ingredient.id} id={id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={changeIngredientInput}>{ingredient.nombre}</button>)}    
     </div>
 
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
-                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-10">
-                    <input id={id} name='ingrediente' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE INGREDIENTE" onFocus={showIngredientList} onBlur={showIngredientList} defaultValue={listValue}/>
+                <div className="teteo w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-10">
+                    <input id={id} name='ingrediente' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE INGREDIENTE" onFocus={showIngredientList} onBlur={showIngredientList} onChange={filterIngredientList}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                     <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
