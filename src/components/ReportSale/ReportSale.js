@@ -6,6 +6,7 @@ import { selectSucursal } from "../../slices/sucursalesSlice.js";
 import { RecipeList } from "../Item/ItemList";
 import PlusIcon from "../../assets/Plus.png";
 import { decreaseIngredient, selectIngredients } from "../../slices/ingredientSlice";
+import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
 export default function ReportSale(props) {
     const {title} = props;
@@ -61,6 +62,7 @@ export default function ReportSale(props) {
                     </div>
                 </div>
             </div>
+            <DisplayMessage type={'ingredient'}/>
         </>
     );
 }

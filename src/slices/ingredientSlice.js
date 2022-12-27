@@ -67,6 +67,7 @@ const ingredientsSlice = createSlice({
             })
             .addCase(decreaseIngredient.fulfilled, (state, action) => {
                 state.items = action.payload;
+                state.message = 'Sale(s) reported properly'
             })
             .addCase(updateIngredients.fulfilled, (state, action) => {
                 state.items = action.payload;
