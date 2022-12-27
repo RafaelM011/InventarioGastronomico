@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Desplegable from "../../components/Desplegable/Desplegable";
 import Datasheet from "../../components/Datasheet/Datasheet";
+import { useNavigate } from "react-router-dom";
 
 export default function ConfigIngredients() {
     let [gridLayout, setGridLayout] = useState('grid-cols-[1fr,9fr]');
     let [buttonOffsetTop, setButtonOffsetTop] = useState('top-[-85px]');
     let [active, setActive] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect( () => {
+        if (!sessionStorage.getItem('username')) navigate('/')
+    },[navigate])
 
     function deployMenu(){
         if (active === false) {
