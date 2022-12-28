@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
-import { addRecipe, selectNewRecipe, selectRecipes } from "../../slices/recipeSlice";
+import { addRecipe, selectNewRecipe, selectRecipes, recipeMessage } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
@@ -130,8 +130,10 @@ export function EmptyRecipeList(){
     const recipeName = useRef();
     const dispatch = useDispatch();
     const sucursal = useSelector(selectSucursal);
+    const recipes = useSelector(selectRecipes);
+    const ingredients = useSelector(selectIngredients);
     const newRecipe = useSelector(selectNewRecipe);
-    
+
     const addIngredientToRecipe = () => {
         setAmount( prevState => prevState + 1);
     }
@@ -143,7 +145,28 @@ export function EmptyRecipeList(){
     }
     renderRecipeItems();
 
+    const validateIngredient = (newIngredients) => {
+        return newRecipe.ingredientes.some(ingredientName => ingredients.some( ingredient => ingredient.nombre === ingredientName))
+    }
+
+    const validateCantidades = () => {
+        return newRecipe.cantidades.some(cantidad => cantidad === '')
+    }
+
+    const validateRecipeName = (newRecipeName) => {
+        return recipes.some( recipe => recipe.nombre === newRecipeName)
+    }
+
     const sendRecipeInfo = () => {
+        const ingredientExist = validateIngredient();
+        const emptyQty = validateCantidades()
+        const recipeExist = validateRecipeName(recipeName.current.value)
+
+        if (emptyQty) return dispatch(recipeMessage('Must fill out all quantities field'))
+        if (!ingredientExist) return dispatch(recipeMessage('One or more of the ingredients does not exist'))
+        if (!recipeName.current.value) return dispatch(recipeMessage('Missing recipe name'))
+        if (recipeExist) return dispatch(recipeMessage('This recipe name is already being used'))
+
         const newRecipeInfo = {
             sucursal,
             nombre: recipeName.current.value,

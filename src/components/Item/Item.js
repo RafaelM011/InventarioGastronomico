@@ -240,6 +240,10 @@ export function RecipeIngredient(props) {
         newItem()
     },[dispatch,id,amount,sucursal])
 
+    const validateIngredient = (newIngredientName) => {
+        return ingredients.some(ingredient => ingredient.nombre === newIngredientName)
+    }
+
     const updateNewRecipeInfo = (event) => {
         const target = event.target;
         const id = target.id;
@@ -254,15 +258,17 @@ export function RecipeIngredient(props) {
         dispatch(updateNewRecipe(newRecipeInfo))
     }
 
+    const changeMouseOver = () => {
+        setIsMouseOver(mouseOver => !mouseOver)
+    }
+
     const showIngredientList = (event) => {
         if(!isMouseOver) {
             updateNewRecipeInfo(event)
             setShow(prevState => !prevState)
-        }
-    }
-
-    const changeMouseOver = () => {
-        setIsMouseOver(mouseOver => !mouseOver)
+        }else if(event.type === 'focus')(
+            setShow(prevState => !prevState)            
+        )
     }
 
     const changeIngredientInput = (event) => {
