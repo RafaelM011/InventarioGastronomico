@@ -33,7 +33,13 @@ export function EditableItemList() {
         updatedIngredients[info.index].unidad = info.unit;
     }
 
+    const validateUpdate = () => {
+        return updatedIngredients.some( updatedIngredient => updatedIngredient.nombre === '' || updatedIngredient.precio === '' || updatedIngredient.cantidad === '' || updatedIngredient.unidad === '')
+    }
+
     const sendUpdatedEntries = () => {
+        const isEmpty = validateUpdate();
+        if (isEmpty) return dispatch(ingredientMessage('Missing fields'))
         dispatch(updateIngredients({ingredients: updatedIngredients, sucursal}));
     }
 

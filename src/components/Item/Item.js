@@ -71,18 +71,18 @@ export  function EditableItem(props) {
             <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={name} name="nombre" onChange={updateMyEntry}/>
+                        <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={name} name="nombre" onBlur={updateMyEntry}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="precio" defaultValue={price} onChange={updateMyEntry}/>
+                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="precio" defaultValue={price} onBlur={updateMyEntry}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onChange={updateMyEntry}/>
+                        <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onBlur={updateMyEntry}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="unidad" defaultValue={unit} onChange={updateMyEntry}/>
+                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="unidad" defaultValue={unit} onBlur={updateMyEntry}/>
                     </div>
                 </div>
             </div>  
@@ -239,10 +239,6 @@ export function RecipeIngredient(props) {
         }
         newItem()
     },[dispatch,id,amount,sucursal])
-
-    const validateIngredient = (newIngredientName) => {
-        return ingredients.some(ingredient => ingredient.nombre === newIngredientName)
-    }
 
     const updateNewRecipeInfo = (event) => {
         const target = event.target;
