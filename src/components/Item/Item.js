@@ -71,18 +71,18 @@ export  function EditableItem(props) {
             <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" defaultValue={name} name="nombre" onChange={updateMyEntry}/>
+                        <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={name} name="nombre" onBlur={updateMyEntry}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-9/12 outline-none" name="precio" defaultValue={price} onChange={updateMyEntry}/>
+                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="precio" defaultValue={price} onBlur={updateMyEntry}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl mt-3 ml-6 bg-inherit outline-none" name="cantidad" defaultValue={quantity} onChange={updateMyEntry}/>
+                        <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onBlur={updateMyEntry}/>
                     </div>
-                    <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="text-3xl text-white font-thin mt-3 ml-6 bg-inherit w-8/12 outline-none" name="unidad" defaultValue={unit} onChange={updateMyEntry}/>
+                    <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="unidad" defaultValue={unit} onBlur={updateMyEntry}/>
                     </div>
                 </div>
             </div>  
@@ -128,18 +128,18 @@ export function EmptyItem(props) {
             <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
                 <div className="w-7/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Nombre" type='text' onBlur={updateNewItem}/>
+                        <input id={id} name='nombre' className="text-3xl w-10/12 mt-3 ml-6 pl-2 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre" type='text' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none appearance-none" placeholder="Precio" type='number' onBlur={updateNewItem}/>
+                        <input id={id} name='precio'  className="text-3xl w-8/12 mt-3 ml-6 pl-2 bg-inherit outline-none appearance-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" placeholder="Precio" type='number' onBlur={updateNewItem}/>
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
-                    <div className="w-8/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='cantidad'  className="text-3xl w-10/12 mt-3 ml-6 bg-inherit outline-none placeholder:text-right appearance-none text-right" placeholder="Cantidad" type='number' onBlur={updateNewItem}/>
+                    <div className="w-7/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input id={id} name='cantidad'  className="text-3xl text-left w-10/12 mt-3 ml-6 bg-inherit outline-none appearance-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='number' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 bg-inherit outline-none" placeholder="Unidad" type='text' onBlur={updateNewItem}/>
+                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 pl-2 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" placeholder="Unidad" type='text' onBlur={updateNewItem}/>
                     </div>
                 </div>
             </div>  
@@ -214,7 +214,7 @@ export function RecipeItem(props) {
                 </div>
                 <div className="w-5/12 h-[60px] flex">
                     <div className="w-9/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input ref={quantityRef} className="w-9/12 text-3xl text-right font-semibold mt-3 ml-8 bg-inherit outline-none" onChange={updateRef}/>
+                        <input ref={quantityRef} className="w-9/12 text-3xl text-right font-semibold mt-3 ml-8 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" onChange={updateRef}/>
                     </div>
                 </div>
             </div>  
@@ -254,12 +254,17 @@ export function RecipeIngredient(props) {
         dispatch(updateNewRecipe(newRecipeInfo))
     }
 
-    const showIngredientList = () => {
-        if(!isMouseOver) setShow(prevState => !prevState)
-    }
-
     const changeMouseOver = () => {
         setIsMouseOver(mouseOver => !mouseOver)
+    }
+
+    const showIngredientList = (event) => {
+        if(!isMouseOver) {
+            updateNewRecipeInfo(event)
+            setShow(prevState => !prevState)
+        }else if(event.type === 'focus')(
+            setShow(prevState => !prevState)            
+        )
     }
 
     const changeIngredientInput = (event) => {
@@ -278,7 +283,7 @@ export function RecipeIngredient(props) {
     }
 
     const render = 
-    <div className="w-6/12 max-h-[180px] min-h-fit absolute top-full right-[420px] py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={changeMouseOver} onMouseLeave={changeMouseOver}> 
+    <div className="ring-4 ring-inv-blue w-6/12 max-h-[180px] min-h-fit absolute top-full right-[420px] py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={changeMouseOver} onMouseLeave={changeMouseOver}> 
         {filteredIngredients.map( ingredient => <button key={ingredient.id} id={id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={changeIngredientInput}>{ingredient.nombre}</button>)}    
     </div>
 
@@ -286,10 +291,10 @@ export function RecipeIngredient(props) {
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
                 <div className="teteo w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-10">
-                    <input id={id} name='ingrediente' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" placeholder="NOMBRE INGREDIENTE" onFocus={showIngredientList} onBlur={showIngredientList} onChange={filterIngredientList}/>
+                    <input id={id} name='ingrediente' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="NOMBRE INGREDIENTE" onFocus={showIngredientList} onBlur={showIngredientList} onChange={filterIngredientList}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-right font-normal mt-3 ml-3 bg-inherit outline-none" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
+                    <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
                 </div>
                 {show ? render : null}
             </div>
@@ -346,7 +351,7 @@ export function EditableRecipeItem(props) {
         <div className="flex w-12/12 place-content-around items-start">
             <details className="w-7/12">
                 <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none" name='nombre' defaultValue={nombre} onChange={updateRecipeInfo}/>
+                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onChange={updateRecipeInfo}/>
                     <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> EXPANDIR </h1>
                 </summary>
                 <div>
@@ -370,10 +375,10 @@ export function EditableRecipeIngredient(props) {
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
                 <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input index={index} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none" defaultValue={nombre} onChange={update}/>
+                    <input index={index} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={nombre} onChange={update}/>
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input index={index} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none" defaultValue={cantidad} onChange={update}/>
+                    <input index={index} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onChange={update}/>
                 </div>
             </div>
         </>
