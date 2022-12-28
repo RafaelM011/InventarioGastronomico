@@ -31,6 +31,8 @@ const recipeSlice = createSlice({
             name  === 'ingrediente'
             ? state.newItem.ingredientes[id] = value
             : state.newItem.cantidades[id] = value
+
+            state.message = '';
         },
         addRefAmount(state, action){
             for (let i = 0; i < state.items.length; i++){
