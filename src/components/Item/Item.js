@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useId } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
-import { addRefAmount, createNewRecipe, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
+import { addRefAmount, createNewRecipe, recipeMessage, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 
 
@@ -314,12 +314,14 @@ export function EditableRecipeItem(props) {
     const dispatch = useDispatch();
     let newIngredientes = [...recipe.ingredientes];
     let newCantidades = [...recipe.cantidades];
+    let [display, setDisplay] = useState(false)
+    const unique = useId();
 
     const updateRecipeInfo = (e) => {
         const target = e.target;
         const value = target.value;
         const name = target.name;
-        const index = target.attributes[0].value;
+        const index = target.attributes[1].value;
 
         switch (name){
             case 'nombre':
@@ -344,19 +346,20 @@ export function EditableRecipeItem(props) {
     }
 
     const updateRecipeOnDB = () => {
-        dispatch(updateRecipe(recipe));
+        if (recipe.nombre !== '') return dispatch(updateRecipe(recipe));
+        return dispatch(recipeMessage('Missing fields'))
     }
 
     return(
         <div className="flex w-12/12 place-content-around items-start">
             <details className="w-7/12">
                 <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onChange={updateRecipeInfo}/>
-                    <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> EXPANDIR </h1>
+                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onBlur={updateRecipeInfo}/>
+                    <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer" onClick={() => setDisplay(prev=>!prev)}> {display ? "COLAPSAR" :"EXPANDIR"} </h1>
                 </summary>
                 <div>
                     {ingredientes.map( (ingrediente,index) => {
-                        return <EditableRecipeIngredient key={index} index={index} nombre={ingrediente} cantidad={cantidades[index]} update={updateRecipeInfo}/>
+                        return <EditableRecipeIngredient key={index} id={unique} index={index} nombre={ingrediente} cantidad={cantidades[index]} update={updateRecipeInfo}/>
                     })}
                 </div>
             </details>
@@ -369,16 +372,47 @@ export function EditableRecipeItem(props) {
 }
 
 export function EditableRecipeIngredient(props) {
-    const {index, nombre, cantidad, update} = props;
+    const {id, index, nombre, cantidad, update} = props;
+    const ingredients = useSelector(selectIngredients)
+    const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
+    const [show, setShow] = useState(false);
+    const [isMouseOver, setIsMouseOver] = useState(false)
+
+    const setDisplay = (event) =>{
+        if (!isMouseOver || event.type === 'focus') {
+            setShow(prevState => !prevState)
+            update(event)
+        }
+        else if (event.type === 'click'){
+            document.getElementById(`${id}${index}`).value = event.target.innerHTML;
+            setIsMouseOver(false)
+            document.getElementById(`${id}${index}`).focus()
+            document.getElementById(`${id}${index}`).blur()
+        }
+    }
+
+    const filterIngredientList = (event) => {
+        const value = event.target.value;
+        const filtered = ingredients.filter(ingredient => ingredient.nombre.toLowerCase().includes(value.toLowerCase()))
+        setFilteredIngredients(filtered)
+    }
     
+    const render = 
+    <div className="ring-4 ring-inv-blue w-6/12 max-h-[180px] min-h-fit absolute top-full py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={() => setIsMouseOver(true)} onMouseLeave={() => setIsMouseOver(false)}> 
+        {filteredIngredients.map( ingredient => <button key={ingredient.id} id={ingredient.id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={setDisplay}>{ingredient.nombre}</button>)}    
+    </div>
+
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
-                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input index={index} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={nombre} onChange={update}/>
+                <div className="relative w-9/12 h-2/12">
+                    <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input id={`${id}${index}`} index={index} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={nombre} onChange={filterIngredientList} onFocus={setDisplay} onBlur={setDisplay}/>
+                    </div>
+                    {show ? render : null}
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input index={index} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onChange={update}/>
+                    <input index={index} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onBlur={update}/>
                 </div>
             </div>
         </>
