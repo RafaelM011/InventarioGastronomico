@@ -20,17 +20,25 @@ export const Calculator = (props) => {
     useEffect(() => {
         if (ingredientMap.size !== 0) {
             setRenderIngredients(
-                <div className="text-center">
+                <div className="max-h-[480px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
                     {[...recipeMap.keys()].map(recipe => {
-                        return(
+                        if( recipeMap.get(recipe).value !== '0')
+                        {return(
                             <div key={recipe} className="my-2">
-                                <h1 className="mx-auto text-lg font-semibold border-white border-b-2">{recipe}</h1>
-                                <div className="flex place-content-between my-4">
-                                    {/* <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
-                                    <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 outline-none text-white font-medium text-center">{ingredientMap.get(ingredient)}</p> */}
+                                <h1 className="mx-auto text-lg font-semibold border-white border-b-2 mb-2">{recipe} - {recipeMap.get(recipe).value} item(s)</h1>
+                                <div className="flex flex-col">
+                                    {[...recipeMap.get(recipe).ingredientes].map( (ingredient,index) => {
+                                        return(
+                                            <div key={ingredient} className="flex place-content-between my-2">
+                                                <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
+                                                <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 text-white font-medium text-center">{recipeMap.get(recipe).cantidades[index]}</p>
+                                            </div>
+                                        )
+                                    })}   
                                 </div>
                             </div>
-                        )
+                        )}
+                        return null;
                     })}
                 </div>
             )
@@ -61,49 +69,58 @@ export const Calculator = (props) => {
     }
 
     const calculateIngredients = () => {
+        const tempMap = new Map();
         recipeMap.forEach( value => {
             value.ingredientes.forEach( (ingrediente,index) => {
-                if (!ingredientMap.has(ingrediente)) {
-                    setIngredientMap(prevMap => {
-                        prevMap.set(ingrediente, value.cantidades[index])
-                        return new Map(prevMap)
-                    })
+                if (!tempMap.has(ingrediente)) {
+                    tempMap.set(ingrediente, value.cantidades[index])
                 }
                 else {
-                    setIngredientMap(prevMap => {
-                        prevMap.set(ingrediente, ingredientMap.get(ingrediente) + value.cantidades[index])
-                        return new Map(prevMap)
-                    })
+                    tempMap.set(ingrediente, tempMap.get(ingrediente) + value.cantidades[index])
                 }
             })
         })
+        setIngredientMap(tempMap)
     }
 
     const toggleDisplay = () => {
-        if (toggle) {
+        const trigger = toggle;
+        if (trigger) {
             setRenderIngredients(
-                <div className="max-h-[500px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
+                <div className="max-h-[480px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
                     {[...ingredientMap.keys()].map(ingredient => {
-                        return(
+                        if(ingredientMap.get(ingredient) !== 0)
+                        {return(
                             <div key={ingredient} className="flex place-content-between my-4">
                                 <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
                                 <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 outline-none text-white font-medium text-center">{ingredientMap.get(ingredient)}</p>
                             </div>
-                        )
+                        )}
+                        return null;
                     })}
                 </div>
             )
         }else{
             setRenderIngredients(
-                <div className="text-center">
+                <div className="max-h-[480px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
                     {[...recipeMap.keys()].map(recipe => {
-                        return(
-                            <div key={recipe} className="flex place-content-between my-4">
-                                <h1 className="">{recipe}</h1>
-                                {/* <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
-                                <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 outline-none text-white font-medium text-center">{ingredientMap.get(ingredient)}</p> */}
+                        if( recipeMap.get(recipe).value !== '0')
+                        {return(
+                            <div key={recipe} className="my-2">
+                                <h1 className="mx-auto text-lg font-semibold border-white border-b-2 mb-2">{recipe} - {recipeMap.get(recipe).value} item(s)</h1>
+                                <div className="flex flex-col">
+                                    {[...recipeMap.get(recipe).ingredientes].map( (ingredient,index) => {
+                                        return(
+                                            <div key={ingredient} className="flex place-content-between my-2">
+                                                <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
+                                                <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 text-white font-medium text-center">{recipeMap.get(recipe).cantidades[index]}</p>
+                                            </div>
+                                        )
+                                    })}   
+                                </div>
                             </div>
-                        )
+                        )}
+                        return null;
                     })}
                 </div>
             )
@@ -113,7 +130,7 @@ export const Calculator = (props) => {
 
     const resetStates = () => {
         setDisplay('calculator')
-        setToggle(false)
+        setToggle(true)
         setRecipeMap(new Map())
         setIngredientMap(new Map())
         setRenderIngredients([])
@@ -145,10 +162,12 @@ export const Calculator = (props) => {
     const resultRender = 
     <>
         <div className="h-[500px] bg-gradient-to-b from-transparent via-inv-blue to-transparent px-20">
+            {toggle === false ? 
             <div className="w-11/12 flex place-content-between mx-auto mt-4 font-semibold text-2xl">
                 <p className="border-b-2 border-inv-blue rounded-br-2xl p-2"> Ingredientes </p>
                 <p className="border-b-2 border-inv-blue rounded-br-2xl p-2"> Cantidades </p>
-            </div>
+            </div>        
+            : null}
             {renderIngredients}
         </div>
         <div className="h-fit w-fit bg-inv-blue rounded-2xl mx-auto mt-10">
