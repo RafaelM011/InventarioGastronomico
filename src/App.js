@@ -19,7 +19,7 @@ function App() {
   const userData = useSelector(selectUser);
   const username = sessionStorage.getItem("username");
   const sucursal = useSelector(selectSucursal);   
-  const version  = '1.0.5';
+  const version  = '1.0.6';
 
   useEffect( () => {
     if (userData.status === 'completed') {
