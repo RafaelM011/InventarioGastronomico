@@ -59,8 +59,8 @@ export function LargeMenuOptions(){
                  </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
-                <Link to="/contactos">
-                    <h1 className="text-center text-3xl mt-3"> CONTACTOS </h1>
+                <Link to="/calculadora">
+                    <h1 className="text-center text-3xl mt-3"> CALCULADORA</h1>
                 </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
@@ -110,8 +110,8 @@ export function SmallMenuOptions(){
                 </Link>
             </div>
             <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
-                <Link to="/contactos">
-                    <img className="w-6/12 mx-auto" src={ContactosImg} alt="contactos"/> 
+                <Link to="/calculadora">
+                    <img className="w-6/12 mx-auto" src={ContactosImg} alt="calculadora"/> 
                 </Link>
             </div>
             <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">

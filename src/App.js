@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import Inventario from './pages/Inventario/Inventario';
 import ReporteDeVentas from './pages/Reporte_de_ventas/ReporteVentas';
 import SuplirIngredientes from './pages/Suplir_ingredientes/SuplirIngredientes';
+import Calculator from './pages/Calculadora/Calculadora';
 import ConfigIngredients from './pages/Configurar_ingredientes/ConfigurarIngredientes';
 import { fetchSucursales, selectSucursal } from './slices/sucursalesSlice';
 import { fetchIngredients } from './slices/ingredientSlice';
@@ -19,8 +20,6 @@ function App() {
   const username = sessionStorage.getItem("username");
   const sucursal = useSelector(selectSucursal);   
   const version  = '1.0.5';
-
-  console.log(`Curent Version ${version}`)
 
   useEffect( () => {
     if (userData.status === 'completed') {
@@ -39,6 +38,9 @@ function App() {
       dispatch(fetchSucursales(username))
   }, [dispatch, username])
 
+  useEffect( () => {
+    console.log(`Curent Version ${version}`)
+  },[])
 
     return (
     <>
@@ -48,7 +50,7 @@ function App() {
         <Route path="/reporte_de_ventas" element={<ReporteDeVentas/>}/>
         <Route path="/suplir_ingredientes" element={<SuplirIngredientes/>}/>
         <Route path="/configurar_ingredientes" element={<ConfigIngredients/>}/>
-        {/* <Route path="/contactos" element={<Inventario/>}/> */}
+        <Route path="/calculadora" element={<Calculator/>}/>
         {/* <Route path="/precios" element={<Inventario/>}/> */}
         {/* <Route path="/manual" element={<Inventario/>}/> */}
         {/* <Route path="/servicios" element={<Inventario/>}/> */}

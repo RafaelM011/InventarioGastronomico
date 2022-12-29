@@ -4,7 +4,6 @@ import { selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice.js";
 // import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
-import PlusIcon from "../../assets/Plus.png";
 import { decreaseIngredient, selectIngredients } from "../../slices/ingredientSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
@@ -57,8 +56,8 @@ export default function ReportSale(props) {
                     <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent mt-10">
                         <RecipeList/>
                     </div>
-                    <div className="h-[60px] w-[60px] bg-inv-blue rounded-full mx-auto">
-                        <img className="mx-auto pt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={sendSalesInfo}/>
+                    <div className="h-fit w-fit bg-inv-blue rounded-2xl mx-auto mt-10">
+                        <button className="mx-auto p-2 w-fit cursor-pointer text-2xl text-white font-semibold" onClick={sendSalesInfo} >REPORTAR VENTAS</button>
                     </div>
                 </div>
             </div>

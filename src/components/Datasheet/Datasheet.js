@@ -10,6 +10,7 @@ import ManageIngredient from "../ManageIngredients/ManageIngredients";
 import InfoBox from "../InformationBox/InformationBox.js";
 import ReportSale from "../ReportSale/ReportSale";
 import ConfigInventory from "../ConfigInventory/ConfigInventory";
+import { Calculator } from "../Calculator/Calculator";
 
 export default function Datasheet(props) {
     const {option, active} = props;
@@ -20,6 +21,7 @@ export default function Datasheet(props) {
             case 2: return <ManageIngredient title={option.title}/>
             case 3: return <ReportSale title={option.title}/>
             case 4: return <ConfigInventory title={option.title}/>
+            case 5: return <Calculator title={option.title}/>
             default:
         }
     }
