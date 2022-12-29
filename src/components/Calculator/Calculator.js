@@ -6,15 +6,45 @@ import { selectRecipes } from "../../slices/recipeSlice";
 export const Calculator = (props) => {
     const {title} = props
     const [display, setDisplay] = useState('calculator')
+    const [toggle, setToggle] = useState(true);
     const recipes = useSelector(selectRecipes);
     const [filteredRecipe, setFilteredRecipe] = useState([]);
     const [renderIngredients, setRenderIngredients] = useState('')
-    const ingredientMap = new Map();
-    const recipeMap = new Map();
+    const [ingredientMap, setIngredientMap] = useState(new Map());
+    const [recipeMap, setRecipeMap] = useState(new Map());
 
     useEffect(() => {
         setFilteredRecipe(recipes)
     },[recipes])
+
+    useEffect(() => {
+        if (ingredientMap.size !== 0) {
+            setRenderIngredients(
+                <div className="max-h-[480px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
+                    {[...recipeMap.keys()].map(recipe => {
+                        if( recipeMap.get(recipe).value !== '0')
+                        {return(
+                            <div key={recipe} className="my-2">
+                                <h1 className="mx-auto text-lg font-semibold border-white border-b-2 mb-2">{recipe} - {recipeMap.get(recipe).value} item(s)</h1>
+                                <div className="flex flex-col">
+                                    {[...recipeMap.get(recipe).ingredientes].map( (ingredient,index) => {
+                                        return(
+                                            <div key={ingredient} className="flex place-content-between my-2">
+                                                <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
+                                                <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 text-white font-medium text-center">{recipeMap.get(recipe).cantidades[index]}</p>
+                                            </div>
+                                        )
+                                    })}   
+                                </div>
+                            </div>
+                        )}
+                        return null;
+                    })}
+                </div>
+            )
+            setDisplay('result')
+        }
+    },[ingredientMap, recipeMap])
 
     const filterRecipes = (event) => {
         const value = event.target.value;
@@ -28,30 +58,82 @@ export const Calculator = (props) => {
         let {cantidades} = recipeInfo;
         cantidades = cantidades.map(cantidad => cantidad*value);
 
-        if(value) recipeMap.set(nombre, {ingredientes, cantidades, value})
-        else if(recipeMap.has(nombre)) recipeMap.delete(nombre);
+        if(value === '' && recipeMap.has(nombre)) setRecipeMap(prevMap => {
+            prevMap.delete(nombre)
+            return new Map(prevMap)
+        })
+        else if (value !== '') setRecipeMap(prevMap => {
+            prevMap.set(nombre, {ingredientes, cantidades, value})
+            return new Map(prevMap);
+        })
     }
 
     const calculateIngredients = () => {
+        const tempMap = new Map();
         recipeMap.forEach( value => {
             value.ingredientes.forEach( (ingrediente,index) => {
-                if (!ingredientMap.has(ingrediente)) ingredientMap.set(ingrediente, value.cantidades[index])
-                else ingredientMap.set(ingrediente, ingredientMap.get(ingrediente) + value.cantidades[index])
+                if (!tempMap.has(ingrediente)) {
+                    tempMap.set(ingrediente, value.cantidades[index])
+                }
+                else {
+                    tempMap.set(ingrediente, tempMap.get(ingrediente) + value.cantidades[index])
+                }
             })
         })
-        setRenderIngredients(
-            <div className="max-h-[500px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
-                {[...ingredientMap.keys()].map(ingredient => {
-                        return(
+        setIngredientMap(tempMap)
+    }
+
+    const toggleDisplay = () => {
+        const trigger = toggle;
+        if (trigger) {
+            setRenderIngredients(
+                <div className="max-h-[480px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
+                    {[...ingredientMap.keys()].map(ingredient => {
+                        if(ingredientMap.get(ingredient) !== 0)
+                        {return(
                             <div key={ingredient} className="flex place-content-between my-4">
                                 <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
                                 <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 outline-none text-white font-medium text-center">{ingredientMap.get(ingredient)}</p>
                             </div>
-                        )
-                })}
-            </div>
-        )
-        setDisplay('result')
+                        )}
+                        return null;
+                    })}
+                </div>
+            )
+        }else{
+            setRenderIngredients(
+                <div className="max-h-[480px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
+                    {[...recipeMap.keys()].map(recipe => {
+                        if( recipeMap.get(recipe).value !== '0')
+                        {return(
+                            <div key={recipe} className="my-2">
+                                <h1 className="mx-auto text-lg font-semibold border-white border-b-2 mb-2">{recipe} - {recipeMap.get(recipe).value} item(s)</h1>
+                                <div className="flex flex-col">
+                                    {[...recipeMap.get(recipe).ingredientes].map( (ingredient,index) => {
+                                        return(
+                                            <div key={ingredient} className="flex place-content-between my-2">
+                                                <p className="w-7/12 border-t-2 border-r-2 border-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{ingredient}</p>
+                                                <p className="w-2/12 border-t-2 border-r-2 border-white rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 text-white font-medium text-center">{recipeMap.get(recipe).cantidades[index]}</p>
+                                            </div>
+                                        )
+                                    })}   
+                                </div>
+                            </div>
+                        )}
+                        return null;
+                    })}
+                </div>
+            )
+        }
+        setToggle(toggle => !toggle)
+    }
+
+    const resetStates = () => {
+        setDisplay('calculator')
+        setToggle(true)
+        setRecipeMap(new Map())
+        setIngredientMap(new Map())
+        setRenderIngredients([])
     }
 
     const renderRecipes = 
@@ -80,14 +162,19 @@ export const Calculator = (props) => {
     const resultRender = 
     <>
         <div className="h-[500px] bg-gradient-to-b from-transparent via-inv-blue to-transparent px-20">
+            {toggle === false ? 
             <div className="w-11/12 flex place-content-between mx-auto mt-4 font-semibold text-2xl">
                 <p className="border-b-2 border-inv-blue rounded-br-2xl p-2"> Ingredientes </p>
                 <p className="border-b-2 border-inv-blue rounded-br-2xl p-2"> Cantidades </p>
-            </div>
+            </div>        
+            : null}
             {renderIngredients}
         </div>
         <div className="h-fit w-fit bg-inv-blue rounded-2xl mx-auto mt-10">
-            <button className="mx-auto w-fit p-2 cursor-pointer text-2xl text-white font-semibold" onClick={() => setDisplay('calculator')}> REGRESAR </button>
+            <button className="mx-auto w-fit p-2 cursor-pointer text-2xl text-white font-semibold" onClick={resetStates}> REGRESAR </button>
+        </div>
+        <div className={`relative left-10 bottom-4 h-[20px] w-[60px] bg-[#F4F4F4] rounded-xl flex place-items-center ${toggle === true ? 'place-content-start' : 'place-content-end'}`}>
+            <button className="h-[40px] w-[40px] rounded-full bg-inv-blue" onClick={toggleDisplay}></button>
         </div>
     </>
 
