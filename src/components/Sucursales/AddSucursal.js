@@ -4,6 +4,7 @@ import { addSucursal } from "../../slices/sucursalesSlice";
 
 export const AddSucursal = () => {
     const [state, setState] = useState(false);
+    const [isMouseOver, setIsMouseOver] = useState(false);
     const dispatch = useDispatch();
     const user = sessionStorage.getItem('username');
     const sucursal = useRef();
@@ -20,11 +21,11 @@ export const AddSucursal = () => {
 
     return(
         state 
-        ? <div className="h-[50px] bg-gradient-to-r from-transparent via-[#000692CC] to-transparent flex place-content-evenly place-items-center">
+        ? <div id='addSucursal' mouseover={isMouseOver?'true':'false'} className="h-[50px] bg-gradient-to-r from-transparent via-[#000692CC] to-transparent flex place-content-evenly place-items-center" onMouseEnter={() => setIsMouseOver(true)} onMouseLeave={() => setIsMouseOver(false)}>
             <input type="text" className="w-6/12 h-4/6 bg-inherit text-xl font-semibold text-white border-b-2 border-l-2 rounded-bl-md outline-none pl-4" ref={sucursal}/>
             <button className="w-2/12 text-xl font-semibold text-white" onClick={changeState}> AÑADIR </button>
         </div>
-        : <div className="h-[50px] text-center bg-gradient-to-r from-transparent via-[#000692CC] to-transparent ">
+        : <div id='addSucursal' mouseover={isMouseOver?'true':'false'} className="h-[50px] text-center bg-gradient-to-r from-transparent via-[#000692CC] to-transparent" onMouseEnter={() => setIsMouseOver(true)} onMouseLeave={() => setIsMouseOver(false)}>
             <button className="text-[150%] text-white font-semibold py-2 cursor-pointer hover:scale-95" onClick={changeState}> AÑADIR SUCURSAL </button>
         </div>
     )

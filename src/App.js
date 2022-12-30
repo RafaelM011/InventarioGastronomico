@@ -19,7 +19,7 @@ function App() {
   const userData = useSelector(selectUser);
   const username = sessionStorage.getItem("username");
   const sucursal = useSelector(selectSucursal);   
-  const version  = '1.0.6';
+  const version  = '1.0.7';
 
   useEffect( () => {
     if (userData.status === 'completed') {
@@ -51,9 +51,9 @@ function App() {
         <Route path="/suplir_ingredientes" element={<SuplirIngredientes/>}/>
         <Route path="/configurar_ingredientes" element={<ConfigIngredients/>}/>
         <Route path="/calculadora" element={<Calculator/>}/>
-        {/* <Route path="/precios" element={<Inventario/>}/> */}
-        {/* <Route path="/manual" element={<Inventario/>}/> */}
-        {/* <Route path="/servicios" element={<Inventario/>}/> */}
+        {/* <Route path="/precios" element={<Precios/>}/> */}
+        {/* <Route path="/manual" element={<Manual/>}/> */}
+        {/* <Route path="/servicios" element={<Servicios/>}/> */}
         <Route path="/download"/>
       </Routes>      
     </>

@@ -1,4 +1,4 @@
-import React from "react";
+import React  from "react";
 
 import InventarioImg from "../../assets/Inventario.png";
 import ReporteVentaImg from "../../assets/Reporte_de_venta.png";
@@ -9,11 +9,11 @@ import PrecioImg from "../../assets/Precios.png";
 import ManualImg from "../../assets/Manual.png";
 import { Link } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetIngredientState } from "../../slices/ingredientSlice";
 import { resetRecipeState } from "../../slices/recipeSlice";
 import { resetSucursalesState } from "../../slices/sucursalesSlice";
-import { resetUserState } from "../../slices/userSlice";
+import { changeActiveMenu, resetUserState, selectActiveMenu } from "../../slices/userSlice";
 
 export function LargeMenu() {
     return(
@@ -79,7 +79,9 @@ export function LargeMenuOptions(){
 
 export function SmallMenuOptions(){
     const dispatch = useDispatch();
-
+    const selected = useSelector(selectActiveMenu);
+    const normalClass = 'place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12'
+    const selectedClass = 'place-self-start h-[50px] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center bg-inv-blue w-6/12'
     const resetStore = () => {
         dispatch(resetRecipeState())
         dispatch(resetIngredientState())
@@ -89,37 +91,37 @@ export function SmallMenuOptions(){
 
     return(
         <>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 1 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(1))}>
                 <Link to="/inventario">
                     <img className="w-11/12" src={InventarioImg} alt="inventario"/>
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 2 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(2))}>
                 <Link to="/reporte_de_ventas">
                     <img className="w-6/12 mx-auto" src={ReporteVentaImg} alt="reporte de venta"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 3 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(3))}>
                 <Link to="/suplir_ingredientes">
                     <img className="w-6/12 mx-auto" src={SuplirIngredientesImg} alt="suplir ingredientes"/> 
                 </Link>
             </div>  
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 4 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(4))}>
                 <Link to="/configurar_ingredientes">
                     <img className="w-6/12 mx-auto" src={ConfigIngredientesImg} alt="configurar ingredientes"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 5 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(5))}>
                 <Link to="/calculadora">
                     <img className="w-6/12 mx-auto" src={ContactosImg} alt="calculadora"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 6 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(6))}>
                 <Link to="/precios">
                     <img className="w-6/12 mx-auto" src={PrecioImg} alt="precio"/> 
                 </Link>
             </div>
-            <div className="place-self-start w-5/12 h-[50px] bg-[#DCDCDC] rounded-r-full mt-6 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-items-center place-content-center hover:bg-inv-blue hover:w-6/12">
+            <div className={selected === 7 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(7))}>
                 <Link to="/manual">
                     <img className="w-6/12 mx-auto" src={ManualImg} alt="manual"/> 
                 </Link>
