@@ -9,7 +9,8 @@ const initialState = {
     info: {
         id: null,
         username: '',
-        email: ''
+        email: '',
+        selectedMenu: 1
     },
     status: 'idle',
     error: ''
@@ -24,6 +25,9 @@ const userSlice = createSlice({
         },
         resetUserState(state, action) {
             return initialState 
+        },
+        changeActiveMenu(state,action){
+            state.info.selectedMenu = action.payload;
         }
     },
     extraReducers(builder){
@@ -79,7 +83,8 @@ export const registerUser = createAsyncThunk('user/registerUser', async (user, {
     return response;
 })
 
-export const { idleStatus, resetUserState } = userSlice.actions;
+export const { idleStatus, resetUserState, changeActiveMenu } = userSlice.actions;
 export const selectUser = state => state.user;
 export const selectError = state => state.user.error;
+export const selectActiveMenu = state => state.user.info.selectedMenu;
 export default userSlice.reducer;

@@ -10,6 +10,6 @@ export const store = configureStore({
     user: userReducer,
     sucursales: sucursalesReducer,
     ingredients: ingredientsReducer,
-    recipes: recipesReducer
+    recipes: recipesReducer,
   },
 });

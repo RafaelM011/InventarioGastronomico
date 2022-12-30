@@ -9,7 +9,7 @@ import './index.css';
 
 const container = document.getElementById('root');
 container.addEventListener('click', () => {
-  if (document.getElementById('details').open && document.getElementById('addSucursal').getAttribute('mouseover') === 'false') document.getElementById('sucursales_dropdown').click()
+  if (document.getElementById('details')?.open && document.getElementById('addSucursal').getAttribute('mouseover') === 'false') document.getElementById('sucursales_dropdown').click()
 })
 const root = createRoot(container);
 
