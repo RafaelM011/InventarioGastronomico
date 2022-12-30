@@ -1,8 +1,5 @@
 CREATE A NEW BRANCH TO DO THE FOLLOWING TASKS
 
-1. VALIDATE INPUTS BEFORE SENDING DATA (INGREDIENTES AND RECIPES)
-
-2. Calculate how much of ingredients per recipe
 3. Inventory in grams
 4. Create password recover option
 5. Show selected option on menu

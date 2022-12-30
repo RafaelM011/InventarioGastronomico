@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useId } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
-import { addRefAmount, createNewRecipe, recipeMessage, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
+import { addRefAmount, createNewRecipe, recipeMessage, selectRecipes, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 
 
@@ -304,6 +304,7 @@ export function RecipeIngredient(props) {
 
 export function EditableRecipeItem(props) {
     const {id, nombre, ingredientes, cantidades, sucursal} = props;
+    const [allowSend, setAllowSend] = useState(false)
     const [recipe, setRecipe] = useState({
         id,
         nombre,
@@ -316,46 +317,70 @@ export function EditableRecipeItem(props) {
     let newCantidades = [...recipe.cantidades];
     let [display, setDisplay] = useState(false)
     const unique = useId();
+    const ingredients = useSelector(selectIngredients);
+    const recipes = useSelector(selectRecipes);
 
     const updateRecipeInfo = (e) => {
         const target = e.target;
         const value = target.value;
         const name = target.name;
         const index = target.attributes[1].value;
+        let ingredientExist = true;
+        let recipeNameExist = false;
 
-        switch (name){
-            case 'nombre':
-                setRecipe( recipe => {
-                    return {...recipe, nombre: value}
-                });
-                break;
-            case 'ingredientes':
-                newIngredientes[index] = value;
-                setRecipe( recipe => {
-                    return {...recipe, ingredientes: newIngredientes}
-                });
-                break;
-            case 'cantidades':
-                newCantidades[index] = value;
-                setRecipe( recipe => {
-                    return {...recipe, cantidades: newCantidades}
-                });
-                break;
-            default:
+        if (name === 'ingredientes') ingredientExist = validateIngredient(value)
+        if (name === 'nombre') recipeNameExist = recipes.some(recipe => recipe.nombre === value)
+
+        if (ingredientExist && !recipeNameExist && value !== ''){
+            switch (name){
+                case 'nombre':
+                    setRecipe( recipe => {
+                        return {...recipe, nombre: value}
+                    });
+                    break;
+                case 'ingredientes':
+                    newIngredientes[index] = value;
+                    setRecipe( recipe => {
+                        return {...recipe, ingredientes: newIngredientes}
+                    });
+                    break;
+                case 'cantidades':
+                    newCantidades[index] = value;
+                    setRecipe( recipe => {
+                        return {...recipe, cantidades: newCantidades}
+                    });
+                    break;
+                default:
+            }
+            setAllowSend(true)
+        }
+        else{
+            setAllowSend(false)
+            if (e.type !== 'focus')  {
+                value === '' ? 
+                dispatch(recipeMessage('Missing field(s)')) :
+                !recipeNameExist ? 
+                dispatch(recipeMessage('This ingredient does not exist')) :
+                dispatch(recipeMessage('This recipe name already exist'))
+            }
         }
     }
 
     const updateRecipeOnDB = () => {
-        if (recipe.nombre !== '') return dispatch(updateRecipe(recipe));
-        return dispatch(recipeMessage('Missing fields'))
+        if (allowSend) return dispatch(updateRecipe(recipe));
+    }
+
+    const validateIngredient = (name) => {
+        const exist = ingredients.some(ingredient => ingredient.nombre.includes(name))
+        return exist
     }
 
     return(
         <div className="flex w-12/12 place-content-around items-start">
             <details className="w-7/12">
-                <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onBlur={updateRecipeInfo}/>
-                    <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer" onClick={() => setDisplay(prev=>!prev)}> {display ? "COLAPSAR" :"EXPANDIR"} </h1>
+                <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]" onClick={() => setDisplay(prev=>!prev)}>
+                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onBlur={updateRecipeInfo} onClick={(e)=>e.stopPropagation()}/>
+                    <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> {display ? "COLAPSAR" :"EXPANDIR"} </h1>
                 </summary>
                 <div>
                     {ingredientes.map( (ingrediente,index) => {
