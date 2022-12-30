@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/InventarioGastronomico/static/css/main.014da6b2.css",
-    "main.js": "/InventarioGastronomico/static/js/main.8b7135c6.js",
+    "main.css": "/InventarioGastronomico/static/css/main.40b289bd.css",
+    "main.js": "/InventarioGastronomico/static/js/main.347e8b1e.js",
     "static/js/787.e73c98e0.chunk.js": "/InventarioGastronomico/static/js/787.e73c98e0.chunk.js",
     "static/media/Suplir_ingrediente.png": "/InventarioGastronomico/static/media/Suplir_ingrediente.33f68ebc5fb4e324cd70.png",
     "static/media/Configurar_ingredientes.png": "/InventarioGastronomico/static/media/Configurar_ingredientes.e60e263d2c7966bf54ed.png",
     "static/media/Precios.png": "/InventarioGastronomico/static/media/Precios.c0c4b20056311b31bc49.png",
     "index.html": "/InventarioGastronomico/index.html",
-    "main.014da6b2.css.map": "/InventarioGastronomico/static/css/main.014da6b2.css.map",
-    "main.8b7135c6.js.map": "/InventarioGastronomico/static/js/main.8b7135c6.js.map",
+    "main.40b289bd.css.map": "/InventarioGastronomico/static/css/main.40b289bd.css.map",
+    "main.347e8b1e.js.map": "/InventarioGastronomico/static/js/main.347e8b1e.js.map",
     "787.e73c98e0.chunk.js.map": "/InventarioGastronomico/static/js/787.e73c98e0.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.014da6b2.css",
-    "static/js/main.8b7135c6.js"
+    "static/css/main.40b289bd.css",
+    "static/js/main.347e8b1e.js"
   ]
 }
