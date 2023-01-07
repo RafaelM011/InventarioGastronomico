@@ -48,6 +48,17 @@ const ingredientsSlice = createSlice({
                 default:
             }
         },
+        cleanNewItem(state,action){
+            const clean = {
+                nombre: '',
+                precio: null,
+                cantidad: null,
+                unidad: ''
+            }
+            state.newItems.forEach( (item, i) => {
+                state.newItems[i] = {...state.newItems[i], ...clean}
+            })
+        },
         ingredientMessage(state, action){
             state.message = action.payload;
         },
@@ -123,5 +134,5 @@ export const updateIngredients = createAsyncThunk('ingredients/updateIngredients
 export const selectIngredients = state => state.ingredients.items;
 export const selectNewIngredients = state => state.ingredients.newItems;
 export const selectIngredientMessage = state => state.ingredients.message;
-export const { resetIngredientState,createNewItem,addNewItem, ingredientMessage } = ingredientsSlice.actions;
+export const { resetIngredientState, createNewItem, addNewItem, cleanNewItem, ingredientMessage } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;

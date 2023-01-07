@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage } from "../../slices/ingredientSlice";
+import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
 import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
-import { addRecipe, selectNewRecipe, selectRecipes, recipeMessage } from "../../slices/recipeSlice";
+import { addRecipe, selectNewRecipe, selectRecipes, recipeMessage, cleanNewRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
@@ -66,11 +66,17 @@ export function EditableItemList() {
 }
 
 export function EmptyItemList(props){
-    const {renderAmount, addItem} = props;
+    const {renderAmount, addItem } = props;
     const render = [];
     const dispatch = useDispatch();
     const ingredients = useSelector(selectIngredients);
     const newIngredients = useSelector(selectNewIngredients);
+
+    useEffect(() => {
+        return function cleanup(){
+            dispatch(cleanNewItem())
+        }
+    },[dispatch])
 
     const renderEmptyItems = () => {
         for (let i = 0; i < renderAmount; i++) {
@@ -139,6 +145,12 @@ export function EmptyRecipeList(){
     const recipes = useSelector(selectRecipes);
     const ingredients = useSelector(selectIngredients);
     const newRecipe = useSelector(selectNewRecipe);
+
+    useEffect(() => {
+        return function cleanup(){
+            dispatch(cleanNewRecipe())
+        }
+    },[dispatch])
 
     const addIngredientToRecipe = () => {
         setAmount( prevState => prevState + 1);

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectRecipes } from "../../slices/recipeSlice";
+import { recipeMessage, removeRefAmount, selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice.js";
 // import { RecipesHeader } from "../Item/Item";
 import { RecipeList } from "../Item/ItemList";
-import { decreaseIngredient, selectIngredients } from "../../slices/ingredientSlice";
+import { decreaseIngredient, ingredientMessage, selectIngredients } from "../../slices/ingredientSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
 export default function ReportSale(props) {
@@ -40,12 +40,22 @@ export default function ReportSale(props) {
             }
         })
 
-        dispatch(decreaseIngredient({
-            sucursal,
-            ingredientes: ingredientsToDecrease,
-            cantidades: newQuantities
-        }))
+        if (ingredientsToDecrease.length > 0) {
+            dispatch(decreaseIngredient({
+                sucursal,
+                ingredientes: ingredientsToDecrease,
+                cantidades: newQuantities
+            }))
+        }else{
+            dispatch(ingredientMessage('There is no sales to report'))
+        }
     }
+
+    useEffect(() => {
+        return function cleanup() {
+            dispatch(removeRefAmount())
+        }
+    },[dispatch])
 
     return(
         <>
