@@ -41,7 +41,11 @@ export const ImportXLSX = createAsyncThunk('excel/ImportXLSX', async (file, reje
 });
 export const writeexcel = createAsyncThunk('excel/writeexcel', async (file, rejectWithValue) => {
     const response = await
-    fetch(serverUrl + 'writeexcel')
+    fetch(serverUrl + 'writeexcel',{
+        method: "post",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(file)
+    })
     .then( res =>res.blob())
     .then(blob => {
         const url = URL.createObjectURL(blob);

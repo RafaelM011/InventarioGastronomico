@@ -11,12 +11,14 @@ import InfoBox from "../InformationBox/InformationBox.js";
 import ReportSale from "../ReportSale/ReportSale";
 import ConfigInventory from "../ConfigInventory/ConfigInventory";
 import { Calculator } from "../Calculator/Calculator";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ImportXLSX, writeexcel } from "../../slices/excelSlice";
+import { selectSucursal } from "../../slices/sucursalesSlice";
 
 export default function Datasheet(props) {
     const {option, active} = props;
     const dispatch = useDispatch();
+    const sucursal = useSelector(selectSucursal);
 
     const Switch = () => {
         switch(option.id){
@@ -36,7 +38,17 @@ export default function Datasheet(props) {
     }
     function ExportExcel(){
         console.log("exporting");
-        dispatch(writeexcel());
+        dispatch(writeexcel(
+            {parameters:{
+                ingredientes : { 
+                    sucursal: sucursal ,
+                    //precio: 99,
+                    },
+                recetas: { 
+                    sucursal: sucursal ,
+                    },
+            }}
+        ));
     }
 
     return (
