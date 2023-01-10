@@ -96,7 +96,7 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
     return response;
 })
 
-export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
+export const updateRecipe = createAsyncThunk('recipes/updateRecipe', async (recipe, rejectWithValue) => {
     const response = await 
     fetch(serverUrl + 'updaterecipe', {
         method: "post",
