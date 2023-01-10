@@ -1,5 +1,7 @@
 CREATE A NEW BRANCH TO DO THE FOLLOWING TASKS
 
-1. Inventory in grams
-2. Create password recover option
-3. Show selected option on menu
+1. Modify style to make it responsive
+
+2. Inventory in grams
+3. Create password recover option
+4. CLEAN INGREDIENT AND RECIPE STATE WHEN ADDING NEW ONE
