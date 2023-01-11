@@ -34,21 +34,10 @@ const recipeSlice = createSlice({
 
             state.message = '';
         },
-        cleanNewRecipe(state,action){
-            state.newItem = {
-                ingredientes: [],
-                cantidades: []
-            }
-        },
         addRefAmount(state, action){
             for (let i = 0; i < state.items.length; i++){
                 if (state.items[i].id === action.payload.id) state.items[i].refAmount = parseInt(action.payload.refAmount)                
             }
-        },
-        removeRefAmount(state,action){
-            state.items.forEach((item,i) => {
-                if(item.refAmount) delete state.items[i].refAmount
-            })
         },
         recipeMessage(state,action){
             state.message = action.payload;
@@ -96,7 +85,7 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
     return response;
 })
 
-export const updateRecipe = createAsyncThunk('recipes/updateRecipe', async (recipe, rejectWithValue) => {
+export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
     const response = await 
     fetch(serverUrl + 'updaterecipe', {
         method: "post",
@@ -111,5 +100,5 @@ export const updateRecipe = createAsyncThunk('recipes/updateRecipe', async (reci
 export const selectRecipes = state => state.recipes.items;
 export const selectNewRecipe = state => state.recipes.newItem;
 export const selectRecipeMessage = state => state.recipes.message;
-export const { addRefAmount, removeRefAmount, resetRecipeState, recipeMessage, createNewRecipe, updateNewRecipe, cleanNewRecipe } = recipeSlice.actions;
+export const { addRefAmount, resetRecipeState, recipeMessage, createNewRecipe, updateNewRecipe } = recipeSlice.actions;
 export default recipeSlice.reducer;

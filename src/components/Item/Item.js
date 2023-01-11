@@ -97,7 +97,7 @@ export function EmptyItem(props) {
 
     useEffect( () => {
         const newItem = () => {
-            if (sucursal){
+            if ( id === render - 1 && sucursal){
                 const newItem = {
                     id,
                     sucursal

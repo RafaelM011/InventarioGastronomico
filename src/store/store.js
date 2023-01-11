@@ -4,7 +4,6 @@ import userReducer from "../slices/userSlice.js";
 import sucursalesReducer from "../slices/sucursalesSlice.js";
 import ingredientsReducer from "../slices/ingredientSlice.js";
 import recipesReducer from "../slices/recipeSlice.js"
-import excelReducer from "../slices/excelSlice.js"
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +11,5 @@ export const store = configureStore({
     sucursales: sucursalesReducer,
     ingredients: ingredientsReducer,
     recipes: recipesReducer,
-    excel: excelReducer
   },
 });
