@@ -11,14 +11,9 @@ import InfoBox from "../InformationBox/InformationBox.js";
 import ReportSale from "../ReportSale/ReportSale";
 import ConfigInventory from "../ConfigInventory/ConfigInventory";
 import { Calculator } from "../Calculator/Calculator";
-import { useDispatch, useSelector } from "react-redux";
-import { ImportXLSX, writeexcel } from "../../slices/excelSlice";
-import { selectSucursal } from "../../slices/sucursalesSlice";
 
 export default function Datasheet(props) {
     const {option, active} = props;
-    const dispatch = useDispatch();
-    const sucursal = useSelector(selectSucursal);
 
     const Switch = () => {
         switch(option.id){
@@ -29,26 +24,6 @@ export default function Datasheet(props) {
             case 5: return <Calculator title={option.title}/>
             default:
         }
-    };
-
-   function ImportExcel(event){
-    const file = event.target.files[0];
-    console.log("La vaina pasa",file);
-    dispatch(ImportXLSX(file));
-    }
-    function ExportExcel(){
-        console.log("exporting");
-        dispatch(writeexcel(
-            {parameters:{
-                ingredientes : { 
-                    sucursal: sucursal ,
-                    //precio: 99,
-                    },
-                recetas: { 
-                    sucursal: sucursal ,
-                    },
-            }}
-        ));
     }
 
     return (
@@ -71,8 +46,8 @@ export default function Datasheet(props) {
                     </div>
                     {/* BUTTONS */}
                     <div className="col-start-2 w-full h-full flex flex-col place-items-center">
-                        <div className="w-[90px] h-[90px] bg-[#00C8E3] rounded-full mt-20 cursor-pointer"> <img onClick={ExportExcel} className="w-[64px] m-auto mt-3" src={Download} alt="left arrow"/> </div>
-                        <div className="w-[90px] h-[90px] bg-[#10EB26] rounded-full mt-20 cursor-pointer"> <input type={"file"} onChange={ImportExcel}/> <img className="w-[64px] m-auto mt-3" src={Upload} alt="left arrow"/> </div>
+                        <div className="w-[90px] h-[90px] bg-[#00C8E3] rounded-full mt-20 cursor-pointer"> <img className="w-[64px] m-auto mt-3" src={Download} alt="left arrow"/> </div>
+                        <div className="w-[90px] h-[90px] bg-[#10EB26] rounded-full mt-20 cursor-pointer"> <img className="w-[64px] m-auto mt-3" src={Upload} alt="left arrow"/> </div>
                         <div className="w-[250px] flex flex-row mt-20">
                             <div className="w-[90px] h-[90px] bg-[#0009E3] rounded-full cursor-pointer"> <img className="w-[64px] m-auto mt-3" src={LeftArrow} alt="left arrow"/> </div>
                             <div className="w-[90px] h-[90px] bg-[#0009E3] rounded-full ml-20 cursor-pointer"> <img className="w-[64px] m-auto mt-3" src={RightArrow} alt="left arrow"/> </div>                            
