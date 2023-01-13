@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ingredientMessage, selectIngredientMessage } from '../../slices/ingredientSlice';
 import { recipeMessage, selectRecipeMessage } from '../../slices/recipeSlice';
@@ -24,6 +24,30 @@ export const DisplayMessage = (props) => {
             break;
         default:
     }
+
+    useEffect(()=> {
+        if(message !== ""){
+            switch (type){
+                case 'ingredient':
+                    console.log('delayed')
+                    setTimeout(() => {
+                        dispatch(ingredientMessage(''))
+                    },2000)
+                    break;
+                case 'recipe':
+                    setTimeout(() => {
+                        dispatch(recipeMessage(''))
+                    },2000)
+                    break;
+                case 'sucursales':
+                    setTimeout(() => {
+                        dispatch(sucursalesMessage(''))
+                    },2000)
+                    break;
+                default:
+            }
+        }
+    },[message, dispatch, type])
 
     const closeMessage = () => {
         switch (type){

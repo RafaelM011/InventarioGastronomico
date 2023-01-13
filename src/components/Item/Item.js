@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
 import { addRefAmount, createNewRecipe, recipeMessage, selectRecipes, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
-
+import { UnitDropdown } from "../UnitDropdown/UnitDropdown";
 
 export default function Item(props) {
     const {name, quantity, price, unit} = props;
@@ -139,7 +139,7 @@ export function EmptyItem(props) {
                         <input id={id} name='cantidad'  className="text-3xl text-left w-10/12 mt-3 ml-6 bg-inherit outline-none appearance-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='number' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 pl-2 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" placeholder="Unidad" type='text' onBlur={updateNewItem}/>
+                        <UnitDropdown/>
                     </div>
                 </div>
             </div>  
@@ -295,6 +295,9 @@ export function RecipeIngredient(props) {
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                     <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
+                </div>
+                <div className="w-2/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <UnitDropdown/>
                 </div>
                 {show ? render : null}
             </div>
