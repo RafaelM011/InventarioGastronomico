@@ -4,7 +4,7 @@ import Select from 'react-select'
 import { selectIngredients } from "../../slices/ingredientSlice";
 
 export const UnitSelectDropdown = (props) => {
-    const { update, bgColor} = props;
+    const { update, bgColor, color, defaultValue, metadata} = props;
     const style = {
         indicatorsContainer: (base) => ({
             ...base,
@@ -48,7 +48,7 @@ export const UnitSelectDropdown = (props) => {
         }),
         singleValue: (base) => ({
             ...base,
-            'color': 'white',
+            'color':  color,
             'fontWeight': '500',
             'padding': '0px 0px 0px 10px',
             'fontSize': '24px'
@@ -75,13 +75,13 @@ export const UnitSelectDropdown = (props) => {
     ]
     return(
         <>
-            <Select styles={style} options={options} onChange={(e) => update({e, name:'unidad'})}/>
+            <Select defaultValue={defaultValue} styles={style} options={options} onChange={(e) => update({e, metadata})}/>
         </>
     )
 }
 
 export const IngredientSelectDropdown = (props) => {
-    const {update, bgColor} = props;
+    const {update, bgColor, color, defaultValue, metadata} = props;
     const ingredients = useSelector(selectIngredients)
     const style = {
         indicatorsContainer: (base) => ({
@@ -126,7 +126,7 @@ export const IngredientSelectDropdown = (props) => {
         }),
         singleValue: (base) => ({
             ...base,
-            'color': 'white',
+            'color': color,
             'fontWeight': '500',
             'padding': '0px 0px 0px 10px',
             'fontSize': '24px'
@@ -145,7 +145,7 @@ export const IngredientSelectDropdown = (props) => {
     
     return(
         <>
-            <Select styles={style} options={options} onChange={(e) => update({e, name:'ingrediente'})}/>
+            <Select defaultValue={defaultValue} styles={style} options={options} onChange={(e) => update({e, metadata})}/>
         </>
     )
 }

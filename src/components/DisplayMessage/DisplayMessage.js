@@ -29,7 +29,6 @@ export const DisplayMessage = (props) => {
         if(message !== ""){
             switch (type){
                 case 'ingredient':
-                    console.log('delayed')
                     setTimeout(() => {
                         dispatch(ingredientMessage(''))
                     },2000)
