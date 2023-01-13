@@ -189,7 +189,8 @@ export function EmptyRecipeList(){
             sucursal,
             nombre: recipeName.current.value,
             ingredientes: newRecipe.ingredientes,
-            cantidades: newRecipe.cantidades
+            cantidades: newRecipe.cantidades,
+            unidades: newRecipe.unidades
         }
         dispatch(addRecipe(newRecipeInfo))
     }
