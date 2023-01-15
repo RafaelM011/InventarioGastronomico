@@ -9,7 +9,8 @@ const initialState = {
     items: [],
     newItem: {
         ingredientes: [],
-        cantidades: []
+        cantidades: [],
+        unidades: []
     },
     status: '',
     message: ''
@@ -24,20 +25,24 @@ const recipeSlice = createSlice({
             if (id >= state.newItem.ingredientes.length){
                 state.newItem.ingredientes.push('');
                 state.newItem.cantidades.push('');
+                state.newItem.unidades.push('');
             }
         },
         updateNewRecipe(state,action){
             const {id,name,value} = action.payload;
             name  === 'ingrediente'
             ? state.newItem.ingredientes[id] = value
-            : state.newItem.cantidades[id] = value
+            : name === 'cantidad' 
+            ? state.newItem.cantidades[id] = value 
+            : state.newItem.unidades[id] = value
 
             state.message = '';
         },
         cleanNewRecipe(state,action){
             state.newItem = {
                 ingredientes: [],
-                cantidades: []
+                cantidades: [],
+                unidades: []
             }
         },
         addRefAmount(state, action){
@@ -92,7 +97,6 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
         body: JSON.stringify(recipe)
     })
     .then( res => res.json())
-
     return response;
 })
 

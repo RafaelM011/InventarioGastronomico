@@ -1,10 +1,12 @@
-import React, { useRef, useState, useEffect, useId } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
-import { addRefAmount, createNewRecipe, recipeMessage, selectRecipes, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
+import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
+import { addRefAmount, createNewRecipe, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
+import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
+// INGREDIENTS
 
 export default function Item(props) {
     const {name, quantity, price, unit} = props;
@@ -43,9 +45,9 @@ export  function EditableItem(props) {
     }
 
     const updateMyEntry = (event) => {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+        const target = event?.target;
+        const value = target?.value ?? event.e.value;
+        const name = target?.name ?? event.metadata.name;
 
        switch(name) {
             case "nombre":
@@ -78,11 +80,11 @@ export  function EditableItem(props) {
                     </div>
                 </div>
                 <div className="w-5/12 h-[60px] flex">
-                    <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                         <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onBlur={updateMyEntry}/>
                     </div>
-                    <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input className="w-8/12 text-3xl text-white font-thin mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" name="unidad" defaultValue={unit} onBlur={updateMyEntry}/>
+                    <div className="w-6/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <UnitSelectDropdown defaultValue={{label:unit, value: unit}} bgColor='#0067D1' color='#fff' isDisabled={false} update={updateMyEntry} metadata={{name: 'unidad'}}/>
                     </div>
                 </div>
             </div>  
@@ -110,11 +112,9 @@ export function EmptyItem(props) {
 
 
     const updateNewItem = (event) => {
-        const target = event.target;
-        const id = target.id;
-        const name = target.name;
-        const value = target.value;
-
+        const target = event?.target;
+        const name = target?.name ?? event.metadata.name;
+        const value = target?.value ?? event.e.value;
         const updatedItem = {
             id,
             name,
@@ -139,7 +139,7 @@ export function EmptyItem(props) {
                         <input id={id} name='cantidad'  className="text-3xl text-left w-10/12 mt-3 ml-6 bg-inherit outline-none appearance-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='number' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={id} name='unidad'  className="text-3xl w-8/12 mt-3 ml-6 pl-2 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-white" placeholder="Unidad" type='text' onBlur={updateNewItem}/>
+                        <UnitSelectDropdown update={updateNewItem} bgColor='#0067D1' color='#fff' isDisabled={false} metadata={{name:'unidad'}}/>
                     </div>
                 </div>
             </div>  
@@ -171,6 +171,8 @@ export function ItemsHeader() {
         </>
     )
 }
+
+// RECIPES
 
 export function RecipesHeader(){
     return(
@@ -224,11 +226,7 @@ export function RecipeItem(props) {
 
 export function RecipeIngredient(props) {
     const {id, amount} = props;
-    const [show, setShow] = useState(false);
-    const [isMouseOver, setIsMouseOver] = useState(false);
     const sucursal = useSelector(selectSucursal);
-    const ingredients = useSelector(selectIngredients);
-    const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
     const dispatch = useDispatch();
 
     useEffect( () => {
@@ -241,11 +239,9 @@ export function RecipeIngredient(props) {
     },[dispatch,id,amount,sucursal])
 
     const updateNewRecipeInfo = (event) => {
-        const target = event.target;
-        const id = target.id;
-        const name = target.name || 'ingrediente';
-        const value = target.value || target.innerHTML;
-
+        const target = event?.target;
+        const name = target?.name ?? event.metadata.name;
+        const value = target?.value ?? event.e.value;
         const newRecipeInfo = {
             id,
             name,
@@ -254,125 +250,69 @@ export function RecipeIngredient(props) {
         dispatch(updateNewRecipe(newRecipeInfo))
     }
 
-    const changeMouseOver = () => {
-        setIsMouseOver(mouseOver => !mouseOver)
-    }
-
-    const showIngredientList = (event) => {
-        if(!isMouseOver) {
-            updateNewRecipeInfo(event)
-            setShow(prevState => !prevState)
-        }else if(event.type === 'focus')(
-            setShow(prevState => !prevState)            
-        )
-    }
-
-    const changeIngredientInput = (event) => {
-        document.getElementById(event.target.id).value = event.target.innerHTML
-        updateNewRecipeInfo(event)
-        setIsMouseOver(mouseOver => !mouseOver)
-        setShow(prevState => !prevState)
-    }
-
-    const filterIngredientList = (event) => {
-        const value = event.target.value;
-        const filtered = ingredients.filter( ingredient => {
-            return ingredient.nombre.toLowerCase().includes(value.toLowerCase())
-        })
-        setFilteredIngredients(filtered)
-    }
-
-    const render = 
-    <div className="ring-4 ring-inv-blue w-6/12 max-h-[180px] min-h-fit absolute top-full right-[420px] py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={changeMouseOver} onMouseLeave={changeMouseOver}> 
-        {filteredIngredients.map( ingredient => <button key={ingredient.id} id={id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={changeIngredientInput}>{ingredient.nombre}</button>)}    
-    </div>
-
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
-                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-10">
-                    <input id={id} name='ingrediente' className=" w-11/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="NOMBRE INGREDIENTE" onFocus={showIngredientList} onBlur={showIngredientList} onChange={filterIngredientList}/>
+                <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <IngredientSelectDropdown update={updateNewRecipeInfo} bgColor='#F4F4F4'  color='#000' metadata={{name: 'ingrediente'}}/>                    
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                     <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
                 </div>
-                {show ? render : null}
+                <div className="w-2/12 h-[60px] ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <UnitSelectDropdown update={updateNewRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false} metadata={{name: 'unidad'}}/>
+                </div>
             </div>
         </>
     )
 }
 
 export function EditableRecipeItem(props) {
-    const {id, nombre, ingredientes, cantidades, sucursal} = props;
-    const [allowSend, setAllowSend] = useState(false)
+    const {id, nombre, ingredientes, cantidades, unidades, sucursal} = props;
+    // const [allowSend, setAllowSend] = useState(false)
     const [recipe, setRecipe] = useState({
         id,
         nombre,
         ingredientes,
         cantidades,
+        unidades,
         sucursal
     });
     const dispatch = useDispatch();
-    let newIngredientes = [...recipe.ingredientes];
-    let newCantidades = [...recipe.cantidades];
     let [display, setDisplay] = useState(false)
-    const unique = useId();
-    const ingredients = useSelector(selectIngredients);
-    const recipes = useSelector(selectRecipes);
+    let newIngredientes = [...recipe.ingredientes]
+    let newCantidades = [...recipe.cantidades];
+    let newUnidades =[...recipe.unidades]
+    // const recipes = useSelector(selectRecipes);
 
-    const updateRecipeInfo = (e) => {
-        const target = e.target;
-        const value = target.value;
-        const name = target.name;
-        const index = target.attributes[1].value;
-        let ingredientExist = true;
-        let recipeNameExist = false;
-
-        if (name === 'ingredientes') ingredientExist = validateIngredient(value)
-        if (name === 'nombre') recipeNameExist = recipes.some(recipe => recipe.nombre === value)
-
-        if (ingredientExist && !recipeNameExist && value !== ''){
-            switch (name){
-                case 'nombre':
-                    setRecipe( recipe => {
-                        return {...recipe, nombre: value}
-                    });
-                    break;
-                case 'ingredientes':
-                    newIngredientes[index] = value;
-                    setRecipe( recipe => {
-                        return {...recipe, ingredientes: newIngredientes}
-                    });
-                    break;
-                case 'cantidades':
-                    newCantidades[index] = value;
-                    setRecipe( recipe => {
-                        return {...recipe, cantidades: newCantidades}
-                    });
-                    break;
-                default:
-            }
-            setAllowSend(true)
-        }
-        else{
-            setAllowSend(false)
-            if (e.type !== 'focus')  {
-                value === '' ? 
-                dispatch(recipeMessage('Missing field(s)')) :
-                !recipeNameExist ? 
-                dispatch(recipeMessage('This ingredient does not exist')) :
-                dispatch(recipeMessage('This recipe name already exist'))
-            }
+    const updateRecipeInfo = (event) => {
+        const target = event?.target;
+        const value = target?.value ?? event.e.value;
+        const name = target?.name ?? event.metadata.name;
+        const index = target?.attributes[0]?.value ?? event?.metadata?.index ?? null;
+        switch(name){
+            case 'nombre':
+                setRecipe(prevRecipe => ({...prevRecipe, nombre: value}))
+                break;
+            case 'ingrediente':
+                newIngredientes[index] = value;
+                setRecipe(prevRecipe => ({...prevRecipe, ingredientes: newIngredientes}))
+                break;
+            case 'cantidad':
+                newCantidades[index] = value;
+                setRecipe(prevRecipe => ({...prevRecipe, cantidades: newCantidades}))
+                break;
+            case 'unidad':
+                newUnidades[index] = value;
+                setRecipe(prevRecipe => ({...prevRecipe, unidades: newUnidades}))
+                break;
+            default:
         }
     }
 
     const updateRecipeOnDB = () => {
-        if (allowSend) return dispatch(updateRecipe(recipe));
-    }
-
-    const validateIngredient = (name) => {
-        const exist = ingredients.some(ingredient => ingredient.nombre.includes(name))
-        return exist
+        // if (allowSend) return dispatch(updateRecipe(recipe));
+        dispatch(updateRecipe(recipe))
     }
 
     return(
@@ -382,9 +322,9 @@ export function EditableRecipeItem(props) {
                     <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onBlur={updateRecipeInfo} onClick={(e)=>e.stopPropagation()}/>
                     <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> {display ? "COLAPSAR" :"EXPANDIR"} </h1>
                 </summary>
-                <div>
+                <div className="-mr-20 ml-10">
                     {ingredientes.map( (ingrediente,index) => {
-                        return <EditableRecipeIngredient key={index} id={unique} index={index} nombre={ingrediente} cantidad={cantidades[index]} update={updateRecipeInfo}/>
+                        return <EditableRecipeIngredient key={index} index={index} nombre={ingrediente} cantidad={cantidades[index]} unidad={unidades[index]} update={updateRecipeInfo}/>
                     })}
                 </div>
             </details>
@@ -397,49 +337,46 @@ export function EditableRecipeItem(props) {
 }
 
 export function EditableRecipeIngredient(props) {
-    const {id, index, nombre, cantidad, update} = props;
-    const ingredients = useSelector(selectIngredients)
-    const [filteredIngredients, setFilteredIngredients] = useState(ingredients);
-    const [show, setShow] = useState(false);
-    const [isMouseOver, setIsMouseOver] = useState(false)
-
-    const setDisplay = (event) =>{
-        if (!isMouseOver || event.type === 'focus') {
-            setShow(prevState => !prevState)
-            update(event)
-        }
-        else if (event.type === 'click'){
-            document.getElementById(`${id}${index}`).value = event.target.innerHTML;
-            setIsMouseOver(false)
-            document.getElementById(`${id}${index}`).focus()
-            document.getElementById(`${id}${index}`).blur()
-        }
-    }
-
-    const filterIngredientList = (event) => {
-        const value = event.target.value;
-        const filtered = ingredients.filter(ingredient => ingredient.nombre.toLowerCase().includes(value.toLowerCase()))
-        setFilteredIngredients(filtered)
-    }
-    
-    const render = 
-    <div className="ring-4 ring-inv-blue w-6/12 max-h-[180px] min-h-fit absolute top-full py-2 bg-[#F4F4F4] rounded-xl z-30 overflow-auto scrollbar-hide" onMouseEnter={() => setIsMouseOver(true)} onMouseLeave={() => setIsMouseOver(false)}> 
-        {filteredIngredients.map( ingredient => <button key={ingredient.id} id={ingredient.id} className="w-full pl-8 text-left text-lg font-semibold hover:bg-gradient-to-r from-transparent to-[#000692CC] hover:scale-95 block rounded-lg" onClick={setDisplay}>{ingredient.nombre}</button>)}    
-    </div>
-
+    const {index, nombre, cantidad, unidad, update} = props;
     return(
         <>
-            <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around">
-                <div className="relative w-9/12 h-2/12">
-                    <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input id={`${id}${index}`} index={index} name='ingredientes' className=" w-10/12 text-2xl text-left font-normal mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={nombre} onChange={filterIngredientList} onFocus={setDisplay} onBlur={setDisplay}/>
-                    </div>
-                    {show ? render : null}
+            <div className="w-11/12 h-[80px] mx-auto flex mt-2 place-content-around">
+                <div className="w-5/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <IngredientSelectDropdown defaultValue={{label:nombre, value:nombre}} update={update} bgColor='#F4F4F4' color='#000'metadata={{name:'ingrediente', index}}/>
                 </div>
-                <div className="w-2/12 h-[60px] z-10 bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input index={index} name='cantidades' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onBlur={update}/>
+                <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input index={index} name='cantidad' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onBlur={update}/>
+                </div>
+                <div className="w-4/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <UnitSelectDropdown defaultValue={{label:unidad, value:unidad}} update={update} bgColor='#F4F4F4' color='#000' isDisabled={false} metadata={{name:'unidad', index}}/>
                 </div>
             </div>
         </>
+    )
+}
+
+// PLATES
+
+export function RecipeAndIngredientItem(props){
+    const {update, id} = props;   
+    const [isDisabled, setIsDisabled] = useState(true);
+
+    const itemSelected = (data) => {
+        setIsDisabled(false);
+        update(data)
+    }
+
+    return(
+        <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
+            <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <RecipeAndIngredientDropdown bgColor="#F4F4F4" color='#000' update={itemSelected} metadata={{name:"recipe/ingredient", id}}/>
+            </div>
+            <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <input id={id} type='number' name='cantidad' disabled={isDisabled} className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={update}/>
+            </div>
+            <div className="w-2/12 h-[60px] ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <UnitSelectDropdown update={update} bgColor='#F4F4F4'  color='#000' metadata={{name: 'unidad', id}} isDisabled={isDisabled}/>
+            </div>
+    </div>
     )
 }
