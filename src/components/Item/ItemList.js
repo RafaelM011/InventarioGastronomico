@@ -2,13 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
-import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeIngredient, RecipeItem } from "./Item";
+import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
 import { addRecipe, selectNewRecipe, selectRecipes, recipeMessage, cleanNewRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
+import { selectUser } from "../../slices/userSlice";
+import { AddDish } from "../../slices/platosSlice";
 
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
+   
     return(
         <>
             <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
@@ -163,7 +166,7 @@ export function EmptyRecipeList(){
     }
     renderRecipeItems();
 
-    const validateIngredient = (newIngredients) => {
+    const validateIngredient = () => {
         return newRecipe.ingredientes.some(ingredientName => ingredients.some( ingredient => ingredient.nombre === ingredientName))
     }
 
@@ -226,6 +229,122 @@ export function EditableRecipeList() {
                 })}
             </div>
             <DisplayMessage type={'recipe'}/>
+        </>
+    )
+}
+
+export function AddPlateScreen(){
+    const sucursal = useSelector(selectSucursal);
+    const dispatch = useDispatch();
+    const nameRef = useRef()
+    const [renderAmount, setRenderAmount] = useState(1)
+    const [ingredients, setIngredients] = useState(new Map());
+    const [recipes, setRecipes] = useState(new Map());
+    const render = [];
+
+    // useEffect(() => {
+    //     console.log('ingredientes\n', ingredients, '\nrecetas\n', recipes)
+    // },[ingredients, recipes])
+
+    const updatePlateInfo = (event) => {
+        const target = event?.target;
+        const name = target?.name ?? event.metadata.name;
+        const value = target?.value ?? event.e.value;
+        const type = event?.e?.type ?? null;
+        const id = event?.target?.id ?? event?.metadata?.id;
+        
+        if(type === 'ingrediente'){
+            if(recipes.has(id)) {
+                const valuePair = recipes.get(id);
+                setIngredients(prevState => {
+                    let newMap = new Map(prevState.set(id, {...valuePair, nombre: value}));
+                    return newMap;
+                })
+                recipes.delete(id)
+            }else{
+                setIngredients(prevState => {
+                    let newMap = new Map(prevState.set(id,{nombre: value, cantidad: null, unidad: null}));
+                    return newMap;
+                })    
+            }
+        }else if (type === 'receta'){
+            if(ingredients.has(id)) {
+                const valuePair = ingredients.get(id);
+                setRecipes(prevState => {
+                    let newMap = new Map(prevState.set(id, {...valuePair, nombre: value}));
+                    return newMap;
+                })
+                ingredients.delete(id)
+            }else{
+                setRecipes(prevState => {
+                    let newMap = new Map(prevState.set(id,{nombre: value, cantidad: null, unidad: null}));
+                    return newMap;
+                })    
+            }
+        }
+        
+        switch(name){
+            case 'cantidad':
+                if(ingredients.has(parseInt(id))) {
+                    setIngredients(prevState => {
+                        const valuePair = ingredients.get(parseInt(id))
+                        const newMap = new Map(prevState.set(parseInt(id),{...valuePair, cantidad: value}))
+                        return newMap;
+                    })
+                }else if(recipes.has(parseInt(id))) {
+                    setRecipes(prevState => {
+                        const valuePair = recipes.get(parseInt(id))
+                        const newMap = new Map(prevState.set(parseInt(id),{...valuePair, cantidad: value}))
+                        return newMap;
+                    })
+                }
+                break;
+            case 'unidad':
+                if(ingredients.has(parseInt(id))) {
+                    setIngredients(prevState => {
+                        const valuePair = ingredients.get(parseInt(id))
+                        const newMap = new Map(prevState.set(parseInt(id),{...valuePair, unidad: value}))
+                        return newMap;
+                    })
+                }else if(recipes.has(parseInt(id))) {
+                    setRecipes(prevState => {
+                        const valuePair = recipes.get(parseInt(id))
+                        const newMap = new Map(prevState.set(parseInt(id),{...valuePair, unidad: value}))
+                        return newMap;
+                    })
+                }
+                break;
+            default:
+        }
+    }
+
+    const addNewPlate = () => {
+        const newPlate = {
+            usuario: sessionStorage.getItem('username'),      
+            nombre: nameRef.current.value,
+            sucursal,
+            ingredientes: [...ingredients.values()],
+            recetas: [...recipes.values()]
+        }   
+        dispatch(AddDish(newPlate));
+    }
+
+    for(let i = 0;i < renderAmount; i++){render.push(<RecipeAndIngredientItem key={i} id={i} update={updatePlateInfo}/>)}
+
+    return(
+        <>
+            <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
+                <div className="w-9/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Plato" type='text' name='nombre' ref={nameRef}/>
+                </div>
+                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
+                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={() => setRenderAmount(prevState => prevState+1)}/>
+                </div>
+            </div> 
+            <div className=" h-[380px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+                {render}
+            </div>
+            <h1 key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={addNewPlate}> AGREGAR PLATO </h1>
         </>
     )
 }

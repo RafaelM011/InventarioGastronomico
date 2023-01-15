@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
 import { addRefAmount, createNewRecipe, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
-import { IngredientSelectDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
+import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
+
+// INGREDIENTS
 
 export default function Item(props) {
     const {name, quantity, price, unit} = props;
@@ -82,7 +84,7 @@ export  function EditableItem(props) {
                         <input className="w-10/12 text-3xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onBlur={updateMyEntry}/>
                     </div>
                     <div className="w-6/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <UnitSelectDropdown defaultValue={{label:unit, value: unit}} bgColor='#0067D1' color='#fff' update={updateMyEntry} metadata={{name: 'unidad'}}/>
+                        <UnitSelectDropdown defaultValue={{label:unit, value: unit}} bgColor='#0067D1' color='#fff' isDisabled={false} update={updateMyEntry} metadata={{name: 'unidad'}}/>
                     </div>
                 </div>
             </div>  
@@ -137,7 +139,7 @@ export function EmptyItem(props) {
                         <input id={id} name='cantidad'  className="text-3xl text-left w-10/12 mt-3 ml-6 bg-inherit outline-none appearance-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='number' onBlur={updateNewItem}/>
                     </div>
                     <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <UnitSelectDropdown update={updateNewItem} bgColor='#0067D1' color='#fff' metadata={{name:'unidad'}}/>
+                        <UnitSelectDropdown update={updateNewItem} bgColor='#0067D1' color='#fff' isDisabled={false} metadata={{name:'unidad'}}/>
                     </div>
                 </div>
             </div>  
@@ -169,6 +171,8 @@ export function ItemsHeader() {
         </>
     )
 }
+
+// RECIPES
 
 export function RecipesHeader(){
     return(
@@ -256,7 +260,7 @@ export function RecipeIngredient(props) {
                     <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
                 </div>
                 <div className="w-2/12 h-[60px] ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <UnitSelectDropdown update={updateNewRecipeInfo} bgColor='#F4F4F4'  color='#000' metadata={{name: 'unidad'}}/>
+                    <UnitSelectDropdown update={updateNewRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false} metadata={{name: 'unidad'}}/>
                 </div>
             </div>
         </>
@@ -344,9 +348,35 @@ export function EditableRecipeIngredient(props) {
                     <input index={index} name='cantidad' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onBlur={update}/>
                 </div>
                 <div className="w-4/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <UnitSelectDropdown defaultValue={{label:unidad, value:unidad}} update={update} bgColor='#F4F4F4' color='#000' metadata={{name:'unidad', index}}/>
+                    <UnitSelectDropdown defaultValue={{label:unidad, value:unidad}} update={update} bgColor='#F4F4F4' color='#000' isDisabled={false} metadata={{name:'unidad', index}}/>
                 </div>
             </div>
         </>
+    )
+}
+
+// PLATES
+
+export function RecipeAndIngredientItem(props){
+    const {update, id} = props;   
+    const [isDisabled, setIsDisabled] = useState(true);
+
+    const itemSelected = (data) => {
+        setIsDisabled(false);
+        update(data)
+    }
+
+    return(
+        <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
+            <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <RecipeAndIngredientDropdown bgColor="#F4F4F4" color='#000' update={itemSelected} metadata={{name:"recipe/ingredient", id}}/>
+            </div>
+            <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <input id={id} type='number' name='cantidad' disabled={isDisabled} className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={update}/>
+            </div>
+            <div className="w-2/12 h-[60px] ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <UnitSelectDropdown update={update} bgColor='#F4F4F4'  color='#000' metadata={{name: 'unidad', id}} isDisabled={isDisabled}/>
+            </div>
+    </div>
     )
 }
