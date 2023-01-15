@@ -6,7 +6,6 @@ import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeAndIngredientI
 import { addRecipe, selectNewRecipe, selectRecipes, recipeMessage, cleanNewRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
-import { selectUser } from "../../slices/userSlice";
 import { AddDish } from "../../slices/platosSlice";
 
 export default function ItemList() {
