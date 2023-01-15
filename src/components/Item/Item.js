@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
-import { addRefAmount, createNewRecipe, updateNewRecipe, updateRecipe } from "../../slices/recipeSlice";
+import { updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
@@ -11,26 +11,24 @@ import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdo
 export default function Item(props) {
     const {name, quantity, price, unit} = props;
     return(
-        <>
-            <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
-                <div className="w-7/12 h-[60px] flex">
-                    <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <h1 className="text-3xl mt-3 ml-6"> {name} </h1>
-                    </div>
-                    <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <h1 className="decoration-2 text-3xl text-white font-thin mt-3 ml-6"> {price} $ </h1>
-                    </div>
+        <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
+            <div className="w-7/12 h-[60px] flex">
+                <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="text-3xl mt-3 ml-6"> {name} </h1>
                 </div>
-                <div className="w-5/12 h-[60px] flex">
-                    <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <h1 className="text-3xl text-right mt-3 mr-6"> {quantity} </h1>
-                    </div>
-                    <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <h1 className="text-3xl text-white font-thin mt-3 ml-6"> {unit} </h1>
-                    </div>
+                <div className="w-3/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="decoration-2 text-3xl text-white font-thin mt-3 ml-6"> {price} $ </h1>
                 </div>
-            </div>  
-        </>
+            </div>
+            <div className="w-5/12 h-[60px] flex">
+                <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="text-3xl text-right mt-3 mr-6"> {quantity} </h1>
+                </div>
+                <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="text-3xl text-white font-thin mt-3 ml-6"> {unit} </h1>
+                </div>
+            </div>
+        </div>  
     )
 }
 
@@ -194,73 +192,41 @@ export function RecipesHeader(){
 }
 
 export function RecipeItem(props) {
-    const {name, id} = props;
-    const quantityRef = useRef();
-    const dispatch = useDispatch();
-
-    const updateRef = () => {
-        const obj = {
-            refAmount: quantityRef.current.value,
-            id,
-        }
-        dispatch(addRefAmount(obj))
-    }
+    const {name, quantity, unit} = props;
 
     return(
-        <>
-            <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
-                <div className="w-7/12 h-[60px] flex">
-                    <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <h1 className="text-3xl text-left font-semibold mt-3 ml-6"> {name} </h1>
-                    </div>
+        <div className="w-11/12 h-[80px] mx-auto flex place-content-between mt-6">
+            <div className="w-7/12 h-[60px] flex">
+                <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="text-3xl mt-3 ml-6"> {name} </h1>
                 </div>
-                <div className="w-5/12 h-[60px] flex">
-                    <div className="w-9/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <input ref={quantityRef} className="w-9/12 text-3xl text-right font-semibold mt-3 ml-8 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" onChange={updateRef}/>
-                    </div>
+            </div>
+            <div className="w-5/12 h-[60px] flex">
+                <div className="w-9/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="text-3xl text-right mt-3 mr-6"> {quantity} </h1>
                 </div>
-            </div>  
-        </>
+                <div className="w-5/12 h-[60px] ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <h1 className="text-3xl text-white font-thin mt-3 ml-6"> {unit} </h1>
+                </div>
+            </div>
+    </div>  
     )
 }
 
 export function RecipeIngredient(props) {
-    const {id, amount} = props;
-    const sucursal = useSelector(selectSucursal);
-    const dispatch = useDispatch();
-
-    useEffect( () => {
-        const newItem = () => {
-            if ( id === amount - 1 && sucursal){
-                dispatch(createNewRecipe({id}))    
-            }
-        }
-        newItem()
-    },[dispatch,id,amount,sucursal])
-
-    const updateNewRecipeInfo = (event) => {
-        const target = event?.target;
-        const name = target?.name ?? event.metadata.name;
-        const value = target?.value ?? event.e.value;
-        const newRecipeInfo = {
-            id,
-            name,
-            value,
-        }
-        dispatch(updateNewRecipe(newRecipeInfo))
-    }
+    const {id, update} = props;
 
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex mt-2 place-content-around relative">
                 <div className="w-6/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <IngredientSelectDropdown update={updateNewRecipeInfo} bgColor='#F4F4F4'  color='#000' metadata={{name: 'ingrediente'}}/>                    
+                    <IngredientSelectDropdown update={update} bgColor='#F4F4F4'  color='#000' metadata={{name: 'ingrediente', id}}/>                    
                 </div>
                 <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={updateNewRecipeInfo}/>
+                    <input type='number' id={id} name='cantidad' className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={update}/>
                 </div>
                 <div className="w-2/12 h-[60px] ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <UnitSelectDropdown update={updateNewRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false} metadata={{name: 'unidad'}}/>
+                    <UnitSelectDropdown update={update} bgColor='#F4F4F4'  color='#000' isDisabled={false} metadata={{name: 'unidad', id, type:'ingrediente'}}/>
                 </div>
             </div>
         </>

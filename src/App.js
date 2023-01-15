@@ -12,12 +12,13 @@ import ConfigIngredients from './pages/Configurar_ingredientes/ConfigurarIngredi
 import { fetchSucursales, selectSucursal } from './slices/sucursalesSlice';
 import { fetchIngredients } from './slices/ingredientSlice';
 import { fetchRecipes } from './slices/recipeSlice';
+import { fetchDishes } from './slices/platosSlice';
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(selectUser);
-  const username = sessionStorage.getItem("username");
+  const usuario = sessionStorage.getItem("username");
   const sucursal = useSelector(selectSucursal);   
   const version  = '1.0.7';
 
@@ -30,13 +31,16 @@ function App() {
   },[dispatch,navigate,userData])
 
   useEffect( () => {
-      dispatch(fetchIngredients(sucursal))        
-      dispatch(fetchRecipes(sucursal));
-  }, [dispatch, username, sucursal]) 
+    if(sucursal){
+      dispatch(fetchIngredients({usuario,sucursal}))        
+      dispatch(fetchRecipes({usuario,sucursal}));
+      dispatch(fetchDishes({usuario,sucursal}))
+    }
+  }, [dispatch, usuario, sucursal]) 
 
   useEffect( () => {
-      dispatch(fetchSucursales(username))
-  }, [dispatch, username])
+      dispatch(fetchSucursales(usuario))
+  }, [dispatch, usuario])
 
   useEffect( () => {
     console.log(`Curent Version ${version}`)

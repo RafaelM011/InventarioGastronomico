@@ -23,6 +23,7 @@ const ingredientsSlice = createSlice({
                 state.newItems[id] = {
                     id,
                     sucursal,
+                    usuario: sessionStorage.getItem('username'),
                     nombre: '',
                     precio: null,
                     cantidad: null,
@@ -87,12 +88,12 @@ const ingredientsSlice = createSlice({
     }
 })
 
-export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (sucursal, rejectWithValue) => {
+export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (info, rejectWithValue) => {
     const response = await 
     fetch(serverUrl + 'importingredientes', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({sucursal})
+        body: JSON.stringify(info)
     })
     .then(res => res.json())
     return response;    
