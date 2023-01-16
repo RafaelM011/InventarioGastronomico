@@ -5,6 +5,7 @@ import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
 import { updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
+import { selectDishes } from "../../slices/platosSlice";
 
 // INGREDIENTS
 
@@ -380,11 +381,71 @@ export function RecipeAndIngredientItem(props){
                 <RecipeAndIngredientDropdown bgColor="#F4F4F4" color='#000' update={itemSelected} metadata={{name:"recipe/ingredient", id}}/>
             </div>
             <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                <input id={id} type='number' name='cantidad' disabled={isDisabled} className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={update}/>
+                <input id={id} type='number' name='cantidad' disabled={isDisabled ? isRecipe !== false ? false : true : false } className="w-10/12 text-2xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={update}/>
             </div>
             <div className="w-2/12 h-[60px] ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
                 <UnitSelectDropdown update={update} bgColor='#F4F4F4'  color='#000' metadata={{name: 'unidad', id}} isDisabled={isDisabled} isRecipe={isRecipe}/>
             </div>
     </div>
+    )
+}
+
+// CALCULATOR
+
+export function CalcultorItem(props){
+    const {nombre, ingredientes, recetas, update} = props
+    const ingredients = [];
+    const recipes = [];
+    ingredientes.forEach((ingrediente, index) => {
+        ingredients[index] = {...ingrediente}
+    })
+    recetas.forEach((receta, index) => {
+        recipes[index] = {...receta}
+    })
+
+    const info = {
+        nombre,
+        ingredientes: ingredients,
+        recetas: recipes
+    }
+
+    return(
+        <div className="flex place-content-between mx-20 my-4">
+            <p className="w-8/12 rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-xl">{nombre}</p>
+            <input className="w-2/12 rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-inv-blue pl-4 py-1 outline-none text-white font-medium text-center" type='number' placeholder="cantidades" onBlur={(event) => update({event,info})}/>
+        </div>
+    )
+}
+
+export function ResultDisplay(props){
+    const {ingredientes, recetas} = props;
+
+    return(
+        <div className="flex flex-col items-start h-full pt-4">
+            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> INGREDIENTES </h1>
+            <div className="w-full h-1/2 overflow-auto scrollbar-hide pt-2">
+                {[...ingredientes.keys()].map(ingrediente => {
+                    return <ResultItem key={ingrediente} nombre={ingrediente} cantidad={ingredientes.get(ingrediente)}/>
+                })}
+            </div>
+            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> RECETAS </h1>
+            <div className="w-full h-1/2 overflow-auto scrollbar-hide pt-2">
+                {[...recetas.keys()].map(receta => {
+                    return <ResultItem key={receta} nombre={receta} cantidad={recetas.get(receta)}/>
+                })}
+            </div>
+        </div>
+    )
+
+}
+
+export function ResultItem(props){
+    const {nombre, cantidad} = props;
+
+    return(
+        <div className="flex place-content-between px-20">
+            <h1 className="w-5/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-left my-2"> {nombre} </h1>
+            <h1 className="w-2/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-center my-2"> {cantidad} </h1>
+        </div>
     )
 }

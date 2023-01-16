@@ -302,10 +302,6 @@ export function PlateSaleReport(){
     const usuario = sessionStorage.getItem('username')
     const [saleInfo, setSaleInfo] = useState(new Map());
 
-    // useEffect(() => {
-    //     console.log(saleInfo)
-    // },[saleInfo])
-    
     const updateSaleInfo = (data) => {
         const target = data.event.target;
         const value = target.value;
