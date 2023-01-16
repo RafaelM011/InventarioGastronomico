@@ -7,13 +7,6 @@ process.env.NODE_ENV === 'production'
     
 const initialState = {
     items: [],
-    newItem: {
-        usuario: '',
-        sucursal: '',
-        nombre: '',
-        ingredientes: [],
-        recetas: [],
-    },
     status: 'idle',
     error: ''
 };
@@ -22,17 +15,29 @@ const platosSlice = createSlice({
     name: "platos",
     initialState,
     reducers: {
-        AddNewPlate(state,action){
-            
-        }
+
     },
     extraReducers(builder){
         builder
+            .addCase(fetchDishes.fulfilled, (state,action) => {
+                state.items = action.payload;
+            })
             .addCase(AddDish.fulfilled, (state, action) => {
                 state.items = action.payload;
             })
             
     }
+})
+
+export const fetchDishes = createAsyncThunk('platos/fetchdishes', async (info, {rejectWithValue}) => {
+    const response = await
+    fetch(serverUrl + 'fetchdishes', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(info)
+    })
+    .then(res => res.json())
+    return response;
 })
 
 export const AddDish = createAsyncThunk('platos/adddish',async (plate, {rejectWithValue}) => {
@@ -47,4 +52,5 @@ export const AddDish = createAsyncThunk('platos/adddish',async (plate, {rejectWi
 })
 
 export const {AddNewPlate} = platosSlice.actions;
+export const selectDishes = state => state.dishes.items;
 export default platosSlice.reducer;

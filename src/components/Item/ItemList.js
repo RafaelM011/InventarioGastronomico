@@ -1,69 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem } from "../../slices/ingredientSlice";
+import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem, decreaseIngredient } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
-import Item, { EditableItem, EditableRecipeItem, EmptyItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
-import { addRecipe, selectNewRecipe, selectRecipes, recipeMessage, cleanNewRecipe } from "../../slices/recipeSlice";
+import Item, { EditableItem, EmptyItem, PlateItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
+import { selectRecipes, recipeMessage, addRecipe, decreaseRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
-import { AddDish } from "../../slices/platosSlice";
+import { AddDish, selectDishes } from "../../slices/platosSlice";
+import { UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
    
     return(
-        <>
-            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
-                {ingredients.map(ingredient => {
-                    return <Item key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
-                })}
-            </div>
-        </>
-    )
-}
-
-export function EditableItemList() {
-    const ingredients = useSelector(selectIngredients);
-    const sucursal = useSelector(selectSucursal);
-    const dispatch = useDispatch();
-    let updatedIngredients = []
-
-    const updateIngredientEntry = (info) => {
-        updatedIngredients[info.index].nombre = info.name;
-        updatedIngredients[info.index].precio = info.price;
-        updatedIngredients[info.index].cantidad = info.quantity;
-        updatedIngredients[info.index].unidad = info.unit;
-    }
-
-    const validateUpdate = () => {
-        return updatedIngredients.some( updatedIngredient => updatedIngredient.nombre === '' || updatedIngredient.precio === '' || updatedIngredient.cantidad === '' || updatedIngredient.unidad === '')
-    }
-
-    const sendUpdatedEntries = () => {
-        const isEmpty = validateUpdate();
-        if (isEmpty) return dispatch(ingredientMessage('Missing fields'))
-        dispatch(updateIngredients({ingredients: updatedIngredients, sucursal}));
-    }
-
-    return(
-        <>
-            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
-                {ingredients.map((ingredient,index) => {
-                    updatedIngredients.push({
-                        id: ingredient.id,
-                        nombre: ingredient.nombre,
-                        cantidad: ingredient.cantidad,
-                        precio: ingredient.precio,
-                        unidad: ingredient.unidad
-                    })
-                    return <EditableItem key={ingredient.id} index={index} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} updateFunction={updateIngredientEntry}/>
-                })}
-            </div>
-            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
-                <button onClick={sendUpdatedEntries}> ACTUALIZAR INGREDIENTES </button>
-            </div>
-            <DisplayMessage type={'ingredient'}/>
-        </>
+        <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+            {ingredients.map(ingredient => {
+                return <Item key={ingredient.id} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} />
+            })}
+        </div>
     )
 }
 
@@ -127,82 +81,177 @@ export function EmptyItemList(props){
     )
 }
 
-export function RecipeList(props) {
+export function EditableItemList() {
+    const ingredients = useSelector(selectIngredients);
+    const sucursal = useSelector(selectSucursal);
+    const dispatch = useDispatch();
+    let updatedIngredients = []
+
+    const updateIngredientEntry = (info) => {
+        updatedIngredients[info.index].nombre = info.name;
+        updatedIngredients[info.index].precio = info.price;
+        updatedIngredients[info.index].cantidad = info.quantity;
+        updatedIngredients[info.index].unidad = info.unit;
+    }
+
+    const validateUpdate = () => {
+        return updatedIngredients.some( updatedIngredient => updatedIngredient.nombre === '' || updatedIngredient.precio === '' || updatedIngredient.cantidad === '' || updatedIngredient.unidad === '')
+    }
+
+    const sendUpdatedEntries = () => {
+        const isEmpty = validateUpdate();
+        if (isEmpty) return dispatch(ingredientMessage('Missing fields'))
+        dispatch(updateIngredients({ingredients: updatedIngredients, sucursal}));
+    }
+
+    return(
+        <>
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+                {ingredients.map((ingredient,index) => {
+                    updatedIngredients.push({
+                        id: ingredient.id,
+                        nombre: ingredient.nombre,
+                        cantidad: ingredient.cantidad,
+                        precio: ingredient.precio,
+                        unidad: ingredient.unidad
+                    })
+                    return <EditableItem key={ingredient.id} index={index} id={ingredient.id} name={ingredient.nombre} quantity={ingredient.cantidad} price={ingredient.precio} unit={ingredient.unidad} updateFunction={updateIngredientEntry}/>
+                })}
+            </div>
+            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
+                <button onClick={sendUpdatedEntries}> ACTUALIZAR INGREDIENTES </button>
+            </div>
+            <DisplayMessage type={'ingredient'}/>
+        </>
+    )
+}
+
+export function RecipeList() {
     const recipes = useSelector(selectRecipes);
     return (
-        <>
+        <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent mt-10">
             {recipes.map(recipe => {
-                return <RecipeItem key={recipe.id} id={recipe.id} name={recipe.nombre}/>
+                    return <RecipeItem key={recipe.id} id={recipe.id} name={recipe.nombre} quantity={recipe.cantidad} unit={recipe.unidad}/>
             })}
-        </>
+        </div>
     )
 }
 
 export function EmptyRecipeList(){
     const [amount, setAmount] = useState(1);
+    const [recipeInfo, setRecipeInfo] = useState({
+        unidad: '',
+        ingredientes: []
+    });
     const render = [];
-    const recipeName = useRef();
+    const nameRef = useRef();
+    const quantityRef = useRef();
     const dispatch = useDispatch();
+    const usuario = sessionStorage.getItem('username');
     const sucursal = useSelector(selectSucursal);
     const recipes = useSelector(selectRecipes);
-    const ingredients = useSelector(selectIngredients);
-    const newRecipe = useSelector(selectNewRecipe);
 
-    useEffect(() => {
-        return function cleanup(){
-            dispatch(cleanNewRecipe())
-        }
-    },[dispatch])
+    for (let i = 0; i < amount; i++) {
+        render.push(<RecipeIngredient key={i} id={i} update={updateRecipeInfo}/>)
+    }
 
     const addIngredientToRecipe = () => {
         setAmount( prevState => prevState + 1);
-    }
-
-    const renderRecipeItems = () => {
-        for (let i = 0; i < amount; i++) {
-             render.push(<RecipeIngredient key={i} id={i} amount={amount}/>)
-        }
-    }
-    renderRecipeItems();
-
-    const validateIngredient = () => {
-        return newRecipe.ingredientes.some(ingredientName => ingredients.some( ingredient => ingredient.nombre === ingredientName))
-    }
-
-    const validateCantidades = () => {
-        return newRecipe.cantidades.some(cantidad => cantidad === '')
     }
 
     const validateRecipeName = (newRecipeName) => {
         return recipes.some( recipe => recipe.nombre === newRecipeName)
     }
 
-    const sendRecipeInfo = () => {
-        const ingredientExist = validateIngredient();
-        const emptyQty = validateCantidades()
-        const recipeExist = validateRecipeName(recipeName.current.value)
+    function updateRecipeInfo(event) {
+        const target = event?.target;
+        const name = target?.name ?? event.metadata.name;
+        const value = target?.value ?? event.e.value;
+        const type = event?.metadata?.type ?? null;
+        const id = target?.attributes[1]?.value ?? event?.metadata?.id ;
 
-        if (emptyQty) return dispatch(recipeMessage('Must fill out all quantities field'))
-        if (!ingredientExist) return dispatch(recipeMessage('One or more of the ingredients does not exist'))
-        if (!recipeName.current.value) return dispatch(recipeMessage('Missing recipe name'))
+        if(type === 'receta') {
+            setRecipeInfo(prevState => ({...prevState, unidad: value}))
+        }else if (type === 'ingrediente'){
+            if(recipeInfo.ingredientes[id]){
+                setRecipeInfo(prevState => {
+                    const newIngredientes = recipeInfo.ingredientes;
+                    newIngredientes[id].unidad = value;
+                    return {...prevState, ingredientes: newIngredientes}
+                })
+            }else{
+                setRecipeInfo(prevState => {
+                    const newIngredientes = recipeInfo.ingredientes;
+                    newIngredientes[id] = {nombre: '', cantidad: '', unidad: value}
+                    return {...prevState, ingredientes: newIngredientes}
+                }) 
+            }
+        }
+
+        switch(name){
+            case 'ingrediente':
+                if(recipeInfo.ingredientes[id]){
+                    setRecipeInfo(prevState => {
+                        const newIngredientes = recipeInfo.ingredientes;
+                        newIngredientes[id].nombre = value;
+                        return {...prevState, ingredientes: newIngredientes}
+                    })
+                }else{
+                    setRecipeInfo(prevState => {
+                        const newIngredientes = recipeInfo.ingredientes;
+                        newIngredientes[id] = {nombre: value, cantidad: '', unidad: ''}
+                        return {...prevState, ingredientes: newIngredientes}
+                    }) 
+                }
+            break;
+            case 'cantidad':
+                if(recipeInfo.ingredientes[id]){
+                    setRecipeInfo(prevState => {
+                        const newIngredientes = recipeInfo.ingredientes;
+                        newIngredientes[id].cantidad = value;
+                        return {...prevState, ingredientes: newIngredientes}
+                    })
+                }else{
+                    setRecipeInfo(prevState => {
+                        const newIngredientes = recipeInfo.ingredientes;
+                        newIngredientes[id] = {nombre: '', cantidad: value, unidad: ''}
+                        return {...prevState, ingredientes: newIngredientes}
+                    }) 
+                }   
+            break;
+            default:
+        }
+    }
+
+    const sendRecipeInfo = () => {
+        const recipeExist = validateRecipeName(nameRef.current.value)
+
+        if (!nameRef.current.value) return dispatch(recipeMessage('Missing recipe name'))
         if (recipeExist) return dispatch(recipeMessage('This recipe name is already being used'))
 
         const newRecipeInfo = {
+            usuario,
             sucursal,
-            nombre: recipeName.current.value,
-            ingredientes: newRecipe.ingredientes,
-            cantidades: newRecipe.cantidades,
-            unidades: newRecipe.unidades
+            nombre: nameRef.current.value,
+            cantidad: quantityRef.current.value,
+            unidad: recipeInfo.unidad,
+            ingredientes: recipeInfo.ingredientes
         }
+
         dispatch(addRecipe(newRecipeInfo))
     }
 
     return(
         <>
             <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
-                <div className="w-9/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Receta" type='text' ref={recipeName}/>
+                <div className="w-6/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input ref={nameRef} className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Receta" type='text'/>
                 </div>
+                <div className="w-2/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input ref={quantityRef} className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='text'/>
+                </div>
+                <div className="w-2/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-20">
+                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false}notRecipe={true} isRecipe={false} metadata={{name: 'unidad', type:'receta'}}/>                </div>
                 <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
                     <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
                 </div>
@@ -217,17 +266,128 @@ export function EmptyRecipeList(){
 }
 
 export function EditableRecipeList() {
-    const recipes = useSelector(selectRecipes);
+    // const recipes = useSelector(selectRecipes);
 
     return(
         <>
             <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
-                {recipes.map( recipe => {
+                {/* {recipes.map( recipe => {
                     const {id, sucursal, nombre, ingredientes, cantidades, unidades} = recipe;
                     return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} unidades={unidades}/>
-                })}
+                })} */}
             </div>
             <DisplayMessage type={'recipe'}/>
+        </>
+    )
+}
+
+export function PlateList(){
+    const dishes = useSelector(selectDishes);
+
+    return(
+        <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+            {dishes.map(dish => {
+                return <></>
+            })}
+        </div>
+    )
+}
+
+export function PlateSaleReport(){
+    const dispatch = useDispatch();
+    const dishes = useSelector(selectDishes);
+    const ingredients = useSelector(selectIngredients);
+    const recipes = useSelector(selectRecipes);
+    const sucursal = useSelector(selectSucursal);
+    const usuario = sessionStorage.getItem('username')
+    const [saleInfo, setSaleInfo] = useState(new Map());
+
+    // useEffect(() => {
+    //     console.log(saleInfo)
+    // },[saleInfo])
+    
+    const updateSaleInfo = (data) => {
+        const target = data.event.target;
+        const value = target.value;
+        const {nombre, ingredientes, recetas} = data.info;
+    
+
+        if(value === '') {
+            if (saleInfo.has(nombre)){
+                setSaleInfo(prevState => {
+                    let newState = new Map(prevState)
+                    newState.delete(nombre);
+                    return newState;
+                })    
+            }
+        }
+        else{
+            ingredientes.forEach((ingrediente,index) => {
+                ingredientes[index].cantidad = parseInt(ingrediente.cantidad) * parseInt(value)
+            })
+            recetas.forEach((receta,index) => {
+                recetas[index].cantidad = parseInt(receta.cantidad) * parseInt(value)
+            })
+            const info = {
+                ingredientes,
+                recetas
+            }  
+            setSaleInfo(prevState => {
+                let newState = new Map(prevState.set(nombre, info));
+                return newState;
+            })
+        }
+    }
+
+    const sendSaleInfo = () => {
+        const values = [...saleInfo.values()];
+        const ingredientes = new Map ();
+        const recetas = new Map();
+
+        values.forEach(value => {
+            value.ingredientes.forEach(ingrediente => {
+                if(!ingredientes.has(ingrediente.nombre)) ingredientes.set(ingrediente.nombre, ingrediente.cantidad)
+                else ingredientes.set(ingrediente.nombre, ingrediente.cantidad + ingredientes.get(ingrediente.nombre))
+            })
+            value.recetas.forEach(receta => {
+                if(!recetas.has(receta.nombre)) recetas.set(receta.nombre, receta.cantidad)
+                else recetas.set(receta.nombre, receta.cantidad + recetas.get(receta.nombre))
+            })
+        })
+
+        ingredients.forEach(ingredient => {
+            if(ingredientes.has(ingredient.nombre)) ingredientes.set(ingredient.nombre, parseInt(ingredient.cantidad) - ingredientes.get(ingredient.nombre))
+        })
+        recipes.forEach(recipe => {
+            if(recetas.has(recipe.nombre)) recetas.set(recipe.nombre, parseInt(recipe.cantidad) - recetas.get(recipe.nombre))
+        })
+    
+        const ingredientInfo = {
+            usuario,
+            sucursal,
+            ingredientes: [...ingredientes.keys()],
+            cantidades: [...ingredientes.values()]
+        }
+        const recipeInfo = {
+            usuario,
+            sucursal,
+            recetas: [...recetas.keys()],
+            cantidades: [...recetas.values()]
+        }
+        dispatch(decreaseIngredient(ingredientInfo))
+        dispatch(decreaseRecipe(recipeInfo))
+    }
+
+    return(
+        <>
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent mt-10">
+                {dishes.map(dish => {
+                    return <PlateItem key={dish.id} nombre={dish.nombre} update={updateSaleInfo} ingredientes={dish.ingredientes} recetas={dish.recetas}/>
+                })}        
+            </div>
+            <div className="h-fit w-fit bg-inv-blue rounded-2xl mx-auto mt-10">
+                <button className="mx-auto p-2 w-fit cursor-pointer text-2xl text-white font-semibold" onClick={sendSaleInfo}>REPORTAR VENTAS</button>
+            </div>
         </>
     )
 }
@@ -240,10 +400,6 @@ export function AddPlateScreen(){
     const [ingredients, setIngredients] = useState(new Map());
     const [recipes, setRecipes] = useState(new Map());
     const render = [];
-
-    // useEffect(() => {
-    //     console.log('ingredientes\n', ingredients, '\nrecetas\n', recipes)
-    // },[ingredients, recipes])
 
     const updatePlateInfo = (event) => {
         const target = event?.target;

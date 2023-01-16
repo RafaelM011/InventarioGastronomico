@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-
-import { ItemsHeader } from "../Item/Item";
-import ItemList from "../Item/ItemList";
+import ItemList, { RecipeList } from "../Item/ItemList";
 
 export default function InfoBox(props) {
     const {title} = props;
@@ -20,9 +18,9 @@ export default function InfoBox(props) {
                     <h1 className="text-3xl text-center font-bold mt-5 underline"> {title} </h1>
                     <div className="flex place-content-evenly mt-4 text-xl font-semibold">
                         <button className={pressed === 1 ? pressedStyle : defaultStyle} onClick={() => changePressed(1)}>INGREDIENTES</button>
-                        {/* <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => changePressed(2)}>RECETAS</button> */}
+                        <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => changePressed(2)}>RECETAS</button>
                     </div>
-                    {pressed === 1 ? <ItemList/> : <ItemsHeader/>}
+                    {pressed === 1 ? <ItemList/> : <RecipeList/>}
                 </div>
             </div>
         </>

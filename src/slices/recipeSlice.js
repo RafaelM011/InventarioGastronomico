@@ -7,11 +7,6 @@ process.env.NODE_ENV === 'production'
 
 const initialState = {
     items: [],
-    newItem: {
-        ingredientes: [],
-        cantidades: [],
-        unidades: []
-    },
     status: '',
     message: ''
 }
@@ -20,41 +15,6 @@ const recipeSlice = createSlice({
     name: "recipes",
     initialState,
     reducers: {
-        createNewRecipe(state, action){
-            const {id} = action.payload;
-            if (id >= state.newItem.ingredientes.length){
-                state.newItem.ingredientes.push('');
-                state.newItem.cantidades.push('');
-                state.newItem.unidades.push('');
-            }
-        },
-        updateNewRecipe(state,action){
-            const {id,name,value} = action.payload;
-            name  === 'ingrediente'
-            ? state.newItem.ingredientes[id] = value
-            : name === 'cantidad' 
-            ? state.newItem.cantidades[id] = value 
-            : state.newItem.unidades[id] = value
-
-            state.message = '';
-        },
-        cleanNewRecipe(state,action){
-            state.newItem = {
-                ingredientes: [],
-                cantidades: [],
-                unidades: []
-            }
-        },
-        addRefAmount(state, action){
-            for (let i = 0; i < state.items.length; i++){
-                if (state.items[i].id === action.payload.id) state.items[i].refAmount = parseInt(action.payload.refAmount)                
-            }
-        },
-        removeRefAmount(state,action){
-            state.items.forEach((item,i) => {
-                if(item.refAmount) delete state.items[i].refAmount
-            })
-        },
         recipeMessage(state,action){
             state.message = action.payload;
         },
@@ -65,6 +25,9 @@ const recipeSlice = createSlice({
     extraReducers(builder){
         builder
             .addCase(fetchRecipes.fulfilled, (state, action) => {
+                state.items = action.payload;
+            })
+            .addCase(decreaseRecipe.fulfilled, (state,action) =>  {
                 state.items = action.payload;
             })
             .addCase(addRecipe.fulfilled, (state, action) => {
@@ -78,12 +41,12 @@ const recipeSlice = createSlice({
     }
 })
 
-export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (sucursal, rejectWithValue) => {
+export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (info, rejectWithValue) => {
     const response = await
     fetch(serverUrl + 'getrecipes', {
         method: "post",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({sucursal})
+        body: JSON.stringify(info)
     })
     .then( res => res.json())
     return response
@@ -97,6 +60,17 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
         body: JSON.stringify(recipe)
     })
     .then( res => res.json())
+    return response;
+})
+
+export const decreaseRecipe = createAsyncThunk('recipes/decreaseRecipe', async (recipesInfo, rejectWithValue) => {
+    const response = await
+    fetch(serverUrl + 'decreaserecipe', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(recipesInfo)
+    })
+    .then(res => res.json())
     return response;
 })
 
@@ -115,5 +89,5 @@ export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (reci
 export const selectRecipes = state => state.recipes.items;
 export const selectNewRecipe = state => state.recipes.newItem;
 export const selectRecipeMessage = state => state.recipes.message;
-export const { addRefAmount, removeRefAmount, resetRecipeState, recipeMessage, createNewRecipe, updateNewRecipe, cleanNewRecipe } = recipeSlice.actions;
+export const { resetRecipeState, recipeMessage, createNewRecipe, updateNewRecipe, cleanNewRecipe } = recipeSlice.actions;
 export default recipeSlice.reducer;
