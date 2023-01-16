@@ -5,7 +5,7 @@ import { selectIngredients } from "../../slices/ingredientSlice";
 import { selectRecipes } from "../../slices/recipeSlice";
 
 export const UnitSelectDropdown = (props) => {
-    const { update, bgColor, color, defaultValue, metadata, isDisabled} = props;
+    const { update, bgColor, color, defaultValue, metadata, isDisabled, isRecipe} = props;
     const style = {
         indicatorsContainer: (base) => ({
             ...base,
@@ -65,14 +65,14 @@ export const UnitSelectDropdown = (props) => {
         })
     }
     const options = [
-        {label: 'Lb', value: 'Lb', isDisabled},
-        {label: 'Oz', value: 'Oz', isDisabled},
-        {label: 'Und', value: 'Und', isDisabled},
-        {label: 'Kl', value: 'Kl', isDisabled},
-        {label: 'Lt', value: 'Lt', isDisabled},
-        {label: 'Ml', value: 'Ml', isDisabled},
-        {label: 'Gr', value: 'Gr', isDisabled},
-        {label: 'Gl (128Onz)', value: 'Gl (128Onz)', isDisabled}
+        {label: 'Lb', value: 'Lb', isDisabled: isRecipe === 'Lb' ? false : isDisabled },
+        {label: 'Oz', value: 'Oz', isDisabled: isRecipe === 'Oz' ? false : isDisabled },
+        {label: 'Und', value: 'Und', isDisabled: isRecipe === 'Und' ? false : isDisabled },
+        {label: 'Kl', value: 'Kl', isDisabled: isRecipe === 'Kl' ? false : isDisabled },
+        {label: 'Lt', value: 'Lt', isDisabled: isRecipe === 'Lt' ? false : isDisabled },
+        {label: 'Ml', value: 'Ml', isDisabled: isRecipe === 'Ml' ? false : isDisabled },
+        {label: 'Gr', value: 'Gr', isDisabled: isRecipe === 'Gr' ? false : isDisabled },
+        {label: 'Gl (128Onz)', value: 'Gl (128Onz)', isDisabled: isRecipe === 'Gl (128Onz)' ? false : isDisabled }
     ]
     return(
         <>
@@ -218,7 +218,7 @@ export const RecipeAndIngredientDropdown = (props) => {
     const ingredients = useSelector(selectIngredients);
     const recipes = useSelector(selectRecipes);
     const ingredientsOption = ingredients.map(ingredient => ({ label: ingredient.nombre, value: ingredient.nombre, type: 'ingrediente'}))
-    const recipesOption = recipes.map(recipe => ({ label: recipe.nombre, value: recipe.nombre, type: 'receta'}))
+    const recipesOption = recipes.map(recipe => ({ label: recipe.nombre, value: recipe.nombre, type: 'receta', unidad: recipe.unidad}))
     const groupedOptions = [
         {
             label: "Ingredientes",

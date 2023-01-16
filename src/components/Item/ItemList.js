@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem } from "../../slices/ingredientSlice";
+import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem, decreaseIngredient } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
-import Item, { EditableItem, EmptyItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
-import { selectRecipes, recipeMessage, addRecipe } from "../../slices/recipeSlice";
+import Item, { EditableItem, EmptyItem, PlateItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
+import { selectRecipes, recipeMessage, addRecipe, decreaseRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 import { AddDish, selectDishes } from "../../slices/platosSlice";
@@ -251,7 +251,7 @@ export function EmptyRecipeList(){
                     <input ref={quantityRef} className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='text'/>
                 </div>
                 <div className="w-2/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-20">
-                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false} metadata={{name: 'unidad', type:'receta'}}/>                </div>
+                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false}notRecipe={true} isRecipe={false} metadata={{name: 'unidad', type:'receta'}}/>                </div>
                 <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
                     <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
                 </div>
@@ -293,6 +293,105 @@ export function PlateList(){
     )
 }
 
+export function PlateSaleReport(){
+    const dispatch = useDispatch();
+    const dishes = useSelector(selectDishes);
+    const ingredients = useSelector(selectIngredients);
+    const recipes = useSelector(selectRecipes);
+    const sucursal = useSelector(selectSucursal);
+    const usuario = sessionStorage.getItem('username')
+    const [saleInfo, setSaleInfo] = useState(new Map());
+
+    // useEffect(() => {
+    //     console.log(saleInfo)
+    // },[saleInfo])
+    
+    const updateSaleInfo = (data) => {
+        const target = data.event.target;
+        const value = target.value;
+        const {nombre, ingredientes, recetas} = data.info;
+    
+
+        if(value === '') {
+            if (saleInfo.has(nombre)){
+                setSaleInfo(prevState => {
+                    let newState = new Map(prevState)
+                    newState.delete(nombre);
+                    return newState;
+                })    
+            }
+        }
+        else{
+            ingredientes.forEach((ingrediente,index) => {
+                ingredientes[index].cantidad = parseInt(ingrediente.cantidad) * parseInt(value)
+            })
+            recetas.forEach((receta,index) => {
+                recetas[index].cantidad = parseInt(receta.cantidad) * parseInt(value)
+            })
+            const info = {
+                ingredientes,
+                recetas
+            }  
+            setSaleInfo(prevState => {
+                let newState = new Map(prevState.set(nombre, info));
+                return newState;
+            })
+        }
+    }
+
+    const sendSaleInfo = () => {
+        const values = [...saleInfo.values()];
+        const ingredientes = new Map ();
+        const recetas = new Map();
+
+        values.forEach(value => {
+            value.ingredientes.forEach(ingrediente => {
+                if(!ingredientes.has(ingrediente.nombre)) ingredientes.set(ingrediente.nombre, ingrediente.cantidad)
+                else ingredientes.set(ingrediente.nombre, ingrediente.cantidad + ingredientes.get(ingrediente.nombre))
+            })
+            value.recetas.forEach(receta => {
+                if(!recetas.has(receta.nombre)) recetas.set(receta.nombre, receta.cantidad)
+                else recetas.set(receta.nombre, receta.cantidad + recetas.get(receta.nombre))
+            })
+        })
+
+        ingredients.forEach(ingredient => {
+            if(ingredientes.has(ingredient.nombre)) ingredientes.set(ingredient.nombre, parseInt(ingredient.cantidad) - ingredientes.get(ingredient.nombre))
+        })
+        recipes.forEach(recipe => {
+            if(recetas.has(recipe.nombre)) recetas.set(recipe.nombre, parseInt(recipe.cantidad) - recetas.get(recipe.nombre))
+        })
+    
+        const ingredientInfo = {
+            usuario,
+            sucursal,
+            ingredientes: [...ingredientes.keys()],
+            cantidades: [...ingredientes.values()]
+        }
+        const recipeInfo = {
+            usuario,
+            sucursal,
+            recetas: [...recetas.keys()],
+            cantidades: [...recetas.values()]
+        }
+        dispatch(decreaseIngredient(ingredientInfo))
+        dispatch(decreaseRecipe(recipeInfo))
+    }
+
+    return(
+        <>
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent mt-10">
+                {dishes.map(dish => {
+                    return <PlateItem key={dish.id} nombre={dish.nombre} update={updateSaleInfo} ingredientes={dish.ingredientes} recetas={dish.recetas}/>
+                })}        
+            </div>
+            <div className="h-fit w-fit bg-inv-blue rounded-2xl mx-auto mt-10">
+                <button className="mx-auto p-2 w-fit cursor-pointer text-2xl text-white font-semibold" onClick={sendSaleInfo}>REPORTAR VENTAS</button>
+            </div>
+        </>
+    )
+}
+
 export function AddPlateScreen(){
     const sucursal = useSelector(selectSucursal);
     const dispatch = useDispatch();
@@ -301,10 +400,6 @@ export function AddPlateScreen(){
     const [ingredients, setIngredients] = useState(new Map());
     const [recipes, setRecipes] = useState(new Map());
     const render = [];
-
-    // useEffect(() => {
-    //     console.log('ingredientes\n', ingredients, '\nrecetas\n', recipes)
-    // },[ingredients, recipes])
 
     const updatePlateInfo = (event) => {
         const target = event?.target;
