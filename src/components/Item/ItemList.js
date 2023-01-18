@@ -9,6 +9,8 @@ import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 import { AddDish, selectDishes } from "../../slices/platosSlice";
 import { UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
+// INGREDIENTS
+
 export default function ItemList() {
     const ingredients = useSelector(selectIngredients);
    
@@ -125,6 +127,8 @@ export function EditableItemList() {
         </>
     )
 }
+
+// RECIPES
 
 export function RecipeList() {
     const recipes = useSelector(selectRecipes);
@@ -280,6 +284,8 @@ export function EditableRecipeList() {
         </>
     )
 }
+
+// PLATES
 
 export function PlateList(){
     const dishes = useSelector(selectDishes);

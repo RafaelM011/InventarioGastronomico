@@ -1,7 +1,7 @@
 import React, { useEffect, useState }  from "react";
 import { useSelector } from "react-redux";
 import { selectDishes } from "../../slices/platosSlice";
-import { CalcultorItem, ResultDisplay } from "../Item/Item";
+import { CalcultorItem, ResultDisplay, SummaryDisplay } from "../Item/Item";
 // import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
 
 export const Calculator = (props) => {
@@ -11,6 +11,7 @@ export const Calculator = (props) => {
     const [calculatorInfo, setCalculatorInfo] = useState(new Map());
     const [resultInfo, setResultInfo] = useState([]);
     const [display, setDisplay] = useState('calculator')
+    const [toggle, setToggle] = useState(false)
 
     useEffect(() => {
         setFilteredDishes(dishes)
@@ -26,7 +27,6 @@ export const Calculator = (props) => {
         const value = target.value;
         const {nombre, ingredientes, recetas} = data.info;
     
-
         if(value === '') {
             if (calculatorInfo.has(nombre)){
                 setCalculatorInfo(prevState => {
@@ -44,6 +44,7 @@ export const Calculator = (props) => {
                 recetas[index].cantidad = parseInt(receta.cantidad) * parseInt(value)
             })
             const info = {
+                value,
                 ingredientes,
                 recetas
             }  
@@ -92,7 +93,9 @@ export const Calculator = (props) => {
                                 ?   <div className="max-h-[500px] h-fit w-11/12 mx-auto py-4 overflow-auto scrollbar-hide">
                                     {filteredDishes.map(dish => <CalcultorItem key={dish.id} nombre={dish.nombre} ingredientes={dish.ingredientes} recetas={dish.recetas} update={updateCalculatorInfo}/>)}
                                     </div>
-                                : <ResultDisplay ingredientes={resultInfo[0]} recetas={resultInfo[1]}/>
+                                : toggle 
+                                ? <SummaryDisplay toggle={() => setToggle(false)} data={calculatorInfo}/>
+                                : <ResultDisplay ingredientes={resultInfo[0]} recetas={resultInfo[1]} toggle={() => setToggle(true)}/>
                             }
                         </div>
                     </div>

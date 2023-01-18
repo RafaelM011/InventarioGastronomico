@@ -5,7 +5,6 @@ import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
 import { updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
-import { selectDishes } from "../../slices/platosSlice";
 
 // INGREDIENTS
 
@@ -418,23 +417,28 @@ export function CalcultorItem(props){
 }
 
 export function ResultDisplay(props){
-    const {ingredientes, recetas} = props;
+    const {ingredientes, recetas, toggle} = props;
 
     return(
-        <div className="flex flex-col items-start h-full pt-4">
-            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> INGREDIENTES </h1>
-            <div className="w-full h-1/2 overflow-auto scrollbar-hide pt-2">
-                {[...ingredientes.keys()].map(ingrediente => {
-                    return <ResultItem key={ingrediente} nombre={ingrediente} cantidad={ingredientes.get(ingrediente)}/>
-                })}
+        <>
+            <div className="flex flex-col items-start h-full pt-4">
+                <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> INGREDIENTES </h1>
+                <div className="w-full h-1/2 overflow-auto scrollbar-hide pt-2">
+                    {[...ingredientes.keys()].map(ingrediente => {
+                        return <ResultItem key={ingrediente} nombre={ingrediente} cantidad={ingredientes.get(ingrediente)}/>
+                    })}
+                </div>
+                <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> RECETAS </h1>
+                <div className="w-full h-1/2 overflow-auto scrollbar-hide pt-2">
+                    {[...recetas.keys()].map(receta => {
+                        return <ResultItem key={receta} nombre={receta} cantidad={recetas.get(receta)}/>
+                    })}
+                </div>
             </div>
-            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> RECETAS </h1>
-            <div className="w-full h-1/2 overflow-auto scrollbar-hide pt-2">
-                {[...recetas.keys()].map(receta => {
-                    return <ResultItem key={receta} nombre={receta} cantidad={recetas.get(receta)}/>
-                })}
-            </div>
-        </div>
+            <button className="h-fit w-fit p-2 bg-inv-blue text-white rounded-xl ml-4 mt-4" onClick={toggle}>
+                Toggle
+            </button>
+        </>
     )
 
 }
@@ -446,6 +450,37 @@ export function ResultItem(props){
         <div className="flex place-content-between px-20">
             <h1 className="w-5/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-left my-2"> {nombre} </h1>
             <h1 className="w-2/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-center my-2"> {cantidad} </h1>
+        </div>
+    )
+}
+
+export function SummaryDisplay(props){
+    const {toggle, data} = props;
+    const render = [];
+
+    data.forEach( (info, nombre) => {
+        render.push(<SummaryItem key={nombre} nombre={nombre} info={info}/>)
+    })
+
+    return(
+        <>
+            <div className="h-full pt-4">
+                {render}                
+            </div>
+            <button className="h-fit w-fit p-2 bg-inv-blue text-white rounded-xl ml-4 mt-4" onClick={toggle}>
+                Toggle
+            </button>
+        </>
+    )
+}
+
+export function SummaryItem(props){
+    const {nombre, info} = props;
+
+    return(
+        <div className="">
+            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> {`${nombre} - ${info.value} items`} </h1>
+            
         </div>
     )
 }
