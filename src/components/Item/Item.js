@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addNewItem, createNewItem } from "../../slices/ingredientSlice";
-import { updateRecipe } from "../../slices/recipeSlice";
+import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
+import { selectRecipes, updateRecipe } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
@@ -445,11 +445,18 @@ export function ResultDisplay(props){
 
 export function ResultItem(props){
     const {nombre, cantidad} = props;
+    const ingredientes = useSelector(selectIngredients);
+    const recetas = useSelector(selectRecipes);
+    const ingredienteActual  = ingredientes.filter(ingrediente => ingrediente.nombre === nombre)
+    const recetaActual = recetas.filter(receta => receta.nombre === nombre);
 
     return(
         <div className="flex place-content-between px-20">
             <h1 className="w-5/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-left my-2"> {nombre} </h1>
-            <h1 className="w-2/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-center my-2"> {cantidad} </h1>
+            <h1 className="self-center font-semibold w-1/12"> Inventario: </h1>
+            <h1 className="w-1/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-center my-2"> {ingredienteActual[0]?.cantidad ?? recetaActual[0]?.cantidad} </h1>
+            <h1 className="self-center font-semibold w-1/12"> Requiere: </h1> 
+            <h1 className={`w-1/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] ${parseInt(ingredienteActual[0]?.cantidad) >= parseInt(cantidad) || parseInt(recetaActual[0]?.cantidad) >= parseInt(cantidad) ? 'bg-green-400':'bg-red-400'} pl-4 py-1 font-semibold text-medium text-center my-2`}> {cantidad} </h1>
         </div>
     )
 }
@@ -476,11 +483,27 @@ export function SummaryDisplay(props){
 
 export function SummaryItem(props){
     const {nombre, info} = props;
+    const length = info.ingredientes?.length + info.recetas?.length;
 
     return(
         <div className="">
-            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> {`${nombre} - ${info.value} items`} </h1>
-            
+            <h1 className="text-black text-xl font-semibold text-left pl-10 border-b-2 border-white w-full"> {`${nombre} - ${length} items`} </h1>
+            {info.ingredientes?.map((ingrediente,index) => {
+                return(
+                    <div key={`ing${index}`} className="flex place-content-between px-20">
+                        <h1 className="w-5/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-left my-2"> {ingrediente.nombre} </h1>
+                        <h1 className="w-2/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-center my-2"> {ingrediente.cantidad} </h1>
+                    </div>
+                )
+            })}
+            {info.recetas?.map((receta,index) => {
+                return(
+                    <div key={`rec${index}`} className="flex place-content-between px-20">
+                        <h1 className="w-5/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-left my-2"> {receta.nombre} </h1>
+                        <h1 className="w-2/12 h-fit rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] bg-[#F4F4F4] pl-4 py-1 font-semibold text-medium text-center my-2"> {receta.cantidad} </h1>
+                    </div>
+                )
+            })}
         </div>
     )
 }
