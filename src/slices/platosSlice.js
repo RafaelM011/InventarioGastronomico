@@ -25,6 +25,14 @@ const platosSlice = createSlice({
             .addCase(AddDish.fulfilled, (state, action) => {
                 state.items = action.payload;
             })
+            .addCase(fetchDishes.rejected, (state,action) => {
+                state.status = 'rejected';
+                state.error = action.payload;
+            })
+            .addCase(AddDish.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.error = action.payload;
+            })
             
     }
 })
@@ -37,6 +45,7 @@ export const fetchDishes = createAsyncThunk('platos/fetchdishes', async (info, {
         body: JSON.stringify(info)
     })
     .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 
@@ -48,6 +57,7 @@ export const AddDish = createAsyncThunk('platos/adddish',async (plate, {rejectWi
         body: JSON.stringify(plate)
     })
     .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response
 })
 

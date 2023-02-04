@@ -38,6 +38,22 @@ const recipeSlice = createSlice({
                 state.items = action.payload;
                 state.message = 'Recipe updated succesfully';
             })
+            .addCase(fetchRecipes.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.message = action.payload;
+            })
+            .addCase(decreaseRecipe.rejected, (state,action) =>  {
+                state.status = 'rejected';
+                state.message = action.payload;
+            })
+            .addCase(addRecipe.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.message = action.payload;
+            })
+            .addCase(updateRecipe.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.message = action.payload;
+            })
     }
 })
 
@@ -49,6 +65,7 @@ export const fetchRecipes = createAsyncThunk('recipes/fetchRecipes', async (info
         body: JSON.stringify(info)
     })
     .then( res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response
 })
 
@@ -60,6 +77,7 @@ export const addRecipe = createAsyncThunk('recipes/addRecipe', async (recipe, re
         body: JSON.stringify(recipe)
     })
     .then( res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 
@@ -71,6 +89,7 @@ export const decreaseRecipe = createAsyncThunk('recipes/decreaseRecipe', async (
         body: JSON.stringify(recipesInfo)
     })
     .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 
@@ -82,7 +101,7 @@ export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (reci
         body: JSON.stringify(recipe)
     })
     .then(res => res.json())
-
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 

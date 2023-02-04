@@ -32,11 +32,18 @@ const sucursalesSlice = createSlice({
                 state.items = action.payload;
                 state.sucursalSeleccionada = action.payload[0]?.name ?? '';
             })
-
+            .addCase(fetchSucursales.rejected, (state, action) => {
+                state.status = 'rejected'
+                state.message = action.payload;
+            })
             .addCase(addSucursal.fulfilled, (state, action) => {
                 state.items = action.payload;
                 state.sucursalSeleccionada = action.payload[action.payload.length-1]?.name ?? '';  
                 state.message = 'Sucursal added properly'     
+            })
+            .addCase(addSucursal.rejected, (state, action) => {
+                state.status = 'rejected'
+                state.message = action.payload;
             })
     }
 })
@@ -49,6 +56,7 @@ export const fetchSucursales = createAsyncThunk( 'sucursales/fetchSucursales', a
         body: JSON.stringify({username})
     })
     .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 
@@ -60,6 +68,7 @@ export const addSucursal = createAsyncThunk( 'sucursales/addSucursal', async (da
         body: JSON.stringify(data)
     })
     .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
     return response;
 })
 
