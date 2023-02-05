@@ -3,6 +3,9 @@ import { useSelector } from "react-redux";
 import { selectDishes } from "../../slices/platosSlice";
 import { CalcultorItem, ResultDisplay, SummaryDisplay } from "../Item/Item";
 // import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
+import { conversion } from "../../unit_conversion/unit_conversion";
+import { selectIngredients } from "../../slices/ingredientSlice";
+import { selectRecipes } from "../../slices/recipeSlice";
 
 export const Calculator = (props) => {
     const {title} = props
@@ -12,6 +15,8 @@ export const Calculator = (props) => {
     const [resultInfo, setResultInfo] = useState([]);
     const [display, setDisplay] = useState('calculator')
     const [toggle, setToggle] = useState(false)
+    const ingredientesInv = useSelector(selectIngredients);
+    const recetasInv = useSelector(selectRecipes);
 
     useEffect(() => {
         setFilteredDishes(dishes)
@@ -66,10 +71,22 @@ export const Calculator = (props) => {
         const ingredientes = new Map ();
         const recetas = new Map();
 
+        //Papa Oz, Jamon Kl (Inv) - Papa Gr, Jamon L (Dish)
+
         values.forEach(value => {
             value.ingredientes.forEach(ingrediente => {
-                if(!ingredientes.has(ingrediente.nombre)) ingredientes.set(ingrediente.nombre, ingrediente.cantidad)
-                else ingredientes.set(ingrediente.nombre, ingrediente.cantidad + ingredientes.get(ingrediente.nombre))
+                if(!ingredientes.has(ingrediente.nombre)) {
+                    const info = ingredientesInv.filter(ingredienteInv => ingrediente.nombre === ingredienteInv.nombre);
+                    const {unidad} = info[0];
+                    const convertValue = conversion[ingrediente.unidad][unidad];
+                    ingredientes.set(ingrediente.nombre, ingrediente.cantidad * convertValue)
+                }
+                else {
+                    const info = ingredientesInv.filter(ingredienteInv => ingrediente.nombre === ingredienteInv.nombre);
+                    const {unidad} = info[0];
+                    const convertValue = conversion[ingrediente.unidad][unidad];
+                    ingredientes.set(ingrediente.nombre, ingrediente.cantidad*convertValue + ingredientes.get(ingrediente.nombre))
+                }
             })
             value.recetas.forEach(receta => {
                 if(!recetas.has(receta.nombre)) recetas.set(receta.nombre, receta.cantidad)

@@ -255,7 +255,8 @@ export function EmptyRecipeList(){
                     <input ref={quantityRef} className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='text'/>
                 </div>
                 <div className="w-2/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-20">
-                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false}notRecipe={true} isRecipe={false} metadata={{name: 'unidad', type:'receta'}}/>                </div>
+                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false} notRecipe={true} isRecipe={false} metadata={{name: 'unidad', type:'receta'}}/>
+                </div>
                 <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
                     <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
                 </div>
