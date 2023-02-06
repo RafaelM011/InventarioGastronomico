@@ -71,8 +71,6 @@ export const Calculator = (props) => {
         const ingredientes = new Map ();
         const recetas = new Map();
 
-        //Papa Oz, Jamon Kl (Inv) - Papa Gr, Jamon L (Dish)
-
         values.forEach(value => {
             value.ingredientes.forEach(ingrediente => {
                 if(!ingredientes.has(ingrediente.nombre)) {
@@ -89,8 +87,18 @@ export const Calculator = (props) => {
                 }
             })
             value.recetas.forEach(receta => {
-                if(!recetas.has(receta.nombre)) recetas.set(receta.nombre, receta.cantidad)
-                else recetas.set(receta.nombre, receta.cantidad + recetas.get(receta.nombre))
+                if(!recetas.has(receta.nombre)) {
+                    const info = recetasInv.filter(recetaInv => receta.nombre === recetaInv.nombre);
+                    const {unidad} = info[0];
+                    const convertValue = conversion[receta.unidad][unidad];
+                    recetas.set(receta.nombre, receta.cantidad * convertValue)
+                }
+                else {
+                    const info = recetasInv.filter(recetaInv => receta.nombre === recetaInv.nombre);
+                    const {unidad} = info[0];
+                    const convertValue = conversion[receta.unidad][unidad];
+                    recetas.set(receta.nombre, receta.cantidad * convertValue + recetas.get(receta.nombre))
+                }
             })
         })
         setResultInfo([ingredientes,recetas])

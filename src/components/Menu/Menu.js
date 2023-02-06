@@ -40,22 +40,22 @@ export function LargeMenuOptions(){
         <>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                 <Link to="/inventario">
-                    <h1 className="text-center text-3xl mt-3"> VER INVENTARIO </h1>
+                    <h1 className="text-center text-3xl mt-3"> INVENTARIO </h1>
                 </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                 <Link to="/reporte_de_ventas">
-                    <h1 className="text-center text-3xl mt-3"> REPORTE DE VENTAS </h1>
+                    <h1 className="text-center text-3xl mt-3"> VENTAS </h1>
                 </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                 <Link to="/suplir_ingredientes">
-                        <h1 className="text-center text-3xl mt-3"> SUPLIR INGREDIENTES </h1>
+                        <h1 className="text-center text-3xl mt-3"> MENU </h1>
                 </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                  <Link to="/configurar_ingredientes">
-                    <h1 className="text-center text-3xl mt-3"> CONFIGURAR INGREDIENTES </h1>
+                    <h1 className="text-center text-3xl mt-3"> MODIFICAR MENU </h1>
                  </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">

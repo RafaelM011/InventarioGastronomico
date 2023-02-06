@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import Select from 'react-select'
 import { selectIngredients } from "../../slices/ingredientSlice";
 import { selectRecipes } from "../../slices/recipeSlice";
+import {conversion} from "../../unit_conversion/unit_conversion";
 
 export const UnitSelectDropdown = (props) => {
-    const { update, bgColor, color, defaultValue, metadata, isDisabled, isRecipe} = props;
+    const { update, bgColor, color, defaultValue, metadata, selected, verify} = props;
+    const type = conversion[selected?.unidad]?.Tipo;
     const style = {
         indicatorsContainer: (base) => ({
             ...base,
@@ -15,14 +17,15 @@ export const UnitSelectDropdown = (props) => {
         valueContainer: (base) => ({
             ...base,
             'background': bgColor,
-            'borderRadius': '50px 0px 0px 24px'
+            'borderRadius': '50px 0px 0px 24px',
         }),
         control: (base) => ({
             ...base,
             'background': bgColor,
             'borderColor': bgColor,
             'borderRadius': '50px 24px 50px 24px',
-            'height': '60px',
+            'height': 'fit',
+            'paddingBottom': '8px'
         }),
         option: (base, state) => ({
             ...base,
@@ -52,7 +55,7 @@ export const UnitSelectDropdown = (props) => {
             'color':  color,
             'fontWeight': '400',
             'padding': '0px 0px 0px 10px',
-            'fontSize': '24px'
+            'fontSize': '20px'
         }),
         input: (base) => ({
             ...base,
@@ -61,18 +64,19 @@ export const UnitSelectDropdown = (props) => {
         placeholder: (base) => ({
             ...base,
             'fontWeight': '500',
-            'fontSize': '24px'
+            'fontSize': '20px',
+            'paddingLeft': '10px'
         })
     }
     const options = [
-        {label: 'Lb', value: 'Lb', isDisabled: isRecipe === 'Lb' ? false : isDisabled },
-        {label: 'Oz', value: 'Oz', isDisabled: isRecipe === 'Oz' ? false : isDisabled },
-        {label: 'Und', value: 'Und', isDisabled: isRecipe === 'Und' ? false : isDisabled },
-        {label: 'Kl', value: 'Kl', isDisabled: isRecipe === 'Kl' ? false : isDisabled },
-        {label: 'Lt', value: 'Lt', isDisabled: isRecipe === 'Lt' ? false : isDisabled },
-        {label: 'Ml', value: 'Ml', isDisabled: isRecipe === 'Ml' ? false : isDisabled },
-        {label: 'Gr', value: 'Gr', isDisabled: isRecipe === 'Gr' ? false : isDisabled },
-        {label: 'Gl (128Onz)', value: 'Gl (128Onz)', isDisabled: isRecipe === 'Gl (128Onz)' ? false : isDisabled }
+        {label: 'Und', value: 'Und', isDisabled: verify === true ? type === 'Und' ? false : true : false},
+        {label: 'Gr', value: 'Gr', isDisabled: verify === true ? type === 'Peso' ? false : true : false},
+        {label: 'Lb', value: 'Lb', isDisabled: verify === true ? type === 'Peso' ? false : true : false},
+        {label: 'Oz', value: 'Oz', isDisabled: verify === true ? type === 'Peso' ? false : true : false},
+        {label: 'Kl', value: 'Kl', isDisabled: verify === true ? type === 'Volumen' ? false : true : false},
+        {label: 'Lt', value: 'Lt', isDisabled: verify === true ? type === 'Volumen' ? false : true : false},
+        {label: 'Ml', value: 'Ml', isDisabled: verify === true ? type === 'Volumen' ? false : true : false},
+        {label: 'Gl (128Onz)', value: 'Gl (128Onz)', isDisabled: verify === true ? type === 'Volumen' ? false : true : false}
     ]
     return(
         <>
@@ -100,7 +104,8 @@ export const IngredientSelectDropdown = (props) => {
             'background': bgColor,
             'borderColor': bgColor,
             'borderRadius': '50px 24px 50px 24px',
-            'height': '60px',
+            'height': 'fit',
+            'paddingBottom': '8px'
         }),
         option: (base, state) => ({
             ...base,
@@ -130,7 +135,7 @@ export const IngredientSelectDropdown = (props) => {
             'color': color,
             'fontWeight': '400',
             'padding': '0px 0px 0px 10px',
-            'fontSize': '24px'
+            'fontSize': '20px'
         }),
         input: (base) => ({
             ...base,
@@ -139,10 +144,11 @@ export const IngredientSelectDropdown = (props) => {
         placeholder: (base) => ({
             ...base,
             'fontWeight': '500',
-            'fontSize': '24px'
+            'fontSize': '20px',
+            'paddingLeft': '10px'
         })
     }
-    const options = ingredients.map(ingredient => ({label: ingredient.nombre, value:ingredient.nombre}))
+    const options = ingredients.map(ingredient => ({label: ingredient.nombre, value:ingredient.nombre, unidad: ingredient.unidad}))
     
     return(
         <>
@@ -169,7 +175,8 @@ export const RecipeAndIngredientDropdown = (props) => {
             'background': bgColor,
             'borderColor': bgColor,
             'borderRadius': '50px 24px 50px 24px',
-            'height': '60px',
+            'height': 'fit',
+            'paddingBottom':'8px'
         }),
         option: (base, state) => ({
             ...base,
@@ -199,7 +206,7 @@ export const RecipeAndIngredientDropdown = (props) => {
             'color':  color,
             'fontWeight': '400',
             'padding': '0px 0px 0px 10px',
-            'fontSize': '24px'
+            'fontSize': '20px'
         }),
         input: (base) => ({
             ...base,
@@ -208,7 +215,8 @@ export const RecipeAndIngredientDropdown = (props) => {
         placeholder: (base) => ({
             ...base,
             'fontWeight': '500',
-            'fontSize': '24px'
+            'fontSize': '20px',
+            'paddingLeft': '10px'
         }),
         groupHeading: (base) => ({
             ...base,
@@ -217,7 +225,7 @@ export const RecipeAndIngredientDropdown = (props) => {
     }
     const ingredients = useSelector(selectIngredients);
     const recipes = useSelector(selectRecipes);
-    const ingredientsOption = ingredients.map(ingredient => ({ label: ingredient.nombre, value: ingredient.nombre, type: 'ingrediente'}))
+    const ingredientsOption = ingredients.map(ingredient => ({ label: ingredient.nombre, value: ingredient.nombre, type: 'ingrediente', unidad: ingredient.unidad}))
     const recipesOption = recipes.map(recipe => ({ label: recipe.nombre, value: recipe.nombre, type: 'receta', unidad: recipe.unidad}))
     const groupedOptions = [
         {

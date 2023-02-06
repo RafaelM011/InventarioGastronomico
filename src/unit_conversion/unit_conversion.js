@@ -45,4 +45,8 @@ export const conversion = {
         'Lt': 3.7854,
         'Ml': 3758.4,
     },
+    'Und': {
+        'Tipo': 'Und',
+        'Und': 1
+    }
 }

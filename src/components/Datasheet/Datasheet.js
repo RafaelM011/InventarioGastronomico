@@ -35,9 +35,9 @@ export default function Datasheet(props) {
                         <h1 className="text-3xl text-center"> INVENTARIO: </h1>
                         <DropDown active={active}/>
                     </div>
-                    <div className="w-1/2 h-[140px] bg-inv-blue rounded-l-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] place-self-start mt-8 flex"> 
-                        <div className="h-[70%] w-[11.5%] relative top-[20px] left-[20px] rounded-full bg-[#EFEFEF]"></div>
-                        <h1 className="text-[40px] text-white font-thin self-center ml-10"> USUARIO RESTAURANTE LOS 100 CIELOS </h1>
+                    <div className="w-1/2 h-[60%] bg-inv-blue rounded-l-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] mt-8 flex place-content-around gap-10 px-4"> 
+                        <div className="h-[80px] w-[80px] shrink-0 rounded-full bg-[#EFEFEF] my-auto"></div>
+                        <h1 className="text-4xl text-white font-thin my-auto"> USUARIO RESTAURANTE LOS 100 CIELOS </h1>
                     </div>
                 </div>
                 <div className="row-start-2 grid grid-cols-[8fr,2fr] mt-10">

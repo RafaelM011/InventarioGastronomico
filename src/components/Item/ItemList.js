@@ -247,18 +247,18 @@ export function EmptyRecipeList(){
 
     return(
         <>
-            <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
-                <div className="w-6/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input ref={nameRef} className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Receta" type='text'/>
+            <div className="w-10/12 h-fit mx-auto flex place-content-between mt-6">
+                <div className="w-6/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input ref={nameRef} className="text-xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Receta" type='text'/>
                 </div>
-                <div className="w-2/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input ref={quantityRef} className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='text'/>
+                <div className="w-2/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input ref={quantityRef} className="text-xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Cantidad" type='text'/>
                 </div>
-                <div className="w-2/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-20">
-                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4'  color='#000' isDisabled={false} notRecipe={true} isRecipe={false} metadata={{name: 'unidad', type:'receta'}}/>
+                <div className="w-2/12 h-fit bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] z-20">
+                    <UnitSelectDropdown update={updateRecipeInfo} bgColor='#F4F4F4' verify={false} color='#000' metadata={{name: 'unidad', type:'receta'}}/>
                 </div>
-                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
-                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
+                <div className="bg-inv-blue rounded-full ml-2">
+                    <img className="mx-auto mt-[7px] w-[70%] cursor-pointer" src={PlusIcon} alt='add icon' onClick={addIngredientToRecipe}/>
                 </div>
             </div> 
             <div className=" h-[380px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
@@ -491,12 +491,12 @@ export function AddPlateScreen(){
 
     return(
         <>
-            <div className="w-10/12 h-[80px] mx-auto flex place-content-between mt-6">
-                <div className="w-9/12 h-[65px] pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input className="text-3xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Plato" type='text' name='nombre' ref={nameRef}/>
+            <div className="w-10/12 h-fit mx-auto flex place-content-between mt-6">
+                <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                    <input className="text-xl font-semibold w-10/12 mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="Nombre Plato" type='text' name='nombre' ref={nameRef}/>
                 </div>
-                <div className="h-[60px] w-[60px] bg-inv-blue rounded-full ml-2">
-                    <img className="mx-auto mt-[10px] w-[40px] cursor-pointer" src={PlusIcon} alt='add icon' onClick={() => setRenderAmount(prevState => prevState+1)}/>
+                <div className="bg-inv-blue rounded-full ml-2">
+                    <img className="mx-auto mt-[6px] w-[80%] cursor-pointer" src={PlusIcon} alt='add icon' onClick={() => setRenderAmount(prevState => prevState+1)}/>
                 </div>
             </div> 
             <div className=" h-[380px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">

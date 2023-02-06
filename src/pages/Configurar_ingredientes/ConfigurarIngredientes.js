@@ -34,7 +34,7 @@ export default function ConfigIngredients() {
                 {/*PRIMERA COLUMNA*/}
                 <Desplegable isActive={active} buttonOffset={buttonOffsetTop} deploy={deployMenu}/>
                 {/*SEGUNDA COLUMNA*/}
-                <Datasheet option={{id: 4, title:"CONFIGURAR INVENTARIO"}} active={active}/>
+                <Datasheet option={{id: 4, title:"MODIFICAR MENU"}} active={active}/>
             </div>
         </>
     )

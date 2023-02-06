@@ -33,7 +33,7 @@ export default function SuplirIngredientes() {
                 {/*PRIMERA COLUMNA*/}
                 <Desplegable isActive={active} buttonOffset={buttonOffsetTop} deploy={deployMenu}/>
                 {/*SEGUNDA COLUMNA*/}
-                <Datasheet option={{id: 2, title: "ADMINISTRAR INVENTARIO"}} active={active}/>
+                <Datasheet option={{id: 2, title: "MENU"}} active={active}/>
             </div>
         </>
     )

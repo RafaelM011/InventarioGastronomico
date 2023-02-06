@@ -90,24 +90,24 @@ export default function RegisterModal(props) {
                 <h1 className="text-center text-3xl font-bold mt-10"> REGISTRO </h1>
                 
                 <h2 className="text-center text-xl font-semibold mt-4"> USUARIO </h2>
-                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
-                    <input ref={userInput} className="h-full w-full rounded-full bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="text"/>
+                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-2xl mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
+                    <input ref={userInput} className="h-full w-full rounded-2xl bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="text"/>
                 </div>
                 { errorRegEx.test(fetchError) ? <p className="text-base text-red-400 mt-2 mb-[-16px] text-center"> {fetchError} </p> :  null }
                 <h2 className="text-center text-xl font-semibold mt-4"> E-MAIL </h2>
-                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
-                    <input ref={emailInput} onBlur={checkEmail} className="h-full w-full rounded-full bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="text"/>
+                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-2xl mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
+                    <input ref={emailInput} onBlur={checkEmail} className="h-full w-full rounded-2xl bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="text"/>
                 </div>
                 { emailError !== '' ? <p className="text-base text-red-400 mt-2 mb-[-16px] text-center"> {emailError} </p> :  null }
                 { !errorRegEx.test(fetchError) ? <p className="text-base text-red-400 mt-2 text-center"> {fetchError} </p> :  null }
                 <h2 className="text-center text-xl font-semibold mt-4"> CONTRASEÑA </h2>
-                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
-                    <input ref={passwordInput} onBlur={checkPassword} className="h-full w-full rounded-full bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="password"/>
+                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-2xl mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
+                    <input ref={passwordInput} onBlur={checkPassword} className="h-full w-full rounded-2xl bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="password"/>
                 </div>
                 { passwordError !== '' ? <p className="text-base text-red-400 mt-2 mb-[-16px] text-center"> {passwordError} </p> :  null }
                 <h2 className="text-center text-xl font-semibold mt-4"> REPITA CONTRASEÑA </h2>
-                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
-                    <input ref={repPasswordInput} onBlur={checkRepPassword} className="h-full w-full rounded-full bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="password"/>
+                <div className="w-10/12 h-[40px] bg-[#DCDCDC] rounded-2xl mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] flex place-content-center m-auto">
+                    <input ref={repPasswordInput} onBlur={checkRepPassword} className="h-full w-full rounded-2xl bg-transparent border-none outline-0 place-self-center  text-center font-thin text-xl focus:bg-gradient-to-r from-[#000692] via-transparent to-[#000692] focus:font-semibold" type="password"/>
                 </div>
                 { repPasswordError !== '' ? <p className="text-base text-red-400 mt-2 mb-[-16px] text-center"> {repPasswordError} </p> :  null }
                 <div className="mx-auto mt-10 w-10/12 h-[50px] bg-[#000692] rounded-full shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)] text-center" onMouseEnter={checkInputs}>

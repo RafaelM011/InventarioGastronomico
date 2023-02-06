@@ -34,7 +34,7 @@ export default function Inventario() {
                 {/*PRIMERA COLUMNA*/}
                 <Desplegable isActive={active} buttonOffset={buttonOffsetTop} deploy={deployMenu}/>
                 {/*SEGUNDA COLUMNA*/}
-                <Datasheet option={{id: 1, title:"INVENTARIO"}} active={active}/>
+                <Datasheet option={{id: 1, title:"MENU"}} active={active}/>
             </div>
         </>
     )
