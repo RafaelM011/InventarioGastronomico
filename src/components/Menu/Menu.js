@@ -1,7 +1,7 @@
 import React  from "react";
 
 import InventarioImg from "../../assets/Inventario.png";
-import ReporteVentaImg from "../../assets/Reporte_de_venta.png";
+// import ReporteVentaImg from "../../assets/Reporte_de_venta.png";
 import SuplirIngredientesImg from "../../assets/Suplir_ingrediente.png";
 import ConfigIngredientesImg from "../../assets/Configurar_ingredientes.png";
 import ContactosImg from "../../assets/Contactos.png";
@@ -43,29 +43,29 @@ export function LargeMenuOptions(){
                     <h1 className="text-center text-3xl mt-3"> INVENTARIO </h1>
                 </Link>
             </div>
-            <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
+            {/* <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                 <Link to="/reporte_de_ventas">
                     <h1 className="text-center text-3xl mt-3"> VENTAS </h1>
                 </Link>
-            </div>
+            </div> */}
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                 <Link to="/suplir_ingredientes">
-                        <h1 className="text-center text-3xl mt-3"> MENU </h1>
+                        <h1 className="text-center text-3xl mt-3"> INGREDIENTES </h1>
                 </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                  <Link to="/configurar_ingredientes">
-                    <h1 className="text-center text-3xl mt-3"> MODIFICAR MENU </h1>
+                    <h1 className="text-center text-3xl mt-3"> RECETAS </h1>
                  </Link>
+            </div>
+            <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
+                <Link to="/platos">
+                    <h1 className="text-center text-3xl mt-3"> PLATOS </h1>
+                </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
                 <Link to="/calculadora">
                     <h1 className="text-center text-3xl mt-3"> CALCULADORA</h1>
-                </Link>
-            </div>
-            <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
-                <Link to="/precios">
-                    <h1 className="text-center text-3xl mt-3"> PRECIOS </h1>
                 </Link>
             </div>
             <div className="place-self-start w-10/12 h-[65px] bg-[#DCDCDC] rounded-r-full mt-3 shadow-[1px_1px_14px_3px_rgba(0,0,0,0.55)]">
@@ -96,11 +96,11 @@ export function SmallMenuOptions(){
                     <img className="w-11/12" src={InventarioImg} alt="inventario"/>
                 </Link>
             </div>
-            <div className={selected === 2 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(2))}>
+            {/* <div className={selected === 2 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(2))}>
                 <Link to="/reporte_de_ventas">
                     <img className="w-6/12 mx-auto" src={ReporteVentaImg} alt="reporte de venta"/> 
                 </Link>
-            </div>
+            </div> */}
             <div className={selected === 3 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(3))}>
                 <Link to="/suplir_ingredientes">
                     <img className="w-6/12 mx-auto" src={SuplirIngredientesImg} alt="suplir ingredientes"/> 
@@ -111,14 +111,14 @@ export function SmallMenuOptions(){
                     <img className="w-6/12 mx-auto" src={ConfigIngredientesImg} alt="configurar ingredientes"/> 
                 </Link>
             </div>
+            <div className={selected === 6 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(6))}>
+                <Link to="/platos">
+                    <img className="w-6/12 mx-auto" src={PrecioImg} alt="plato"/> 
+                </Link>
+            </div>
             <div className={selected === 5 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(5))}>
                 <Link to="/calculadora">
                     <img className="w-6/12 mx-auto" src={ContactosImg} alt="calculadora"/> 
-                </Link>
-            </div>
-            <div className={selected === 6 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(6))}>
-                <Link to="/precios">
-                    <img className="w-6/12 mx-auto" src={PrecioImg} alt="precio"/> 
                 </Link>
             </div>
             <div className={selected === 7 ? selectedClass : normalClass} onClick={() => dispatch(changeActiveMenu(7))}>

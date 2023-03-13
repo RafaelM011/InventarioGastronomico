@@ -3,26 +3,29 @@ export const conversion = {
         'Tipo': 'Peso',
         'Gr': 1,
         'Lb': 0.0022,
-        'Oz': 0.0352
+        'Oz': 0.0352,
+        'Kl': 0.001
     },
     'Lb':{
         'Tipo': 'Peso',
         'Lb': 1,
         'Gr': 453.5920,
-        'Oz': 16.0000
+        'Oz': 16.0000,
+        'Kl': 0.4535
     },
     'Oz':{
         'Tipo': 'Peso',
         'Oz': 1,
         'Lb': 0.0625,
-        'Gr': 28.3495
+        'Gr': 28.3495,
+        'Kl': 0.0283
     },
     'Kl':{
-        'Tipo': 'Volumen',
+        'Tipo': 'Peso',
         'Kl': 1,
-        'Lt': 1000,
-        'Ml': 1000000,
-        'Gl (128Onz)': 0.0002641
+        'Oz': 35.274,
+        'Lb': 2.2046,
+        'Gr': 1000
     },
     'Lt':{
         'Tipo': 'Volumen',

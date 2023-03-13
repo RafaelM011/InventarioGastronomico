@@ -1,7 +1,3 @@
-CREATE A NEW BRANCH TO DO THE FOLLOWING TASKS
-
-1. Modify style to make it responsive
-
-2. Inventory in grams
-3. Create password recover option
-4. CLEAN INGREDIENT AND RECIPE STATE WHEN ADDING NEW ONE
+1. Restart page when creating or modifying
+2. Don't allow dupes
+3. despues que se le de "agregar receta" tiene que preguntar el Rendimiento de la receta que es cuando se colo el peso final o el total de unidades

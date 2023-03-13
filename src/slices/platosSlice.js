@@ -8,6 +8,7 @@ process.env.NODE_ENV === 'production'
 const initialState = {
     items: [],
     status: 'idle',
+    message: '',
     error: ''
 };
 
@@ -15,7 +16,12 @@ const platosSlice = createSlice({
     name: "platos",
     initialState,
     reducers: {
-
+        dishMessage(state,action){
+            state.message = action.payload;
+        },
+        resetDishState(state, action) {
+            return initialState 
+        }
     },
     extraReducers(builder){
         builder
@@ -24,6 +30,11 @@ const platosSlice = createSlice({
             })
             .addCase(AddDish.fulfilled, (state, action) => {
                 state.items = action.payload;
+                state.message = 'Dish added succesfully'
+            })
+            .addCase(UpdateDishes.fulfilled, (state, action) => {
+                state.items = action.payload;
+                state.message = 'Dish updated succesfully'
             })
             .addCase(fetchDishes.rejected, (state,action) => {
                 state.status = 'rejected';
@@ -33,6 +44,11 @@ const platosSlice = createSlice({
                 state.status = 'rejected';
                 state.error = action.payload;
             })
+            .addCase(UpdateDishes.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.message = action.payload;
+            })
+            
             
     }
 })
@@ -61,6 +77,19 @@ export const AddDish = createAsyncThunk('platos/adddish',async (plate, {rejectWi
     return response
 })
 
-export const {AddNewPlate} = platosSlice.actions;
+export const UpdateDishes = createAsyncThunk('platos/updatedishes', async (dishes, rejectWithValue) => {
+    const response = await 
+    fetch(serverUrl + 'updatedishes', {
+        method: "post",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(dishes)
+    })
+    .then(res => res.json())
+    if (typeof response === 'string') return rejectWithValue(response);
+    return response;
+})
+
+export const {AddNewPlate,dishMessage, resetDishState} = platosSlice.actions;
 export const selectDishes = state => state.dishes.items;
+export const selectDishMessage = state => state.dishes.message;
 export default platosSlice.reducer;

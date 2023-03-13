@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { ingredientMessage, selectIngredientMessage } from '../../slices/ingredientSlice';
+import { dishMessage, selectDishMessage} from '../../slices/platosSlice';
 import { recipeMessage, selectRecipeMessage } from '../../slices/recipeSlice';
 import { selectSucursalesMessage, sucursalesMessage } from '../../slices/sucursalesSlice';
 
@@ -10,6 +11,7 @@ export const DisplayMessage = (props) => {
     const ingredientsMessage = useSelector(selectIngredientMessage);
     const recipesMessage = useSelector(selectRecipeMessage);
     const sucursalMessage = useSelector(selectSucursalesMessage);
+    const dishesMessage = useSelector(selectDishMessage)
     let message;
 
     switch (type){
@@ -21,6 +23,9 @@ export const DisplayMessage = (props) => {
             break;
         case 'sucursales':
             message = sucursalMessage;
+            break;
+        case 'dish':
+            message = dishesMessage;
             break;
         default:
     }
@@ -43,6 +48,11 @@ export const DisplayMessage = (props) => {
                         dispatch(sucursalesMessage(''))
                     },2000)
                     break;
+                case 'dish':
+                    setTimeout(() => {
+                        dispatch(dishMessage(''))
+                    },2000)
+                    break;
                 default:
             }
         }
@@ -58,6 +68,9 @@ export const DisplayMessage = (props) => {
                 break;
             case 'sucursales':
                 dispatch(sucursalesMessage(''))
+                break;
+            case 'dish':
+                dispatch(dishMessage(''))
                 break;
             default:
         }

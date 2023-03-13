@@ -80,7 +80,7 @@ export const UnitSelectDropdown = (props) => {
     ]
     return(
         <>
-            <Select defaultValue={defaultValue} styles={style} options={options} onChange={(e) => update({e, metadata})}/>
+            <Select defaultValue={{label:defaultValue, value:defaultValue}} styles={style} options={options} onChange={(e) => update({e, metadata})}/>
         </>
     )
 }
@@ -240,7 +240,7 @@ export const RecipeAndIngredientDropdown = (props) => {
 
     return(
         <>
-            <Select defaultValue={defaultValue} options={groupedOptions} styles={style} onChange={(e) => update({e, metadata})}/>
+            <Select defaultValue={{label: defaultValue, value: defaultValue}} options={groupedOptions} styles={style} onChange={(e) => update({e, metadata})}/>
         </>
     )
 }

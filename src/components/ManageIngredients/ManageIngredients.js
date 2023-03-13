@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { AddPlateScreen, EmptyItemList, EmptyRecipeList } from "../Item/ItemList.js";
+import { EditableItemList, EmptyItemList} from "../Item/ItemList.js";
 
 export default function ManageIngredient(props) {
     const {title} = props;
@@ -21,10 +21,9 @@ export default function ManageIngredient(props) {
                     <h1 className="text-3xl text-center font-bold mt-5 underline"> {title} </h1>
                     <div className="flex place-content-evenly mt-4 text-xl font-semibold">
                         <button className={pressed === 1 ? pressedStyle : defaultStyle} onClick={() => setPressed(1)}>AGREGAR INGREDIENTE</button>
-                        <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => setPressed(2)}>AGREGAR RECETA</button>
-                        <button className={pressed === 3 ? pressedStyle : defaultStyle} onClick={() => setPressed(3)}>AGREGAR PLATO</button>
+                        <button className={pressed === 2 ? pressedStyle : defaultStyle} onClick={() => setPressed(2)}>CONFIGURAR INGREDIENTE</button>
                     </div>
-                    {pressed === 1 ? <EmptyItemList renderAmount={amount} addItem={addEmptyItem}/> : pressed === 2 ? <EmptyRecipeList/> : <AddPlateScreen/>}
+                    {pressed === 1 ? <EmptyItemList renderAmount={amount} addItem={addEmptyItem}/> : <EditableItemList/>}
                 </div>
             </div>
         </>

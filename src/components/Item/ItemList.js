@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addIngredient, selectIngredients, selectNewIngredients, updateIngredients, ingredientMessage, cleanNewItem, decreaseIngredient } from "../../slices/ingredientSlice";
 import PlusIcon from "../../assets/Plus.png";
-import Item, { EditableItem, EmptyItem, PlateItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
-import { selectRecipes, recipeMessage, addRecipe, decreaseRecipe } from "../../slices/recipeSlice";
+import Item, { EditableItem, EditablePlateItem, EditableRecipeItem, EmptyItem, PlateItem, RecipeAndIngredientItem, RecipeIngredient, RecipeItem } from "./Item";
+import { selectRecipes, recipeMessage, addRecipe, decreaseRecipe, updateRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { DisplayMessage } from "../DisplayMessage/DisplayMessage";
-import { AddDish, selectDishes } from "../../slices/platosSlice";
+import { AddDish, selectDishes, UpdateDishes } from "../../slices/platosSlice";
 import { UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
 // INGREDIENTS
@@ -271,15 +271,43 @@ export function EmptyRecipeList(){
 }
 
 export function EditableRecipeList() {
-    // const recipes = useSelector(selectRecipes);
+    const recipes = useSelector(selectRecipes);
+    const sucursal = useSelector(selectSucursal);
+    const dispatch = useDispatch();
+    let updatedRecipes = []
+
+    const updateRecipeEntry = (info) => {
+        updatedRecipes[info.index].nombre = info.name;
+        updatedRecipes[info.index].precio = info.price;
+        updatedRecipes[info.index].cantidad = info.quantity;
+        updatedRecipes[info.index].unidad = info.unit;
+    }
+
+    const validateUpdate = () => {
+        return updatedRecipes.some( updatedRecipe => updatedRecipe.nombre === '' || updatedRecipe.cantidad === '' || updatedRecipe.unidad === '')
+    }
+
+    const sendUpdatedEntries = () => {
+        const isEmpty = validateUpdate();
+        if (isEmpty) return dispatch(recipeMessage('Missing fields'))
+        dispatch(updateRecipes({recipes: updatedRecipes, sucursal}));
+    }
 
     return(
         <>
             <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
-                {/* {recipes.map( recipe => {
-                    const {id, sucursal, nombre, ingredientes, cantidades, unidades} = recipe;
-                    return <EditableRecipeItem key={id} id={id} nombre={nombre} sucursal={sucursal} ingredientes={ingredientes} cantidades={cantidades} unidades={unidades}/>
-                })} */}
+                {recipes.map( (recipe,index) => {
+                    updatedRecipes.push({
+                        id: recipe.id,
+                        nombre: recipe.nombre,
+                        cantidad: recipe.cantidad,
+                        unidad: recipe.unidad
+                    })
+                    return <EditableRecipeItem key={recipe.id} name={recipe.nombre} quantity={recipe.cantidad} unit={recipe.unidad} index={index} updateFunction={updateRecipeEntry}/>
+                })}
+            </div>
+            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
+                <button onClick={sendUpdatedEntries}> ACTUALIZAR RECETAS </button>
             </div>
             <DisplayMessage type={'recipe'}/>
         </>
@@ -503,6 +531,50 @@ export function AddPlateScreen(){
                 {render}
             </div>
             <h1 key='1' className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-8 cursor-pointer" onClick={addNewPlate}> AGREGAR PLATO </h1>
+            <DisplayMessage type={'dish'}/>
+        </>
+    )
+}
+
+export function EditablePlateList(){
+    const dishes = useSelector(selectDishes);
+    const sucursal = useSelector(selectSucursal);
+    const dispatch = useDispatch();
+    let updatedDishes = []
+
+    const updateDishesEntry = (info) => {
+        updatedDishes[info.index].nombre = info.nombre;
+        updatedDishes[info.index].ingredientes = info.ingredientes;
+        updatedDishes[info.index].recetas = info.recetas;
+    }
+
+    // const validateUpdate = () => {
+    //     return updatedDishes.some( updatedDish => updatedDish.nombre === '')
+    // }
+
+    const sendUpdatedEntries = () => {
+        // const isEmpty = validateUpdate();
+        // if (isEmpty) return dispatch(recipeMessage('Missing fields'))
+        dispatch(UpdateDishes({dishes: updatedDishes, sucursal}))
+    }
+
+    return(
+        <>
+            <div className="h-[460px] w-[97%] mx-auto rounded-lg overflow-auto scrollbar-hide bg-gradient-to-b from-transparent via-inv-blue to-transparent">
+                {dishes.map( (dish,index) => {
+                    updatedDishes.push({
+                        id: dish.id,
+                        nombre: dish.nombre,
+                        ingredientes: dish.ingredientes,
+                        recetas: dish.recetas
+                    })
+                    return <EditablePlateItem key={dish.id} nombre={dish.nombre} recetas={dish.recetas} ingredientes={dish.ingredientes} index={index} updateFunction={updateDishesEntry}/>
+                })}
+            </div>
+            <div className="h-fit w-fit p-2 rounded-xl bg-inv-blue text-2xl font-medium text-white mx-auto mt-4 cursor-pointer">
+                <button onClick={sendUpdatedEntries}> ACTUALIZAR PLATOS </button>
+            </div>
+            <DisplayMessage type={'dish'}/>
         </>
     )
 }

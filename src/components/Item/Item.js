@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addNewItem, createNewItem, selectIngredients } from "../../slices/ingredientSlice";
-import { selectRecipes, updateRecipe } from "../../slices/recipeSlice";
+import { selectRecipes } from "../../slices/recipeSlice";
 import { selectSucursal } from "../../slices/sucursalesSlice";
 import { IngredientSelectDropdown, RecipeAndIngredientDropdown, UnitSelectDropdown } from "../ReactSelectDropdown/ReactSelectDropdown";
 
@@ -82,7 +82,7 @@ export  function EditableItem(props) {
                         <input className="w-10/12 text-xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onBlur={updateMyEntry}/>
                     </div>
                     <div className="w-6/12 h-fit ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                        <UnitSelectDropdown defaultValue={{label:unit, value: unit}} bgColor='#0067D1' color='#fff' isDisabled={false}notRecipe={true} isRecipe={false} update={updateMyEntry} metadata={{name: 'unidad'}}/>
+                        <UnitSelectDropdown defaultValue={unit} bgColor='#0067D1' color='#fff' isDisabled={false} notRecipe={true} isRecipe={false} update={updateMyEntry} metadata={{name: 'unidad'}}/>
                     </div>
                 </div>
             </div>  
@@ -240,89 +240,52 @@ export function RecipeIngredient(props) {
 }
 
 export function EditableRecipeItem(props) {
-    const {id, nombre, ingredientes, cantidades, unidades, sucursal} = props;
-    // const [allowSend, setAllowSend] = useState(false)
-    const [recipe, setRecipe] = useState({
-        id,
-        nombre,
-        ingredientes,
-        cantidades,
-        unidades,
-        sucursal
-    });
-    const dispatch = useDispatch();
-    let [display, setDisplay] = useState(false)
-    let newIngredientes = [...recipe.ingredientes]
-    let newCantidades = [...recipe.cantidades];
-    let newUnidades =[...recipe.unidades]
-    // const recipes = useSelector(selectRecipes);
+    const {unit, quantity, name, index, updateFunction} = props;
+    const info = {
+        index,
+        name,
+        quantity,
+        unit
+    }
 
-    const updateRecipeInfo = (event) => {
+    const updateMyEntry = (event) => {
         const target = event?.target;
         const value = target?.value ?? event.e.value;
         const name = target?.name ?? event.metadata.name;
-        const index = target?.attributes[0]?.value ?? event?.metadata?.index ?? null;
-        switch(name){
-            case 'nombre':
-                setRecipe(prevRecipe => ({...prevRecipe, nombre: value}))
+
+       switch(name) {
+            case "nombre":
+                info.name = value;
                 break;
-            case 'ingrediente':
-                newIngredientes[index] = value;
-                setRecipe(prevRecipe => ({...prevRecipe, ingredientes: newIngredientes}))
+            case "cantidad":
+                info.quantity = value;
                 break;
-            case 'cantidad':
-                newCantidades[index] = value;
-                setRecipe(prevRecipe => ({...prevRecipe, cantidades: newCantidades}))
-                break;
-            case 'unidad':
-                newUnidades[index] = value;
-                setRecipe(prevRecipe => ({...prevRecipe, unidades: newUnidades}))
+            case "unidad":
+                info.unit = value;
                 break;
             default:
-        }
+        }     
+
+        updateFunction(info)
     }
 
-    const updateRecipeOnDB = () => {
-        // if (allowSend) return dispatch(updateRecipe(recipe));
-        dispatch(updateRecipe(recipe))
-    }
-
-    return(
-        <div className="flex w-12/12 place-content-around items-start">
-            <details className="w-7/12">
-                <summary className="w-inherit h-[80px] ml-10 mt-6 bg-[#F4F4F4] flex place-content-between rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]" onClick={() => setDisplay(prev=>!prev)}>
-                    <input className="text-3xl text-left font-semibold my-auto ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name='nombre' defaultValue={nombre} onBlur={updateRecipeInfo} onClick={(e)=>e.stopPropagation()}/>
-                    <h1 className="text-xl text-right font-normal mx-auto place-self-center underline underline-offset-4 decoration-inv-blue cursor-pointer"> {display ? "COLAPSAR" :"EXPANDIR"} </h1>
-                </summary>
-                <div className="-mr-20 ml-10">
-                    {ingredientes.map( (ingrediente,index) => {
-                        return <EditableRecipeIngredient key={index} index={index} nombre={ingrediente} cantidad={cantidades[index]} unidad={unidades[index]} update={updateRecipeInfo}/>
-                    })}
-                </div>
-            </details>
-            <button className="bg-inv-blue w-3/12 h-fit p-2 mt-[36px] text-2xl text-white rounded-2xl self-start" onClick={updateRecipeOnDB}>
-                ACTUALIZAR
-            </button>
-        </div>
-    )
-
-}
-
-export function EditableRecipeIngredient(props) {
-    const {index, nombre, cantidad, unidad, update} = props;
     return(
         <>
-            <div className="w-11/12 h-[80px] mx-auto flex mt-2 place-content-around">
-                <div className="w-5/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <IngredientSelectDropdown defaultValue={{label:nombre, value:nombre}} update={update} bgColor='#F4F4F4' color='#000'metadata={{name:'ingrediente', index}}/>
+            <div className="w-11/12 h-fit mx-auto flex place-content-between mt-6">
+                <div className="w-7/12 h-fit flex">
+                    <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="w-10/12 text-xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={name} name="nombre" onBlur={updateMyEntry}/>
+                    </div>
                 </div>
-                <div className="w-2/12 h-[60px] z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <input index={index} name='cantidad' className="w-9/12 text-2xl text-center font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={cantidad} onBlur={update}/>
+                <div className="w-5/12 h-fit flex">
+                    <div className="w-6/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="w-10/12 text-xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" name="cantidad" defaultValue={quantity} onBlur={updateMyEntry}/>
+                    </div>
+                    <div className="w-6/12 h-fit ml-[-10px] bg-inv-blue rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <UnitSelectDropdown defaultValue={unit} bgColor='#0067D1' color='#fff' isDisabled={false} notRecipe={true} isRecipe={false} update={updateMyEntry} metadata={{name: 'unidad'}}/>
+                    </div>
                 </div>
-                <div className="w-4/12 h-[60px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
-                    <UnitSelectDropdown defaultValue={{label:unidad, value:unidad}} update={update} bgColor='#F4F4F4' color='#000' isDisabled={false}notRecipe={true} isRecipe={false} metadata={{name:'unidad', index}}/>
-                </div>
-            </div>
+            </div>  
         </>
     )
 }
@@ -386,6 +349,124 @@ export function RecipeAndIngredientItem(props){
     </div>
     )
 }
+
+export function EditablePlateItem(props){
+    const {nombre, recetas, ingredientes, index, updateFunction} = props;
+    const [isShowing, setIsShowing] = useState(false);
+    const info = {
+        index,
+        nombre,
+        ingredientes: [...ingredientes],
+        recetas: [...recetas]
+    }
+
+    const updateMyEntry = ({event, index, type}) => {
+        const target = event?.target;
+        const value = target?.value ?? event.e.value;
+        const name = target?.name ?? event.metadata.name;
+
+       switch(name) {
+            case "nombre":
+                info.nombre = value;
+                break;
+            case "cantidad":
+                if(type === 'ingrediente') info.ingredientes[index] = {...info.ingredientes[index], cantidad: value};
+                else info.recetas[index] = {...info.recetas[index], cantidad: value};
+                break;
+            case "unidad":
+                if(type === 'ingrediente') info.ingredientes[index] = {...info.ingredientes[index], unidad: value};
+                else info.recetas[index] = {...info.recetas[index], unidad: value};
+                break;
+            default:
+        }     
+        updateFunction(info)
+    }
+
+    const show = () => {
+        setIsShowing(prevState => !prevState)
+    }
+ 
+    return(
+        <>
+            <div className="w-11/12 h-fit mx-auto flex-col place-content-between mt-6">
+                <div className="w-7/12 h-fit flex">
+                    <div className="w-9/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                        <input className="w-10/12 text-xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" defaultValue={nombre} name="nombre" onBlur={ event => updateMyEntry({event})}/>
+                    </div>
+                    <div className="cursor-pointer w-fit h-fit rounded-full p-3 ml-4 bg-inv-blue text-white font-semibold" onClick={show}> {!isShowing ? "SHOW" : "HIDE"} </div>
+                </div>
+                <div className="w-full h-fit flex-col">
+                    {isShowing ? 
+                        <div> 
+                            {ingredientes.length === 0 ? null : 
+                                <div className="flex"> 
+                                    {ingredientes.map((ingrediente, index) => {
+                                        return <EditablePlateIngredient key={index} index={index} nombre={ingrediente.nombre} unidad={ingrediente.unidad} cantidad={ingrediente.cantidad} update={updateMyEntry}/>
+                                    })}
+                                </div>
+                            }
+                            {recetas.length === 0 ? null : 
+                                <div className="flex"> 
+                                    {recetas.map((receta, index) => {
+                                        return <EditablePlateRecipe key={index} index={index} nombre={receta.nombre} unidad={receta.unidad} cantidad={receta.cantidad} update={updateMyEntry}/>
+                                    })}
+                                </div>
+                            }
+                        </div>
+                    : 
+                        null}
+                </div>
+            </div>  
+        </>
+    ) 
+}
+
+export function EditablePlateIngredient(props){
+    const {index, nombre, unidad, cantidad, update} = props;
+    const selectedIngredient = {label: nombre, type: 'ingrediente', unidad, value: nombre};
+
+    const updatePlateRecipe = (event) => {
+        update({event, index, type: 'ingrediente'})
+    }  
+
+    return(
+        <div className="w-10/12 h-fit mx-auto flex mt-2 place-content-around relative">
+            <div className="w-5/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <input className="w-10/12 text-xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" value={nombre} name="nombre" readOnly/>
+            </div>
+            <div className="w-3/12 h-fit pb-2 z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <input type='number' defaultValue={cantidad} name='cantidad' className="w-10/12 text-xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={e => updatePlateRecipe(e)}/>
+            </div>
+            <div className="w-3/12 h-fit ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <UnitSelectDropdown update={updatePlateRecipe} bgColor='#F4F4F4' selected={selectedIngredient} verify={true} color='#000' metadata={{name: 'unidad'}} defaultValue={unidad}/>
+            </div>
+    </div>
+    )
+}
+
+export function EditablePlateRecipe(props){
+    const {index, nombre, unidad, cantidad, update} = props;
+    const selectedIngredient = {label: nombre, type: 'ingrediente', unidad, value: nombre};
+
+    const updatePlateRecipe = (event) => {
+        update({event, index, type: 'receta'})
+    }  
+    
+    return(
+        <div className="w-10/12 h-fit mx-auto flex mt-2 place-content-around relative">
+            <div className="w-5/12 h-fit pb-2 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <input className="w-10/12 text-xl mt-3 ml-6 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" value={nombre} name="nombre" readOnly/>
+            </div>
+            <div className="w-3/12 h-fit pb-2 z-10 bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <input type='number' defaultValue={cantidad} name='cantidad' className="w-10/12 text-xl text-left pl-3 font-normal mt-3 ml-3 bg-inherit outline-none rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px] focus:border-r-4 border-inv-blue" placeholder="CANTIDAD" onBlur={e => updatePlateRecipe(e)}/>
+            </div>
+            <div className="w-3/12 h-fit ml-[-10px] bg-[#F4F4F4] rounded-tr-3xl rounded-tl-[50px] rounded-bl-3xl rounded-br-[50px]">
+                <UnitSelectDropdown update={updatePlateRecipe} bgColor='#F4F4F4' selected={selectedIngredient} verify={true} color='#000' metadata={{name: 'unidad'}} defaultValue={unidad}/>
+            </div>
+    </div>
+    )
+}
+
 
 // CALCULATOR
 

@@ -5,7 +5,7 @@ import { idleStatus, selectUser } from './slices/userSlice';
 
 import Home from './pages/Home/Home';
 import Inventario from './pages/Inventario/Inventario';
-import ReporteDeVentas from './pages/Reporte_de_ventas/ReporteVentas';
+// import ReporteDeVentas from './pages/Reporte_de_ventas/ReporteVentas';
 import SuplirIngredientes from './pages/Suplir_ingredientes/SuplirIngredientes';
 import Calculator from './pages/Calculadora/Calculadora';
 import ConfigIngredients from './pages/Configurar_ingredientes/ConfigurarIngredientes';
@@ -13,6 +13,7 @@ import { fetchSucursales, selectSucursal } from './slices/sucursalesSlice';
 import { fetchIngredients } from './slices/ingredientSlice';
 import { fetchRecipes } from './slices/recipeSlice';
 import { fetchDishes } from './slices/platosSlice';
+import Platos from './pages/Platos/Platos';
 
 function App() {
   const navigate = useNavigate();
@@ -51,11 +52,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/inventario" element={<Inventario/>}/>
-        <Route path="/reporte_de_ventas" element={<ReporteDeVentas/>}/>
+        {/* <Route path="/reporte_de_ventas" element={<ReporteDeVentas/>}/> */}
         <Route path="/suplir_ingredientes" element={<SuplirIngredientes/>}/>
         <Route path="/configurar_ingredientes" element={<ConfigIngredients/>}/>
         <Route path="/calculadora" element={<Calculator/>}/>
-        {/* <Route path="/precios" element={<Precios/>}/> */}
+        <Route path="/platos" element={<Platos/>}/>
         {/* <Route path="/manual" element={<Manual/>}/> */}
         {/* <Route path="/servicios" element={<Servicios/>}/> */}
         <Route path="/download"/>

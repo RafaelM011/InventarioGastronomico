@@ -34,7 +34,7 @@ const recipeSlice = createSlice({
                 state.items = action.payload;
                 state.message = 'Recipe added succesfully';
             })
-            .addCase(updateRecipe.fulfilled, (state, action) => {
+            .addCase(updateRecipes.fulfilled, (state, action) => {
                 state.items = action.payload;
                 state.message = 'Recipe updated succesfully';
             })
@@ -50,7 +50,7 @@ const recipeSlice = createSlice({
                 state.status = 'rejected';
                 state.message = action.payload;
             })
-            .addCase(updateRecipe.rejected, (state, action) => {
+            .addCase(updateRecipes.rejected, (state, action) => {
                 state.status = 'rejected';
                 state.message = action.payload;
             })
@@ -93,7 +93,7 @@ export const decreaseRecipe = createAsyncThunk('recipes/decreaseRecipe', async (
     return response;
 })
 
-export const updateRecipe = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
+export const updateRecipes = createAsyncThunk('recipes.updateRecipe', async (recipe, rejectWithValue) => {
     const response = await 
     fetch(serverUrl + 'updaterecipe', {
         method: "post",

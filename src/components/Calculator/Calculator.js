@@ -89,6 +89,7 @@ export const Calculator = (props) => {
             value.recetas.forEach(receta => {
                 if(!recetas.has(receta.nombre)) {
                     const info = recetasInv.filter(recetaInv => receta.nombre === recetaInv.nombre);
+                    console.log(recetasInv)
                     const {unidad} = info[0];
                     const convertValue = conversion[receta.unidad][unidad];
                     recetas.set(receta.nombre, receta.cantidad * convertValue)
